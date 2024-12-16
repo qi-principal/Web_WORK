@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>广告管理</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .preview-image {
+            max-width: 200px;
+            max-height: 200px;
+            margin-top: 10px;
+        }
+        .ad-card {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">广告管理系统</h2>
+        
+        <!-- 创建广告表单 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>创建新广告</h4>
+            </div>
+            <div class="card-body">
+                <form id="createAdForm">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">广告标题</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">广告描述</label>
+                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="targetUrl" class="form-label">目标链接</label>
+                        <input type="url" class="form-control" id="targetUrl" name="targetUrl" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="adImage" class="form-label">广告图片</label>
+                        <input type="file" class="form-control" id="adImage" name="adImage" accept="image/*">
+                        <img id="imagePreview" class="preview-image" style="display: none;">
+                    </div>
+                    <button type="submit" class="btn btn-primary">创建广告</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 广告列表 -->
+        <div class="card">
+            <div class="card-header">
+                <h4>广告列表</h4>
+                <button class="btn btn-secondary" onclick="loadAds()">刷新列表</button>
+            </div>
+            <div class="card-body">
+                <div id="adsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 编辑广告模态框 -->
+    <div class="modal fade" id="editModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">编辑广告</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editAdForm">
+                        <input type="hidden" id="editAdId">
+                        <div class="mb-3">
+                            <label for="editTitle" class="form-label">广告标题</label>
+                            <input type="text" class="form-control" id="editTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDescription" class="form-label">广告描述</label>
+                            <textarea class="form-control" id="editDescription" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editTargetUrl" class="form-label">目标链接</label>
+                            <input type="url" class="form-control" id="editTargetUrl" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editAdImage" class="form-label">广告图片</label>
+                            <input type="file" class="form-control" id="editAdImage" accept="image/*">
+                            <img id="editImagePreview" class="preview-image" style="display: none;">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="updateAd()">保存修改</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 定义API基础URL
+        const API_BASE_URL = 'http://localhost:8080';
+
+        // 页面加载完成后加载广告列表
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAds();
+            setupImagePreviews();
+        });
+
+        // 设置图片预览
+        function setupImagePreviews() {
+            document.getElementById('adImage').addEventListener('change', function(e) {
+                previewImage(e.target, 'imagePreview');
+            });
+            document.getElementById('editAdImage').addEventListener('change', function(e) {
+                previewImage(e.target, 'editImagePreview');
+            });
+        }
+
+        // 图片预览功能
+        function previewImage(input, previewId) {
+            const preview = document.getElementById(previewId);
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // 创建广告
+        document.getElementById('createAdForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData();
+            const adData = {
+                title: document.getElementById('title').value,
+                description: document.getElementById('description').value,
+                targetUrl: document.getElementById('targetUrl').value
+            };
+            formData.append('ad', new Blob([JSON.stringify(adData)], {type: 'application/json'}));
+            
+            const imageFile = document.getElementById('adImage').files[0];
+            if (imageFile) {
+                formData.append('image', imageFile);
+            }
+
+            fetch(`${API_BASE_URL}/api/ads`, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('广告创建成功！');
+                loadAds();
+                document.getElementById('createAdForm').reset();
+                document.getElementById('imagePreview').style.display = 'none';
+            })
+            .catch(error => {
+                alert('创建失败：' + error.message);
+            });
+        });
+
+        // 加载广告列表
+        function loadAds() {
+            fetch(`${API_BASE_URL}/api/ads`)
+                .then(response => response.json())
+                .then(ads => {
+                    const adsList = document.getElementById('adsList');
+                    adsList.innerHTML = '';
+                    ads.forEach(ad => {
+                        adsList.innerHTML += createAdCard(ad);
+                    });
+                })
+                .catch(error => {
+                    console.error('加载广告列表失败：', error);
+                });
+        }
+
+        // 创建广告卡片HTML
+        function createAdCard(ad) {
+            return `
+                <div class="ad-card">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="${API_BASE_URL}/${ad.adImage}" class="img-fluid" alt="广告图片">
+                        </div>
+                        <div class="col-md-8">
+                            <h5>${ad.title}</h5>
+                            <p>${ad.description}</p>
+                            <p><a href="${ad.targetUrl}" target="_blank">${ad.targetUrl}</a></p>
+                            <p>创建时间：${ad.createdAt}</p>
+                            <p>更新时间：${ad.updatedAt}</p>
+                            <button class="btn btn-primary btn-sm" onclick="openEditModal(${JSON.stringify(ad)})">编辑</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteAd(${ad.adId})">删除</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 打开编辑模态框
+        function openEditModal(ad) {
+            document.getElementById('editAdId').value = ad.adId;
+            document.getElementById('editTitle').value = ad.title;
+            document.getElementById('editDescription').value = ad.description;
+            document.getElementById('editTargetUrl').value = ad.targetUrl;
+            if (ad.adImage) {
+                document.getElementById('editImagePreview').src = `${API_BASE_URL}/${ad.adImage}`;
+                document.getElementById('editImagePreview').style.display = 'block';
+            }
+            new bootstrap.Modal(document.getElementById('editModal')).show();
+        }
+
+        // 更新广告
+        function updateAd() {
+            const adId = document.getElementById('editAdId').value;
+            const formData = new FormData();
+            const adData = {
+                title: document.getElementById('editTitle').value,
+                description: document.getElementById('editDescription').value,
+                targetUrl: document.getElementById('editTargetUrl').value
+            };
+            formData.append('ad', new Blob([JSON.stringify(adData)], {type: 'application/json'}));
+            
+            const imageFile = document.getElementById('editAdImage').files[0];
+            if (imageFile) {
+                formData.append('image', imageFile);
+            }
+
+            fetch(`${API_BASE_URL}/api/ads/${adId}`, {
+                method: 'PUT',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('广告更新成功！');
+                loadAds();
+                bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+            })
+            .catch(error => {
+                alert('更新失败：' + error.message);
+            });
+        }
+
+        // 删除广告
+        function deleteAd(adId) {
+            if (confirm('确定要删除这个广告吗？')) {
+                fetch(`${API_BASE_URL}/api/ads/${adId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('广告删除成功！');
+                        loadAds();
+                    } else {
+                        throw new Error('删除失败');
+                    }
+                })
+                .catch(error => {
+                    alert('删除失败：' + error.message);
+                });
+            }
+        }
+    </script>
+</body>
+</html> 

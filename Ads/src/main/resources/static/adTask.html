@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>广告任务管理</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container { margin-top: 30px; }
+        .card { margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-center mb-4">广告任务管理系统</h2>
+
+        <!-- 创建广告任务 -->
+        <div class="card">
+            <div class="card-header">
+                创建广告任务
+            </div>
+            <div class="card-body">
+                <form id="createTaskForm">
+                    <div class="form-group">
+                        <label for="websiteSelect">选择网站</label>
+                        <select class="form-control" id="websiteSelect" required>
+                            <option value="">请选择网站</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="adSlotSelect">选择广告位</label>
+                        <select class="form-control" id="adSlotSelect" required disabled>
+                            <option value="">请先选择网站</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">创建任务</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 查询任务 -->
+        <div class="card">
+            <div class="card-header">
+                查询任务
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col">
+                        <input type="number" class="form-control" id="searchTaskId" placeholder="输入任务ID">
+                        <button class="btn btn-info mt-2" onclick="searchTask()">查询单个任务</button>
+                    </div>
+                    <div class="col">
+                        <select class="form-control" id="searchWebsiteSelect">
+                            <option value="">选择网站</option>
+                        </select>
+                        <button class="btn btn-info mt-2" onclick="searchByWebsiteId()">按网站查询</button>
+                    </div>
+                    <div class="col">
+                        <select class="form-control" id="searchStatus">
+                            <option value="">选择状态</option>
+                            <option value="PENDING">待处理</option>
+                            <option value="RUNNING">进行中</option>
+                            <option value="COMPLETED">已完成</option>
+                            <option value="FAILED">失败</option>
+                        </select>
+                        <button class="btn btn-info mt-2" onclick="searchByStatus()">按状态查询</button>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" onclick="getAllTasks()">获取所有任务</button>
+            </div>
+        </div>
+
+        <!-- 更新任务 -->
+        <div class="card">
+            <div class="card-header">
+                更新任务
+            </div>
+            <div class="card-body">
+                <form id="updateTaskForm">
+                    <div class="form-group">
+                        <label for="updateTaskId">任务ID</label>
+                        <input type="number" class="form-control" id="updateTaskId" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateWebsiteSelect">选择网站</label>
+                        <select class="form-control" id="updateWebsiteSelect">
+                            <option value="">请选择网站</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateAdSlotSelect">选择广告位</label>
+                        <select class="form-control" id="updateAdSlotSelect" disabled>
+                            <option value="">请先选择网站</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="updateStatus">状态</label>
+                        <select class="form-control" id="updateStatus">
+                            <option value="PENDING">待处理</option>
+                            <option value="RUNNING">进行中</option>
+                            <option value="COMPLETED">已完成</option>
+                            <option value="FAILED">失败</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-warning">更新任务</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 结果显示区域 -->
+        <div class="card">
+            <div class="card-header">
+                结果显示
+            </div>
+            <div class="card-body">
+                <pre id="result" style="background-color: #f8f9fa; padding: 15px;"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        // API基础URL
+        const baseUrl = '/api/ad-tasks';
+        const websiteUrl = '/api/websites';
+        const adSlotUrl = '/api/ad-slots';
+
+        // 页面加载完成后初始化
+        $(document).ready(function() {
+            // 加载所有网站
+            loadWebsites();
+            
+            // 监听网站选择变化
+            $('#websiteSelect').change(function() {
+                const websiteId = $(this).val();
+                loadAdSlots(websiteId, '#adSlotSelect');
+            });
+
+            // 监听更新表单中的网站选择变化
+            $('#updateWebsiteSelect').change(function() {
+                const websiteId = $(this).val();
+                loadAdSlots(websiteId, '#updateAdSlotSelect');
+            });
+        });
+
+        // 加载网站列表
+        function loadWebsites() {
+            $.ajax({
+                url: websiteUrl,
+                type: 'GET',
+                success: function(websites) {
+                    const options = websites.map(website => 
+                        `<option value="${website.websiteId}">${website.websiteName}</option>`
+                    );
+                    
+                    $('#websiteSelect').html('<option value="">请选择网站</option>' + options.join(''));
+                    $('#searchWebsiteSelect').html('<option value="">请选择网站</option>' + options.join(''));
+                    $('#updateWebsiteSelect').html('<option value="">请选择网站</option>' + options.join(''));
+                },
+                error: function(xhr) {
+                    showError('加载网站列表失败：' + xhr.responseText);
+                }
+            });
+        }
+
+        // 加载广告位列表
+        function loadAdSlots(websiteId, targetSelect) {
+            if (!websiteId) {
+                $(targetSelect).html('<option value="">请先选择网站</option>').prop('disabled', true);
+                return;
+            }
+
+            $.ajax({
+                url: `${adSlotUrl}/website/${websiteId}`,
+                type: 'GET',
+                success: function(adSlots) {
+                    const options = adSlots.map(slot => 
+                        `<option value="${slot.adSlotId}">${slot.slotType} - ${slot.slotSize}</option>`
+                    );
+                    
+                    $(targetSelect).html('<option value="">请选择广告位</option>' + options.join(''))
+                        .prop('disabled', false);
+                },
+                error: function(xhr) {
+                    showError('加载广告位列表失败：' + xhr.responseText);
+                    $(targetSelect).html('<option value="">加载失败</option>').prop('disabled', true);
+                }
+            });
+        }
+
+        // 显示结果
+        function showResult(data) {
+            $('#result').text(JSON.stringify(data, null, 2));
+        }
+
+        // 显示错误
+        function showError(error) {
+            $('#result').text('错误: ' + error);
+        }
+
+        // 创建任务
+        $('#createTaskForm').submit(function(e) {
+            e.preventDefault();
+            const websiteId = $('#websiteSelect').val();
+            const adSlotId = $('#adSlotSelect').val();
+
+            if (!websiteId || !adSlotId) {
+                showError('请选择网站和广告位');
+                return;
+            }
+
+            const data = {
+                websiteId: websiteId,
+                adSlotId: adSlotId
+            };
+
+            $.ajax({
+                url: baseUrl,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: showResult,
+                error: function(xhr) {
+                    showError(xhr.responseText);
+                }
+            });
+        });
+
+        // 查询单个任务
+        function searchTask() {
+            const taskId = $('#searchTaskId').val();
+            if (!taskId) {
+                showError('请输入任务ID');
+                return;
+            }
+
+            $.ajax({
+                url: `${baseUrl}/${taskId}`,
+                type: 'GET',
+                success: showResult,
+                error: function(xhr) {
+                    showError(xhr.responseText);
+                }
+            });
+        }
+
+        // 查询所有任务
+        function getAllTasks() {
+            $.ajax({
+                url: baseUrl,
+                type: 'GET',
+                success: showResult,
+                error: function(xhr) {
+                    showError(xhr.responseText);
+                }
+            });
+        }
+
+        // 按网站ID查询
+        function searchByWebsiteId() {
+            const websiteId = $('#searchWebsiteSelect').val();
+            if (!websiteId) {
+                showError('请选择网站');
+                return;
+            }
+
+            $.ajax({
+                url: `${baseUrl}/website/${websiteId}`,
+                type: 'GET',
+                success: showResult,
+                error: function(xhr) {
+                    showError(xhr.responseText);
+                }
+            });
+        }
+
+        // 按状态查询
+        function searchByStatus() {
+            const status = $('#searchStatus').val();
+            if (!status) {
+                showError('请选择状态');
+                return;
+            }
+
+            $.ajax({
+                url: `${baseUrl}/status/${status}`,
+                type: 'GET',
+                success: showResult,
+                error: function(xhr) {
+                    showError(xhr.responseText);
+                }
+            });
+        }
+
+        // 更新任务
+        $('#updateTaskForm').submit(function(e) {
+            e.preventDefault();
+            const taskId = $('#updateTaskId').val();
+            const websiteId = $('#updateWebsiteSelect').val();
+            const adSlotId = $('#updateAdSlotSelect').val();
+            const taskStatus = $('#updateStatus').val();
+
+            if (!taskId) {
+                showError('请输入任务ID');
+                return;
+            }
+
+            const data = {
+                websiteId: websiteId,
+                adSlotId: adSlotId,
+                taskStatus: taskStatus
+            };
+
+            $.ajax({
+                url: `${baseUrl}/${taskId}`,
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function() {
+                    showResult('更新成功');
+                },
+                error: function(xhr) {
+                    showError(xhr.responseText);
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

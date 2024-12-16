@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS `ad_slots` (
+    `ad_slot_id` INT PRIMARY KEY AUTO_INCREMENT COMMENT '广告位唯一标识',
+    `website_id` INT NOT NULL COMMENT '网站ID',
+    `slot_type` VARCHAR(255) NOT NULL COMMENT '广告位类别',
+    `slot_size` VARCHAR(50) NOT NULL COMMENT '广告位尺寸',
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '广告位创建时间',
+    `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '广告位更新时间'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='广告位信息表';
+
+

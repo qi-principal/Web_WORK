@@ -8,6 +8,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 用户控制器
+ *
+ * @author andrew
+ * @date 2024/12/16
+ */
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -59,5 +65,29 @@ public class UserController {
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
+    }
+
+    /**
+     * 检查用户名是否已存在
+     *
+     * @param username 用户名
+     * @return true-存在，false-不存在
+     */
+    @GetMapping("/check-username")
+    public ResponseEntity<Boolean> checkUsernameExists(@RequestParam String username) {
+        boolean exists = userService.isUsernameExists(username);
+        return ResponseEntity.ok(exists);
+    }
+
+    /**
+     * 检查邮箱是否已存在
+     *
+     * @param email 邮箱
+     * @return true-存在，false-不存在
+     */
+    @GetMapping("/check-email")
+    public ResponseEntity<Boolean> checkEmailExists(@RequestParam String email) {
+        boolean exists = userService.isEmailExists(email);
+        return ResponseEntity.ok(exists);
     }
 } 

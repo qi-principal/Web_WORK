@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ads.mapper.AdTaskMapper">
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="com.ads.entity.AdTask">
+        <id column="task_id" property="taskId"/>
+        <result column="website_id" property="websiteId"/>
+        <result column="ad_slot_id" property="adSlotId"/>
+        <result column="task_status" property="taskStatus"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+    
+    <!-- 通用查询列 -->
+    <sql id="Base_Column_List">
+        task_id, website_id, ad_slot_id, task_status, created_at, updated_at
+    </sql>
+    
+    <!-- 插入广告任务 -->
+    <insert id="insert" parameterType="com.ads.entity.AdTask" useGeneratedKeys="true" keyProperty="taskId">
+        INSERT INTO ad_task (
+            website_id,
+            ad_slot_id,
+            task_status,
+            created_at,
+            updated_at
+        )
+        VALUES (
+            #{websiteId},
+            #{adSlotId},
+            #{taskStatus},
+            #{createdAt},
+            #{updatedAt}
+        )
+    </insert>
+    
+    <!-- 根据ID查询广告任务 -->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM ad_task
+        WHERE task_id = #{taskId}
+    </select>
+    
+    <!-- 更新广告任务 -->
+    <update id="updateById" parameterType="com.ads.entity.AdTask">
+        UPDATE ad_task
+        <set>
+            <if test="websiteId != null">website_id = #{websiteId},</if>
+            <if test="adSlotId != null">ad_slot_id = #{adSlotId},</if>
+            <if test="taskStatus != null">task_status = #{taskStatus},</if>
+            updated_at = #{updatedAt}
+        </set>
+        WHERE task_id = #{taskId}
+    </update>
+</mapper> 
