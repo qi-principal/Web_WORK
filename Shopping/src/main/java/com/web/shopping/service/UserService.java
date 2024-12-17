@@ -71,46 +71,4 @@ public class UserService {
         return PageInfo.of(list);
     }
 
-//    /**
-//     * 登录
-//     */
-//    public Account login(Account account) {
-//        Account dbUser = userMapper.selectByUsername(account.getUsername());
-//        if (ObjectUtil.isNull(dbUser)) {
-//            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
-//        }
-//        if (!account.getPassword().equals(dbUser.getPassword())) {
-//            throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
-//        }
-//        // 生成token
-//        String tokenData = dbUser.getId() + "-" + RoleEnum.USER.name();
-//        String token = TokenUtils.createToken(tokenData, dbUser.getPassword());
-//        dbUser.setToken(token);
-//        return dbUser;
-//    }
-//
-//    /**
-//     * 注册
-//     */
-//    public void register(Account account) {
-//        User user = new User();
-//        BeanUtils.copyProperties(account, user);
-//        add(user);
-//    }
-//
-//    /**
-//     * 修改密码
-//     */
-//    public void updatePassword(Account account) {
-//        User dbUser = userMapper.selectByUsername(account.getUsername());
-//        if (ObjectUtil.isNull(dbUser)) {
-//            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
-//        }
-//        if (!account.getPassword().equals(dbUser.getPassword())) {
-//            throw new CustomException(ResultCodeEnum.PARAM_PASSWORD_ERROR);
-//        }
-//        dbUser.setPassword(account.getNewPassword());
-//        userMapper.updateById(dbUser);
-//    }
-
 }

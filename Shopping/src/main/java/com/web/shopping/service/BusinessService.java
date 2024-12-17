@@ -73,46 +73,4 @@ public class BusinessService {
         return PageInfo.of(list);
     }
 
-    /**
-     * 登录
-     */
-//    public Account login(Account account) {
-//        Account dbBusiness = businessMapper.selectByUsername(account.getUsername());
-//        if (ObjectUtil.isNull(dbBusiness)) {
-//            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
-//        }
-//        if (!account.getPassword().equals(dbBusiness.getPassword())) {
-//            throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
-//        }
-//        // 生成token
-//        String tokenData = dbBusiness.getId() + "-" + RoleEnum.BUSINESS.name();
-//        String token = TokenUtils.createToken(tokenData, dbBusiness.getPassword());
-//        dbBusiness.setToken(token);
-//        return dbBusiness;
-//    }
-//
-//    /**
-//     * 注册
-//     */
-//    public void register(Account account) {
-//        Business business = new Business();
-//        BeanUtils.copyProperties(account, business);
-//        add(business);
-//    }
-//
-//    /**
-//     * 修改密码
-//     */
-//    public void updatePassword(Account account) {
-//        Business dbBusiness = businessMapper.selectByUsername(account.getUsername());
-//        if (ObjectUtil.isNull(dbBusiness)) {
-//            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
-//        }
-//        if (!account.getPassword().equals(dbBusiness.getPassword())) {
-//            throw new CustomException(ResultCodeEnum.PARAM_PASSWORD_ERROR);
-//        }
-//        dbBusiness.setPassword(account.getNewPassword());
-//        businessMapper.updateById(dbBusiness);
-//    }
-
 }

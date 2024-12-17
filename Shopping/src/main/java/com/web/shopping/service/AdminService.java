@@ -72,46 +72,5 @@ public class AdminService {
         return PageInfo.of(list);
     }
 
-//    /**
-//     * 登录
-//     */
-//    public Account login(Account account) {
-//        Account dbAdmin = adminMapper.selectByUsername(account.getUsername());
-//        if (ObjectUtil.isNull(dbAdmin)) {
-//            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
-//        }
-//        if (!account.getPassword().equals(dbAdmin.getPassword())) {
-//            throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
-//        }
-//        // 生成token
-//        String tokenData = dbAdmin.getId() + "-" + RoleEnum.ADMIN.name();
-//        String token = TokenUtils.createToken(tokenData, dbAdmin.getPassword());
-//        dbAdmin.setToken(token);
-//        return dbAdmin;
-//    }
-
-//    /**
-//     * 注册
-//     */
-//    public void register(Account account) {
-//        Admin admin = new Admin();
-//        BeanUtils.copyProperties(account, admin);
-//        add(admin);
-//    }
-//
-//    /**
-//     * 修改密码
-//     */
-//    public void updatePassword(Account account) {
-//        Admin dbAdmin = adminMapper.selectByUsername(account.getUsername());
-//        if (ObjectUtil.isNull(dbAdmin)) {
-//            throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
-//        }
-//        if (!account.getPassword().equals(dbAdmin.getPassword())) {
-//            throw new CustomException(ResultCodeEnum.PARAM_PASSWORD_ERROR);
-//        }
-//        dbAdmin.setPassword(account.getNewPassword());
-//        adminMapper.updateById(dbAdmin);
-//    }
 
 }
