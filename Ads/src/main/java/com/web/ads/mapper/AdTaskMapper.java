@@ -16,8 +16,8 @@ public interface AdTaskMapper {
      * @param adTask 广告任务信息
      * @return 影响的行数
      */
-    @Insert("INSERT INTO ad_task (website_id, ad_slot_id, task_status, created_at, updated_at) " +
-            "VALUES (#{websiteId}, #{adSlotId}, #{taskStatus}, #{createdAt}, #{updatedAt})")
+    @Insert("INSERT INTO ad_task (website_id, ad_slot_id, ad_id, task_status, created_at, updated_at) " +
+            "VALUES (#{websiteId}, #{adSlotId}, #{adId}, #{taskStatus}, #{createdAt}, #{updatedAt})")
     @Options(useGeneratedKeys = true, keyProperty = "taskId")
     int insert(AdTask adTask);
 
@@ -68,4 +68,14 @@ public interface AdTaskMapper {
      */
     @Select("SELECT * FROM ad_task WHERE task_status = #{taskStatus}")
     List<AdTask> selectByStatus(@Param("taskStatus") String taskStatus);
+
+
+    /**
+     * 查询过期任务
+     * 这里假设任务创建时间超过24小时且状态不是COMPLETED的任务为过期任务
+     */
+    @Select("SELECT * FROM ad_task " +
+            "WHERE created_at < DATE_SUB(NOW(), INTERVAL 24 HOUR) " +
+            "AND task_status NOT IN ('COMPLETED', 'FAILED')")
+    List<AdTask> selectExpiredTasks();
 } 

@@ -1,11 +1,15 @@
 package com.web.ads.controller;
 
+import com.web.ads.dto.ActiveAdTaskDTO;
+import com.web.ads.dto.AdTaskRecordDTO;
 import com.web.ads.entity.AdTask;
 import com.web.ads.service.AdTaskService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 /**
@@ -129,5 +133,70 @@ public class AdTaskController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("获取指定状态的广告任务失败：" + e.getMessage());
         }
+    }
+
+    /**
+     * 获取活动广告任务列表
+     * 按创建时间排序，并且只返回状态为RUNNING的任务
+     *
+     * @return 活动广告任务列表
+     */
+    @GetMapping("/active")
+    public ResponseEntity<List<ActiveAdTaskDTO>> getActiveTasks() {
+        try {
+            List<ActiveAdTaskDTO> activeTasks = adTaskService.getActiveTasks();
+            return ResponseEntity.ok(activeTasks);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    /**
+     * 记录广告展示或点击
+     *
+     * @param recordDTO 记录信息
+     * @param request HTTP请求对象，用于获取客户端信息
+     * @return 记录结果
+     */
+    @PostMapping("/record")
+    public ResponseEntity<?> recordAdTask(
+            @Validated @RequestBody AdTaskRecordDTO recordDTO,
+            HttpServletRequest request) {
+        try {
+            // 设置客户端信息
+            recordDTO.setClientIp(getClientIp(request));
+            recordDTO.setUserAgent(request.getHeader("User-Agent"));
+            
+            adTaskService.recordAdTask(recordDTO);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body("记录广告任务失败：" + e.getMessage());
+        }
+    }
+
+    /**
+     * 获取客户端真实IP地址
+     */
+    private String getClientIp(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
     }
 } 

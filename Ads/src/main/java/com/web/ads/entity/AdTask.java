@@ -19,6 +19,9 @@ public class AdTask implements Serializable {
     
     /** 广告位信息 */
     private String adSlotId;
+
+    /** 广告ID */
+    private Integer adId;
     
     /** 任务状态 */
     private String taskStatus;

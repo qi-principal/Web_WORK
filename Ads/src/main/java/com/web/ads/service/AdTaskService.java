@@ -1,5 +1,7 @@
 package com.web.ads.service;
 
+import com.web.ads.dto.ActiveAdTaskDTO;
+import com.web.ads.dto.AdTaskRecordDTO;
 import com.web.ads.entity.AdTask;
 import java.util.List;
 
@@ -53,4 +55,19 @@ public interface AdTaskService {
      * @return 广告任务列表
      */
     List<AdTask> getAdTasksByStatus(String taskStatus);
+
+    /**
+     * 获取活动广告任务列表
+     * 按创建时间排序，并且只返回状态为RUNNING的任务
+     *
+     * @return 活动广告任务列表
+     */
+    List<ActiveAdTaskDTO> getActiveTasks();
+
+    /**
+     * 记录广告任务展示或点击
+     *
+     * @param recordDTO 记录信息
+     */
+    void recordAdTask(AdTaskRecordDTO recordDTO);
 } 

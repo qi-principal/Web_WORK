@@ -25,4 +25,14 @@ public interface AdvertisementMapper {
 
     @Select("SELECT * FROM ads")
     List<Advertisement> findAll();
+
+    /**
+     * 批量查询广告信息
+     * @param adIds 广告ID列表
+     * @return 广告信息列表
+     */
+    @Select("SELECT * FROM ads WHERE ad_id IN (#{adIds})")
+    List<Advertisement> findByIds(@Param("adIds") List<Integer> adIds);
+    
+    
 } 

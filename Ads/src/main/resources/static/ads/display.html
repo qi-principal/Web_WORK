@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>广告展示</title>
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="ad-display">
+        <div id="adContent" class="ad-content">
+            <!-- 默认广告 -->
+            <div id="defaultAd" class="default-ad">
+                <a href="#" class="default-ad-link">
+                    <img src="https://via.placeholder.com/600x200" alt="默认广告">
+                    <div class="default-ad-content">
+                        <h3 class="default-ad-title">欢迎使用广告系统</h3>
+                        <p class="default-ad-description">这是一个示例广告位，您可以在这里展示您的广告内容</p>
+                    </div>
+                </a>
+            </div>
+            <!-- 动态广告 -->
+            <div id="dynamicAd" class="dynamic-ad">
+                <!-- 广告内容将通过JavaScript动态插入 -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/adManager.js"></script>
+    <script>
+        // 初始化广告管理器
+        window.onload = function() {
+            AdManager.init();
+        };
+    </script>
+</body>
+</html> 

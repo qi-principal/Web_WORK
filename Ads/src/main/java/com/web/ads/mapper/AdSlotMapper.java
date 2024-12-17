@@ -19,10 +19,11 @@ public interface AdSlotMapper {
      * @param adSlot 广告位信息
      * @return 影响行数
      */
-    @Insert("INSERT INTO ad_slots (slot_type, slot_size, created_at, updated_at) " +
-            "VALUES (#{slotType}, #{slotSize}, NOW(), NOW())")
+    @Insert("INSERT INTO ad_slots (website_id, slot_type, slot_size, created_at, updated_at) " +
+            "VALUES (#{websiteId}, #{slotType}, #{slotSize}, NOW(), NOW())")
     @Options(useGeneratedKeys = true, keyProperty = "adSlotId")
     int insert(AdSlot adSlot);
+    
 
     /**
      * 根据ID查询广告位信息
