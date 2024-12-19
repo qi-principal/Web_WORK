@@ -46,7 +46,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/js/**",
                 "/img/**",
                 "/fonts/**",
-                "/favicon.ico"
+                "/favicon.ico",
+                "/material/**",
+                "/site/**",
+                "/admin/**"
             );
     }
 
@@ -70,7 +73,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/*/api-docs").permitAll()
                 // 静态资源
-                .antMatchers("/", "/*.html", "/css/**", "/js/**", "/img/**").permitAll()
+                .antMatchers("/", "/*.html", "/css/**", "/js/**", "/img/**",
+                           "/material/**", "/site/**", "/admin/**").permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()
                 .and()

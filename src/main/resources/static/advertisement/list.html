@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>广告管理</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.7/theme-chalk/index.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.7/index.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <el-container>
+            <el-header>
+                <h2>广告管理</h2>
+            </el-header>
+            <el-main>
+                <!-- 搜索栏 -->
+                <el-form :inline="true" :model="searchForm" class="search-form">
+                    <el-form-item label="状态">
+                        <el-select v-model="searchForm.status" placeholder="请选择状态">
+                            <el-option label="全部" value=""></el-option>
+                            <el-option v-for="item in statusOptions" 
+                                     :key="item.value" 
+                                     :label="item.label" 
+                                     :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="handleSearch">查询</el-button>
+                        <el-button type="primary" @click="handleAdd">新建广告</el-button>
+                    </el-form-item>
+                </el-form>
+
+                <!-- 广告列表 -->
+                <el-table :data="tableData" border style="width: 100%">
+                    <el-table-column prop="id" label="ID" width="80"></el-table-column>
+                    <el-table-column prop="title" label="标题" width="180"></el-table-column>
+                    <el-table-column prop="typeName" label="类型" width="100"></el-table-column>
+                    <el-table-column prop="statusName" label="状态" width="100"></el-table-column>
+                    <el-table-column prop="budget" label="总预算" width="120"></el-table-column>
+                    <el-table-column prop="dailyBudget" label="日预算" width="120"></el-table-column>
+                    <el-table-column label="投放时间" width="300">
+                        <template slot-scope="scope">
+                            {{scope.row.startTime}} 至 {{scope.row.endTime}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作" width="300">
+                        <template slot-scope="scope">
+                            <el-button size="mini" @click="handleEdit(scope.row)">编辑</el-button>
+                            <el-button size="mini" type="success" 
+                                     v-if="scope.row.status === 0"
+                                     @click="handleSubmit(scope.row)">提交审核</el-button>
+                            <el-button size="mini" type="success" 
+                                     v-if="scope.row.status === 4"
+                                     @click="handleStart(scope.row)">开始投放</el-button>
+                            <el-button size="mini" type="warning" 
+                                     v-if="scope.row.status === 5"
+                                     @click="handlePause(scope.row)">暂停投放</el-button>
+                            <el-button size="mini" type="danger" 
+                                     v-if="scope.row.status === 0 || scope.row.status === 3"
+                                     @click="handleDelete(scope.row)">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+
+                <!-- 分页 -->
+                <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+                    :page-sizes="[10, 20, 50, 100]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total">
+                </el-pagination>
+
+                <!-- 编辑对话框 -->
+                <el-dialog :title="dialogTitle" :visible.sync="dialogVisible">
+                    <el-form :model="form" :rules="rules" ref="form" label-width="100px">
+                        <el-form-item label="标题" prop="title">
+                            <el-input v-model="form.title"></el-input>
+                        </el-form-item>
+                        <el-form-item label="描述" prop="description">
+                            <el-input type="textarea" v-model="form.description"></el-input>
+                        </el-form-item>
+                        <el-form-item label="类型" prop="type">
+                            <el-select v-model="form.type" placeholder="请选择类型">
+                                <el-option v-for="item in typeOptions" 
+                                         :key="item.value" 
+                                         :label="item.label" 
+                                         :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="总预算" prop="budget">
+                            <el-input-number v-model="form.budget" :min="0"></el-input-number>
+                        </el-form-item>
+                        <el-form-item label="日预算" prop="dailyBudget">
+                            <el-input-number v-model="form.dailyBudget" :min="0"></el-input-number>
+                        </el-form-item>
+                        <el-form-item label="投放时间" prop="dateRange">
+                            <el-date-picker
+                                v-model="form.dateRange"
+                                type="datetimerange"
+                                range-separator="至"
+                                start-placeholder="开始时间"
+                                end-placeholder="结束时间">
+                            </el-date-picker>
+                        </el-form-item>
+                    </el-form>
+                    <div slot="footer" class="dialog-footer">
+                        <el-button @click="dialogVisible = false">取 消</el-button>
+                        <el-button type="primary" @click="handleSave">确 定</el-button>
+                    </div>
+                </el-dialog>
+            </el-main>
+        </el-container>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    // 搜索表单
+                    searchForm: {
+                        status: ''
+                    },
+                    // 表格数据
+                    tableData: [],
+                    // 分页
+                    currentPage: 1,
+                    pageSize: 10,
+                    total: 0,
+                    // 对话框
+                    dialogVisible: false,
+                    dialogTitle: '',
+                    form: {
+                        title: '',
+                        description: '',
+                        type: '',
+                        budget: 0,
+                        dailyBudget: 0,
+                        dateRange: []
+                    },
+                    // 表单校验规则
+                    rules: {
+                        title: [
+                            { required: true, message: '请输入标题', trigger: 'blur' }
+                        ],
+                        type: [
+                            { required: true, message: '请选择类型', trigger: 'change' }
+                        ],
+                        budget: [
+                            { required: true, message: '请输入总预算', trigger: 'blur' }
+                        ],
+                        dailyBudget: [
+                            { required: true, message: '请输入日预算', trigger: 'blur' }
+                        ],
+                        dateRange: [
+                            { required: true, message: '请选择投放时间', trigger: 'change' }
+                        ]
+                    },
+                    // 状态选项
+                    statusOptions: [
+                        { value: 0, label: '草稿' },
+                        { value: 1, label: '待审核' },
+                        { value: 2, label: '审核中' },
+                        { value: 3, label: '已拒绝' },
+                        { value: 4, label: '已通过' },
+                        { value: 5, label: '投放中' },
+                        { value: 6, label: '已暂停' },
+                        { value: 7, label: '已完成' }
+                    ],
+                    // 类型选项
+                    typeOptions: [
+                        { value: 1, label: '图片广告' },
+                        { value: 2, label: '视频广告' },
+                        { value: 3, label: '文字广告' }
+                    ]
+                }
+            },
+            created() {
+                this.fetchData();
+            },
+            methods: {
+                // 获取数据
+                fetchData() {
+                    axios.get('/api/v1/ads', {
+                        params: {
+                            current: this.currentPage,
+                            size: this.pageSize,
+                            status: this.searchForm.status
+                        }
+                    }).then(response => {
+                        this.tableData = response.data.records;
+                        this.total = response.data.total;
+                    });
+                },
+                // 搜索
+                handleSearch() {
+                    this.currentPage = 1;
+                    this.fetchData();
+                },
+                // 新建广告
+                handleAdd() {
+                    this.dialogTitle = '新建广告';
+                    this.form = {
+                        title: '',
+                        description: '',
+                        type: '',
+                        budget: 0,
+                        dailyBudget: 0,
+                        dateRange: []
+                    };
+                    this.dialogVisible = true;
+                },
+                // 编辑广告
+                handleEdit(row) {
+                    this.dialogTitle = '编辑广告';
+                    this.form = {
+                        ...row,
+                        dateRange: [row.startTime, row.endTime]
+                    };
+                    this.dialogVisible = true;
+                },
+                // 保存广告
+                handleSave() {
+                    this.$refs.form.validate((valid) => {
+                        if (valid) {
+                            const data = {
+                                ...this.form,
+                                startTime: this.form.dateRange[0],
+                                endTime: this.form.dateRange[1]
+                            };
+                            delete data.dateRange;
+
+                            const request = this.form.id
+                                ? axios.put(`/api/v1/ads/${this.form.id}`, data)
+                                : axios.post('/api/v1/ads', data);
+
+                            request.then(() => {
+                                this.$message.success('保存成功');
+                                this.dialogVisible = false;
+                                this.fetchData();
+                            });
+                        }
+                    });
+                },
+                // 提交审核
+                handleSubmit(row) {
+                    axios.post(`/api/v1/ads/${row.id}/submit`).then(() => {
+                        this.$message.success('提交成功');
+                        this.fetchData();
+                    });
+                },
+                // 开始投放
+                handleStart(row) {
+                    axios.post(`/api/v1/ads/${row.id}/start`).then(() => {
+                        this.$message.success('开始投放成功');
+                        this.fetchData();
+                    });
+                },
+                // 暂停投放
+                handlePause(row) {
+                    axios.post(`/api/v1/ads/${row.id}/pause`).then(() => {
+                        this.$message.success('暂停投放成功');
+                        this.fetchData();
+                    });
+                },
+                // 删除广告
+                handleDelete(row) {
+                    this.$confirm('确认删除该广告？', '提示', {
+                        type: 'warning'
+                    }).then(() => {
+                        axios.delete(`/api/v1/ads/${row.id}`).then(() => {
+                            this.$message.success('删除成功');
+                            this.fetchData();
+                        });
+                    });
+                },
+                // 分页大小改变
+                handleSizeChange(val) {
+                    this.pageSize = val;
+                    this.fetchData();
+                },
+                // 当前页改变
+                handleCurrentChange(val) {
+                    this.currentPage = val;
+                    this.fetchData();
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

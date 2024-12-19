@@ -1,0 +1,40 @@
+{
+  "name": "素材管理",
+  "item": [
+    {
+      "name": "上传素材",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/api/material/upload",
+        "headers": {
+          "Authorization": "Bearer {{token}}"
+        },
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "/path/to/test/image.jpg"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "获取素材列表",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/api/material",
+        "headers": {
+          "Authorization": "Bearer {{token}}"
+        },
+        "params": {
+          "page": 1,
+          "size": 10,
+          "type": "IMAGE"
+        }
+      }
+    }
+  ]
+} 

@@ -4,6 +4,7 @@ import com.adplatform.common.response.Result;
 import com.adplatform.module.user.dto.UserDTO;
 import com.adplatform.module.user.security.UserPrincipal;
 import com.adplatform.module.user.service.UserService;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * @date 2023-11-21
  */
 @Slf4j
+@Api(tags = "用户管理接口")
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
@@ -30,6 +32,11 @@ public class UserController {
      * @param id 用户ID
      * @return 用户信息
      */
+    @ApiOperation("获取用户信息")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "获取用户信息成功"),
+        @ApiResponse(code = 404, message = "用户不存在")
+    })
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or @securityService.isCurrentUser(#id)")
     public Result<UserDTO> getUserById(@PathVariable Long id) {
@@ -46,6 +53,12 @@ public class UserController {
      * @param status 状态
      * @return 操作结果
      */
+    @ApiOperation("更新用户状态")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "更新用户状态成功"),
+        @ApiResponse(code = 403, message = "没有权限更新用户状态"),
+        @ApiResponse(code = 404, message = "用户不存在")
+    })
     @PutMapping("/{id}/status")
     @PreAuthorize("hasRole('ADMIN')")
     public Result<Void> updateStatus(@PathVariable Long id, @RequestParam Integer status) {
@@ -61,6 +74,11 @@ public class UserController {
      * @param currentUser 当前用户
      * @return 用户信息
      */
+    @ApiOperation("获取当前用户信息")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "获取当前用户信息成功"),
+        @ApiResponse(code = 401, message = "用户未登录")
+    })
     @GetMapping("/me")
     public Result<UserDTO> getCurrentUser(@AuthenticationPrincipal UserPrincipal currentUser) {
         log.info("接收到获取当前用户信息请求，用户ID: {}", currentUser.getId());

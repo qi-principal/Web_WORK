@@ -6,13 +6,11 @@ import com.adplatform.module.user.dto.LoginResponse;
 import com.adplatform.module.user.dto.RegisterRequest;
 import com.adplatform.module.user.dto.UserDTO;
 import com.adplatform.module.user.service.UserService;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 认证控制器
@@ -21,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2023-11-21
  */
 @Slf4j
+@Api(tags = "认证接口")
 @RestController
 @RequestMapping("/v1/auth")
 @RequiredArgsConstructor
@@ -34,8 +33,17 @@ public class AuthController {
      * @param request 注册请求
      * @return 用户信息
      */
+    @ApiOperation("用户注册")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "注册成功"),
+        @ApiResponse(code = 400, message = "参数错误"),
+        @ApiResponse(code = 409, message = "用户名已存在")
+    })
     @PostMapping("/register")
-    public Result<UserDTO> register(@Validated @RequestBody RegisterRequest request) {
+    public Result<UserDTO> register(
+        @ApiParam(value = "注册信息", required = true)
+        @Validated @RequestBody RegisterRequest request
+    ) {
         log.info("收到注册请求，用户名: {}, 邮箱: {}", request.getUsername(), request.getEmail());
         Result<UserDTO> result = Result.success(userService.register(request));
         log.info("注册成功，用户ID: {}", result.getData().getId());
@@ -48,8 +56,18 @@ public class AuthController {
      * @param request 登录请求
      * @return 登录响应
      */
+    @ApiOperation("用户登录")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "登录成功"),
+        @ApiResponse(code = 400, message = "参数错误"),
+        @ApiResponse(code = 401, message = "用户名或密码错误"),
+        @ApiResponse(code = 403, message = "账号已被禁用")
+    })
     @PostMapping("/login")
-    public Result<LoginResponse> login(@Validated @RequestBody LoginRequest request) {
+    public Result<LoginResponse> login(
+        @ApiParam(value = "登录信息", required = true)
+        @Validated @RequestBody LoginRequest request
+    ) {
         log.info("收到登录请求，用户名: {}", request.getUsername());
         Result<LoginResponse> result = Result.success(userService.login(request));
         log.info("登录成功，用户ID: {}", result.getData().getUser().getId());

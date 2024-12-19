@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>广告投放平台 - 素材管理</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.7/theme-chalk/index.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.14/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.7/index.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <style>
+        .header {
+            background-color: #409EFF;
+            color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .header h2 {
+            margin: 0;
+        }
+        .user-info {
+            float: right;
+        }
+        .container {
+            padding: 20px;
+        }
+        .material-card {
+            width: 240px;
+            margin: 10px;
+        }
+        .material-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .material-list {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="header">
+            <el-row type="flex" justify="space-between" align="middle">
+                <el-col :span="12">
+                    <h2>广告投放平台 - 素材管理</h2>
+                </el-col>
+                <el-col :span="12" style="text-align: right">
+                    <span>欢迎，{{userInfo.username}}</span>
+                    <el-button type="text" style="color: white; margin-left: 20px" @click="handleLogout">退出登录</el-button>
+                </el-col>
+            </el-row>
+        </div>
+
+        <el-container>
+            <el-aside width="200px">
+                <el-menu
+                    default-active="1"
+                    class="el-menu-vertical-demo">
+                    <el-menu-item index="1">
+                        <i class="el-icon-picture"></i>
+                        <span slot="title">素材管理</span>
+                    </el-menu-item>
+                    <el-menu-item index="2">
+                        <i class="el-icon-data-analysis"></i>
+                        <span slot="title">数据统计</span>
+                    </el-menu-item>
+                    <el-menu-item index="3">
+                        <i class="el-icon-setting"></i>
+                        <span slot="title">账户设置</span>
+                    </el-menu-item>
+                </el-menu>
+            </el-aside>
+            
+            <el-main>
+                <!-- 上传按钮 -->
+                <el-row>
+                    <el-col :span="24">
+                        <el-upload
+                            class="upload-demo"
+                            action="/api/v1/materials/upload"
+                            :on-success="handleUploadSuccess"
+                            :before-upload="beforeUpload"
+                            :data="{type: selectedType}"
+                            multiple>
+                            <el-button type="primary">上传素材</el-button>
+                            <div slot="tip" class="el-upload__tip">
+                                <el-select v-model="selectedType" placeholder="请选择素材类型">
+                                    <el-option
+                                        v-for="item in typeOptions"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </div>
+                        </el-upload>
+                    </el-col>
+                </el-row>
+
+                <!-- 素材列表 -->
+                <el-row class="material-list">
+                    <el-col :span="6" v-for="item in materials" :key="item.id">
+                        <el-card class="material-card">
+                            <!-- 图片素材 -->
+                            <img v-if="item.type === 1"
+                                 :src="item.url"
+                                 class="material-image"
+                                 @click="handlePreview(item)">
+                            <!-- 视频素材 -->
+                            <video v-else-if="item.type === 2"
+                                  :src="item.url"
+                                  class="material-image"
+                                  controls>
+                            </video>
+                            <!-- 文字素材 -->
+                            <div v-else
+                                 class="material-image"
+                                 style="padding: 10px;">
+                                {{item.content}}
+                            </div>
+                            <div style="padding: 14px;">
+                                <span>{{item.typeName}}</span>
+                                <div class="bottom clearfix">
+                                    <el-button type="text" class="button" 
+                                             @click="handleDelete(item)">删除</el-button>
+                                </div>
+                            </div>
+                        </el-card>
+                    </el-col>
+                </el-row>
+
+                <!-- 分页 -->
+                <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+                    :page-sizes="[12, 24, 48, 96]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total">
+                </el-pagination>
+
+                <!-- 预览对话框 -->
+                <el-dialog :visible.sync="previewVisible">
+                    <img width="100%" :src="previewUrl" alt="">
+                </el-dialog>
+            </el-main>
+        </el-container>
+    </div>
+
+    <script>
+        // 检查登录状态
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const userType = localStorage.getItem('userType');
+            
+            if (!token || userType !== '1') {
+                alert('请先登录或无权访问此页面');
+                window.location.href = '/api/index.html';
+                return false;
+            }
+            return true;
+        }
+
+        // 页面加载时检查权限
+        if (!checkAuth()) {
+            throw new Error('未登录或无权限');
+        }
+
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    userInfo: {},
+                    // 素材列表
+                    materials: [],
+                    // 分页
+                    currentPage: 1,
+                    pageSize: 12,
+                    total: 0,
+                    // 预览
+                    previewVisible: false,
+                    previewUrl: '',
+                    // 选择的素材类型
+                    selectedType: 1,
+                    // 类型选项
+                    typeOptions: [
+                        { value: 1, label: '图片' },
+                        { value: 2, label: '视频' },
+                        { value: 3, label: '文字' }
+                    ]
+                }
+            },
+            created() {
+                this.loadUserInfo();
+                this.fetchData();
+            },
+            methods: {
+                // 加载用户信息
+                async loadUserInfo() {
+                    try {
+                        const response = await fetch('/api/v1/users/me', {
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                            }
+                        });
+                        const result = await response.json();
+                        if (result.code === 200) {
+                            this.userInfo = result.data;
+                        }
+                    } catch (error) {
+                        console.error('获取用户信息失败:', error);
+                    }
+                },
+
+                // 退出登录
+                handleLogout() {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('userType');
+                    window.location.href = '/api/index.html';
+                },
+
+                // 获取数据
+                async fetchData() {
+                    try {
+                        const response = await fetch(`/api/v1/materials?current=${this.currentPage}&size=${this.pageSize}`, {
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                            }
+                        });
+                        const result = await response.json();
+                        if (result.code === 200) {
+                            this.materials = result.data.records;
+                            this.total = result.data.total;
+                        }
+                    } catch (error) {
+                        console.error('获取素材列表失败:', error);
+                        this.$message.error('获取素材列表失败');
+                    }
+                },
+
+                // 上传前校验
+                beforeUpload(file) {
+                    const isImage = file.type.startsWith('image/');
+                    const isVideo = file.type.startsWith('video/');
+                    const isText = file.type === 'text/plain';
+                    
+                    if (this.selectedType === 1 && !isImage) {
+                        this.$message.error('请上传图片文件！');
+                        return false;
+                    }
+                    if (this.selectedType === 2 && !isVideo) {
+                        this.$message.error('请上传视频文件！');
+                        return false;
+                    }
+                    if (this.selectedType === 3 && !isText) {
+                        this.$message.error('请上传文本文件！');
+                        return false;
+                    }
+
+                    const isLt10M = file.size / 1024 / 1024 < 10;
+                    if (!isLt10M) {
+                        this.$message.error('文件大小不能超过 10MB!');
+                        return false;
+                    }
+                    return true;
+                },
+
+                // 上传成功
+                handleUploadSuccess(response) {
+                    this.$message.success('上传成功');
+                    this.fetchData();
+                },
+
+                // 预览素材
+                handlePreview(item) {
+                    this.previewUrl = item.url;
+                    this.previewVisible = true;
+                },
+
+                // 删除素材
+                handleDelete(item) {
+                    this.$confirm('确认删除该素材？', '提示', {
+                        type: 'warning'
+                    }).then(async () => {
+                        try {
+                            const response = await fetch(`/api/v1/materials/${item.id}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                }
+                            });
+                            const result = await response.json();
+                            if (result.code === 200) {
+                                this.$message.success('删除成功');
+                                this.fetchData();
+                            } else {
+                                this.$message.error(result.message || '删除失败');
+                            }
+                        } catch (error) {
+                            console.error('删除素材失败:', error);
+                            this.$message.error('删除素材失败');
+                        }
+                    });
+                },
+
+                // 分页大小改变
+                handleSizeChange(val) {
+                    this.pageSize = val;
+                    this.fetchData();
+                },
+
+                // 当前页改变
+                handleCurrentChange(val) {
+                    this.currentPage = val;
+                    this.fetchData();
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

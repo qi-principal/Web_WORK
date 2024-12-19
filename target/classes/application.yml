@@ -27,6 +27,11 @@ spring:
         max-wait: -1
         max-idle: 8
         min-idle: 0
+        
+  # 添加 MVC 配置
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
 
 # MyBatis-Plus配置
 mybatis-plus:
@@ -54,3 +59,12 @@ logging:
     com.adplatform: debug
   file:
     name: logs/ad-platform.log
+
+# 阿里云OSS配置
+aliyun:
+  oss:
+    endpoint: oss-cn-hangzhou.aliyuncs.com  # TODO: 配置endpoint
+    access-key-id: your-access-key-id  # TODO: 配置accessKeyId
+    access-key-secret: your-access-key-secret  # TODO: 配置accessKeySecret
+    bucket-name: your-bucket-name  # TODO: 配置bucketName
+    domain: https://your-bucket-name.oss-cn-hangzhou.aliyuncs.com  # TODO: 配置domain

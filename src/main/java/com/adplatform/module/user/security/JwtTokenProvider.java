@@ -7,6 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Date;
 
 /**
@@ -40,7 +42,7 @@ public class JwtTokenProvider {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(SignatureAlgorithm.HS512, getSigningKey())
                 .compact();
     }
 
@@ -52,7 +54,7 @@ public class JwtTokenProvider {
      */
     public String getUsernameFromToken(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(jwtSecret)
+                .setSigningKey(getSigningKey())
                 .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();
@@ -66,7 +68,7 @@ public class JwtTokenProvider {
      */
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(getSigningKey()).parseClaimsJws(token);
             return true;
         } catch (SignatureException ex) {
             log.error("无效的JWT签名");
@@ -80,5 +82,14 @@ public class JwtTokenProvider {
             log.error("JWT声明为空");
         }
         return false;
+    }
+
+    /**
+     * 获取签名密钥
+     *
+     * @return 签名密钥字节数组
+     */
+    private byte[] getSigningKey() {
+        return Base64.getEncoder().encode(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
 } 
