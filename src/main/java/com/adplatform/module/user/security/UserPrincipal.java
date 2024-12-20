@@ -1,13 +1,15 @@
 package com.adplatform.module.user.security;
 
 import com.adplatform.module.user.entity.User;
+import com.adplatform.module.website.security.WebsitePermissions;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 /**
  * 自定义用户认证信息类
@@ -30,23 +32,56 @@ public class UserPrincipal implements UserDetails {
         this.password = user.getPassword();
         this.enabled = user.getStatus() == 1;
         
-        // 根据用户类型设置角色
-        String role;
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        
+        // 根据用户类型设置角色和权限
         switch (user.getUserType()) {
-            case 1:
-                role = "ROLE_ADVERTISER";
+            case 1: // 广告主
+                authorities.add(new SimpleGrantedAuthority("ROLE_ADVERTISER"));
                 break;
-            case 2:
-                role = "ROLE_PUBLISHER";
+                
+            case 2: // 网站主
+                authorities.add(new SimpleGrantedAuthority("ROLE_PUBLISHER"));
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.ROLE_WEBSITE_OWNER));
+                // 添加网站相关权限
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.WEBSITE_CREATE));
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.WEBSITE_UPDATE));
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.WEBSITE_READ));
+                // 添加广告位相关权限
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.AD_SPACE_CREATE));
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.AD_SPACE_UPDATE));
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.AD_SPACE_READ));
+                // 添加页面相关权限
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.PAGE_CREATE));
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.PAGE_UPDATE));
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.PAGE_READ));
                 break;
-            case 3:
-                role = "ROLE_ADMIN";
+                
+            case 3: // 管理员
+                authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+                // 添加所有网站相关权限
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.WEBSITE_CREATE));
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.WEBSITE_UPDATE));
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.WEBSITE_READ));
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.WEBSITE_APPROVE));
+                // 添加所有广告位相关权限
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.AD_SPACE_CREATE));
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.AD_SPACE_UPDATE));
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.AD_SPACE_READ));
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.AD_SPACE_APPROVE));
+                // 添加所有页面相关权限
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.PAGE_CREATE));
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.PAGE_UPDATE));
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.PAGE_READ));
+                authorities.add(new SimpleGrantedAuthority(WebsitePermissions.PAGE_APPROVE));
                 break;
+                
             default:
-                role = "ROLE_USER";
+                authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
                 break;
         }
-        this.authorities = Collections.singletonList(new SimpleGrantedAuthority(role));
+        
+        this.authorities = authorities;
     }
 
     @Override

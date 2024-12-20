@@ -3,6 +3,7 @@ package com.adplatform.module.user.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -75,6 +76,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 静态资源
                 .antMatchers("/", "/*.html", "/css/**", "/js/**", "/img/**",
                            "/material/**", "/site/**", "/admin/**").permitAll()
+                // 网站模块的公开接口
+                .antMatchers(HttpMethod.GET, "/api/v1/websites/*/spaces/*/code").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/pages/*/display").permitAll()
+                // 网站模块的审核接口
+                .antMatchers("/api/v1/websites/*/approve", "/api/v1/websites/*/reject",
+                           "/api/v1/spaces/*/approve", "/api/v1/spaces/*/reject",
+                           "/api/v1/pages/*/approve", "/api/v1/pages/*/reject")
+                    .hasRole("ADMIN")
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()
                 .and()
