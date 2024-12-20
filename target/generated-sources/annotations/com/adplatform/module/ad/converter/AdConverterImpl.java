@@ -11,22 +11,20 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-12-19T21:11:15+0800",
+    date = "2024-12-20T13:02:44+0800",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 11.0.24 (Amazon.com Inc.)"
 )
 @Component
 public class AdConverterImpl implements AdConverter {
 
     @Override
-    public AdvertisementDTO toDTO(Advertisement entity) {
+    public AdvertisementDTO toAdvertisementDTO(Advertisement entity) {
         if ( entity == null ) {
             return null;
         }
 
         AdvertisementDTO advertisementDTO = new AdvertisementDTO();
 
-        advertisementDTO.setTypeName( getTypeName( entity.getType() ) );
-        advertisementDTO.setStatusName( getStatusName( entity.getStatus() ) );
         advertisementDTO.setId( entity.getId() );
         advertisementDTO.setTitle( entity.getTitle() );
         advertisementDTO.setDescription( entity.getDescription() );
@@ -41,27 +39,30 @@ public class AdConverterImpl implements AdConverter {
         advertisementDTO.setUpdateTime( entity.getUpdateTime() );
         advertisementDTO.setMaterials( materialListToMaterialDTOList( entity.getMaterials() ) );
 
+        advertisementDTO.setTypeName( com.adplatform.module.ad.enums.AdType.getNameByCode(entity.getType()) );
+        advertisementDTO.setStatusName( com.adplatform.module.ad.enums.AdStatus.getNameByCode(entity.getStatus()) );
+
         return advertisementDTO;
     }
 
     @Override
-    public MaterialDTO toDTO(Material entity) {
+    public MaterialDTO toMaterialDTO(Material entity) {
         if ( entity == null ) {
             return null;
         }
 
-        MaterialDTO materialDTO = new MaterialDTO();
+        MaterialDTO.MaterialDTOBuilder materialDTO = MaterialDTO.builder();
 
-        materialDTO.setTypeName( getMaterialTypeName( entity.getType() ) );
-        materialDTO.setId( entity.getId() );
-        materialDTO.setAdId( entity.getAdId() );
-        materialDTO.setType( entity.getType() );
-        materialDTO.setContent( entity.getContent() );
-        materialDTO.setUrl( entity.getUrl() );
-        materialDTO.setSize( entity.getSize() );
-        materialDTO.setCreateTime( entity.getCreateTime() );
+        materialDTO.id( entity.getId() );
+        materialDTO.type( entity.getType() );
+        materialDTO.content( entity.getContent() );
+        materialDTO.url( entity.getUrl() );
+        materialDTO.size( entity.getSize() );
+        materialDTO.createTime( entity.getCreateTime() );
 
-        return materialDTO;
+        materialDTO.typeName( com.adplatform.module.ad.enums.MaterialType.getNameByCode(entity.getType()) );
+
+        return materialDTO.build();
     }
 
     protected List<MaterialDTO> materialListToMaterialDTOList(List<Material> list) {
@@ -71,7 +72,7 @@ public class AdConverterImpl implements AdConverter {
 
         List<MaterialDTO> list1 = new ArrayList<MaterialDTO>( list.size() );
         for ( Material material : list ) {
-            list1.add( toDTO( material ) );
+            list1.add( toMaterialDTO( material ) );
         }
 
         return list1;

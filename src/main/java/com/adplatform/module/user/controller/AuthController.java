@@ -41,7 +41,7 @@ public class AuthController {
     })
     @PostMapping("/register")
     public Result<UserDTO> register(
-        @ApiParam(value = "注册信息", required = true)
+        @ApiParam(value = "注册请求参数，包含用户名、密码、邮箱等信息", required = true, name = "registerRequest", example = "{\"username\":\"test\",\"password\":\"123456\",\"email\":\"test@example.com\"}")
         @Validated @RequestBody RegisterRequest request
     ) {
         log.info("收到注册请求，用户名: {}, 邮箱: {}", request.getUsername(), request.getEmail());
@@ -65,7 +65,7 @@ public class AuthController {
     })
     @PostMapping("/login")
     public Result<LoginResponse> login(
-        @ApiParam(value = "登录信息", required = true)
+        @ApiParam(value = "登录请求参数，包含用户名、密码", required = true, name = "loginRequest", example = "{\"username\":\"sun\",\"password\":\"123456\"}")
         @Validated @RequestBody LoginRequest request
     ) {
         log.info("收到登录请求，用户名: {}", request.getUsername());

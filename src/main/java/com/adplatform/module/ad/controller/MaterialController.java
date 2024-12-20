@@ -16,7 +16,7 @@ import java.util.List;
  * @author andrew
  * @date 2023-12-19
  */
-@Api(tags = "素材管理接口")
+@Api(tags = "广告素材管理")
 @RestController
 @RequestMapping("/v1/materials")
 @RequiredArgsConstructor
@@ -30,17 +30,15 @@ public class MaterialController {
     @ApiOperation("上传素材")
     @ApiResponses({
         @ApiResponse(code = 200, message = "上传成功"),
-        @ApiResponse(code = 400, message = "文件格式不支持")
+        @ApiResponse(code = 400, message = "参数错误")
     })
     @PostMapping("/upload")
     @PreAuthorize("hasRole('ADVERTISER')")
     public MaterialDTO upload(
-            @ApiParam(value = "素材文件", required = true)
             @RequestParam("file") MultipartFile file,
             @RequestParam("type") Integer type) {
         return materialService.upload(file, type);
     }
-
 
     /**
      * 获取素材详情
@@ -83,18 +81,47 @@ public class MaterialController {
     }
 
     /**
-     * 保存广告素材关联
+     * 添加素材到广告
      */
-    @ApiOperation("保存广告素材关联")
+    @ApiOperation("添加素材到广告")
     @ApiResponses({
-        @ApiResponse(code = 200, message = "保存成功"),
-        @ApiResponse(code = 404, message = "广告不存在")
+        @ApiResponse(code = 200, message = "添加成功"),
+        @ApiResponse(code = 404, message = "广告或素材不存在")
     })
-    @PostMapping("/ad/{adId}")
+    @PostMapping("/{materialId}/ads/{adId}")
     @PreAuthorize("hasRole('ADVERTISER')")
-    public void saveAdMaterials(
-            @PathVariable Long adId,
-            @RequestBody List<Long> materialIds) {
-        materialService.saveAdMaterials(adId, materialIds);
+    public void addMaterialToAd(
+            @PathVariable Long materialId,
+            @PathVariable Long adId) {
+        materialService.addMaterialToAd(materialId, adId);
+    }
+
+    /**
+     * 从广告中移除素材
+     */
+    @ApiOperation("从广告中移除素材")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "移除成功"),
+        @ApiResponse(code = 404, message = "关联不存在")
+    })
+    @DeleteMapping("/{materialId}/ads/{adId}")
+    @PreAuthorize("hasRole('ADVERTISER')")
+    public void removeMaterialFromAd(
+            @PathVariable Long materialId,
+            @PathVariable Long adId) {
+        materialService.removeMaterialFromAd(materialId, adId);
+    }
+
+    /**
+     * 获取使用该素材的广告列表
+     */
+    @ApiOperation("获取使用该素材的广告列表")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "获取成功"),
+        @ApiResponse(code = 404, message = "素材不存在")
+    })
+    @GetMapping("/{materialId}/ads")
+    public List<Long> listAdsByMaterialId(@PathVariable Long materialId) {
+        return materialService.listAdsByMaterialId(materialId);
     }
 } 

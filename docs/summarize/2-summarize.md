@@ -65,31 +65,86 @@ src/
 - 封装axios请求
 - 统一的错误处理机制
 
-## 4. 测试覆盖
+## 4. API文档实现
 
-### 4.1 单元测��
+### 4.1 Swagger配置
+项目集成了Swagger 2.0来自动生成API文档，主要配置包括：
+
+```java
+@Configuration
+@EnableSwagger2
+public class SwaggerConfig {
+    @Bean
+    public Docket createRestApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+            .apiInfo(apiInfo())
+            .select()
+            .apis(RequestHandlerSelectors.basePackage("com.adplatform.module"))
+            .paths(PathSelectors.any())
+            .build();
+    }
+}
+```
+
+### 4.2 接口文档说明
+
+#### 4.2.1 广告管理接口
+- 创建广告：POST `/v1/ads`
+- 更新广告：PUT `/v1/ads/{id}`
+- 获取广告详情：GET `/v1/ads/{id}`
+- 获取广告列表：GET `/v1/ads`
+- 提交审核：POST `/v1/ads/{id}/submit`
+- 审核通过：POST `/v1/ads/{id}/approve`
+- 审核拒绝：POST `/v1/ads/{id}/reject`
+- 开始投放：POST `/v1/ads/{id}/start`
+- 暂停投放：POST `/v1/ads/{id}/pause`
+- 删除广告：DELETE `/v1/ads/{id}`
+
+#### 4.2.2 素材管理接口
+- 上传素材：POST `/v1/materials/upload`
+- 获取素材详情：GET `/v1/materials/{id}`
+- 获取广告素材列表：GET `/v1/materials/ad/{adId}`
+- 删除素材：DELETE `/v1/materials/{id}`
+- 保存广告素材关联：POST `/v1/materials/ad/{adId}`
+
+#### 4.2.3 用户认证接口
+- 用户注册：POST `/v1/auth/register`
+- 用户登录：POST `/v1/auth/login`
+
+#### 4.2.4 用户管理接口
+- 获取用户信息：GET `/v1/users/{id}`
+- 更新用户状态：PUT `/v1/users/{id}/status`
+- 获取当前用户信息：GET `/v1/users/me`
+
+### 4.3 接口注解说明
+
+使用Swagger注解对接口进行标注：
+```java
+@Api(tags = "模块名称")            // 模块分组
+@ApiOperation("接口说明")          // 接口描述
+@ApiResponses({                    // 响应说明
+    @ApiResponse(code = 200, message = "成功"),
+    @ApiResponse(code = 400, message = "参数错误")
+})
+@ApiParam("参数说明")              // 参数描述
+```
+
+### 4.4 访问方式
+
+- Swagger UI访问地址：`http://localhost:8181/api/swagger-ui.html`
+- API文档JSON格式：`http://localhost:8181/api/v2/api-docs`
+
+## 5. 测试覆盖
+
+### 5.1 单元测试
 - 服务层测试：AdvertisementServiceTest, MaterialServiceTest
 - 控制器测试：AdvertisementControllerTest, MaterialControllerTest
 - OSS服务测试：OssServiceTest
 
-### 4.2 集成测试
+### 5.2 集成测试
 - 前端页面测试：WebPageTest（使用Selenium实现）
 - API接口测试
 - 文件上传测试
-
-## 5. 部署说明
-
-### 5.1 环境要求
-- JDK 11+
-- MySQL 5.7+
-- Maven 3.6+
-- Node.js 12+
-
-### 5.2 配置说明
-需要在application.yml中配置以下信息：
-- 数据库连接信息
-- OSS配置信息
-- 服务器端口等
 
 ## 6. 注意事项
 
@@ -99,25 +154,23 @@ src/
 - 数据库索引优化
 
 ### 6.2 安全考虑
-- 文件上传大小限制
-- 文件类型校验
-- OSS访问权限控制
+- 接口权限控制（使用Spring Security）
+- 文件上传限制
+- 参数验证
+- 跨域配置
 
 ## 7. 后续优化建议
 
-1. 广告投放效果分析功能
-2. 素材智能审核功能
-3. 广告投放策略优化
-4. 性能监控和告警机制
-5. 素材管理支持更多文件类型
+1. 完善API文档描述
+2. 添加更多示例请求和响应
+3. 增加接口版本控制
+4. 优化错误码和错误信息
+5. 添加接口限流措施
+6. 完善接口测试用例
 
-## 8. 文档和资源
+## 8. 相关文档
 
-### 8.1 相关文档
-- API文档：/docs/api
-- 数据库设计文档：/docs/database
-- 测试报告：/docs/test-reports
-
-### 8.2 参考资源
-- Element UI文档：https://element.eleme.cn/#/zh-CN
-- 阿里云OSS文档：https://help.aliyun.com/document_detail/31817.html 
+- Swagger官方文档：https://swagger.io/docs/
+- Spring Fox文档：https://springfox.github.io/springfox/docs/current/
+- Postman接口测试集合：`postman_collection.json`
+- 环境配置文件：`postman_environment.json`

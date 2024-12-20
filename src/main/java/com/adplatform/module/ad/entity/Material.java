@@ -22,11 +22,6 @@ public class Material {
     private Long id;
     
     /**
-     * 广告ID
-     */
-    private Long adId;
-    
-    /**
      * 素材类型：1-图片 2-视频 3-文字
      */
     private Integer type;

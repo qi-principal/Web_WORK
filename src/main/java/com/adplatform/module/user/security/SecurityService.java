@@ -3,6 +3,7 @@ package com.adplatform.module.user.security;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 /**
@@ -40,4 +41,23 @@ public class SecurityService {
             isCurrentUser, ((UserPrincipal) principal).getId(), userId);
         return isCurrentUser;
     }
+
+    /**
+     * 获取当前用户ID
+     * 
+     * @return 当前用户ID
+     */
+    public Long getCurrentUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof UserPrincipal) {
+                return ((UserPrincipal) principal).getId();
+            }
+            throw new RuntimeException("用户认证信息类型错误");
+        }
+        throw new RuntimeException("用户未登录");
+    }
+
+    
 } 

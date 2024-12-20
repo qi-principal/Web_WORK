@@ -28,12 +28,24 @@ public class OssServiceImpl implements OssService {
 
     @Override
     public String upload(MultipartFile file, String dir) throws IOException {
-        // 生成文件名
-        String fileName = generateFileName(file.getOriginalFilename());
+        // 获取原始文件名并提取文件扩展名
+        String originalFileName = file.getOriginalFilename();
+         String extension = originalFileName != null && originalFileName.lastIndexOf('.') > 0
+                        ? originalFileName.substring(originalFileName.lastIndexOf('.'))  // 获取扩展名
+                        : ".jpg";  // 默认使用 .jpg 扩展名
+
+        // 使用UUID生成文件名，并附加原文件扩展名
+        String fileName = UUID.randomUUID().toString() + extension;
+        System.out.println("生成的文件名: " + fileName);  // 打印生成的文件名
+
+        System.out.println("// 创建OSSClient实例");
+        System.out.println("fileName:"+fileName);
         
         // 生成文件路径
         String filePath = generateFilePath(dir, fileName);
-        
+
+        System.out.println("文件路径:"+filePath);
+
         // 设置文件元数据
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(file.getContentType());

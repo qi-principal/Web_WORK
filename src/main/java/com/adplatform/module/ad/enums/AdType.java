@@ -16,19 +16,25 @@ public enum AdType {
     TEXT(3, "文字广告");
 
     private final Integer code;
-    private final String description;
+    private final String name;
 
-    AdType(Integer code, String description) {
+    AdType(Integer code, String name) {
         this.code = code;
-        this.description = description;
+        this.name = name;
     }
 
-    /**
-     * 根据类型码获取枚举值
-     *
-     * @param code 类型码
-     * @return 枚举值
-     */
+    public static String getNameByCode(Integer code) {
+        if (code == null) {
+            return null;
+        }
+        for (AdType type : values()) {
+            if (type.getCode().equals(code)) {
+                return type.getName();
+            }
+        }
+        return null;
+    }
+
     public static AdType getByCode(Integer code) {
         if (code == null) {
             return null;

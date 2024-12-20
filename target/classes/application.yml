@@ -2,6 +2,10 @@ server:
   port: 8181
   servlet:
     context-path: /api
+    multipart:
+      enabled: true  # 启用文件上传
+      max-file-size: 10MB  # 限制单个文件最大大小
+      max-request-size: 10MB  # 限制请求的最大大小
 
 spring:
   application:
@@ -63,8 +67,8 @@ logging:
 # 阿里云OSS配置
 aliyun:
   oss:
-    endpoint: oss-cn-hangzhou.aliyuncs.com  # TODO: 配置endpoint
-    access-key-id: your-access-key-id  # TODO: 配置accessKeyId
-    access-key-secret: your-access-key-secret  # TODO: 配置accessKeySecret
-    bucket-name: your-bucket-name  # TODO: 配置bucketName
-    domain: https://your-bucket-name.oss-cn-hangzhou.aliyuncs.com  # TODO: 配置domain
+    endpoint: oss-cn-shanghai.aliyuncs.com  # 配置endpoint
+    access-key-id: LTAI5tEYmdwCYYmnFua1jaMz  # 配置accessKeyId
+    access-key-secret: 3H5QBpDZyUpM1uHqP03RO0GvvHewJu  # 配置accessKeySecret
+    bucket-name: web-andrew  # 配置bucketName
+    domain: https://web-andrew.oss-cn-shanghai.aliyuncs.com  # 配置domain

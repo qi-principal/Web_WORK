@@ -1,152 +1,225 @@
 package com.adplatform.module.ad.service;
 
+import com.adplatform.module.ad.converter.AdConverter;
 import com.adplatform.module.ad.dto.MaterialDTO;
-import com.adplatform.module.ad.enums.AdType;
+import com.adplatform.module.ad.entity.AdMaterialRelation;
+import com.adplatform.module.ad.entity.Material;
+import com.adplatform.module.ad.mapper.AdMaterialRelationMapper;
+import com.adplatform.module.ad.mapper.MaterialMapper;
+import com.adplatform.module.ad.service.impl.MaterialServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 /**
- * 素材服务测试类
+ * 广告素材服务测试类
  *
  * @author andrew
  * @date 2023-12-19
  */
-@SpringBootTest
-@Transactional
+@ExtendWith(MockitoExtension.class)
 public class MaterialServiceTest {
 
-    @Autowired
-    private MaterialService materialService;
+    @Mock
+    private MaterialMapper materialMapper;
 
-    /**
-     * 测试上传素材
-     */
-    @Test
-    public void testUpload() throws Exception {
-        // 创建模拟的MultipartFile
-        MockMultipartFile file = new MockMultipartFile(
-            "file",
-            "test.jpg",
-            "image/jpeg",
-            "test image content".getBytes()
-        );
+    @Mock
+    private AdMaterialRelationMapper relationMapper;
 
-        MaterialDTO result = materialService.upload(file, AdType.IMAGE.getCode());
+    @Mock
+    private AdConverter adConverter;
 
-        assertNotNull(result);
-        assertNotNull(result.getId());
-        assertEquals(AdType.IMAGE.getCode(), result.getType());
-        assertNotNull(result.getUrl());
+    @Mock
+    private OssService ossService;
+
+    @InjectMocks
+    private MaterialServiceImpl materialService;
+
+    private Material testMaterial;
+    private MaterialDTO testMaterialDTO;
+    private AdMaterialRelation testRelation;
+
+    @BeforeEach
+    void setUp() {
+        // 初始化测试数据
+        testMaterial = new Material();
+        testMaterial.setId(1L);
+        testMaterial.setType(1);
+        testMaterial.setContent("测试内容");
+        testMaterial.setUrl("http://test.com/image.jpg");
+        testMaterial.setSize(1024L);
+        testMaterial.setCreateTime(LocalDateTime.now());
+
+        testMaterialDTO = MaterialDTO.builder()
+                .id(1L)
+                .type(1)
+                .content("测试内容")
+                .url("http://test.com/image.jpg")
+                .size(1024L)
+                .createTime(LocalDateTime.now())
+                .build();
+
+        testRelation = new AdMaterialRelation();
+        testRelation.setId(1L);
+        testRelation.setAdId(1L);
+        testRelation.setMaterialId(1L);
+        testRelation.setCreateTime(LocalDateTime.now());
     }
 
-    /**
-     * 测试获取素材详情
-     */
     @Test
-    public void testGetById() throws Exception {
-        // 先上传素材
-        MockMultipartFile file = new MockMultipartFile(
-            "file",
+    void testUpload() throws Exception {
+        // 准备测试数据
+        MultipartFile file = new MockMultipartFile(
+            "test.jpg",
             "test.jpg",
             "image/jpeg",
             "test image content".getBytes()
         );
-        MaterialDTO uploaded = materialService.upload(file, AdType.IMAGE.getCode());
 
-        // 获取详情
-        MaterialDTO result = materialService.getById(uploaded.getId());
+        // 配置Mock行为
+        when(ossService.upload(any(), any())).thenReturn("http://test.com/image.jpg");
+        when(materialMapper.insert(any())).thenReturn(1);
+        when(adConverter.toMaterialDTO(any())).thenReturn(testMaterialDTO);
 
+        // 执行测试
+        MaterialDTO result = materialService.upload(file, 1);
+
+        // 验证结果
         assertNotNull(result);
-        assertEquals(uploaded.getId(), result.getId());
-        assertEquals(uploaded.getUrl(), result.getUrl());
+        assertEquals("http://test.com/image.jpg", result.getUrl());
+        verify(materialMapper).insert(any());
+        verify(ossService).upload(any(), any());
     }
 
-    /**
-     * 测试获取广告的素材列表
-     */
     @Test
-    public void testListByAdId() throws Exception {
-        // 先上传素材
-        MockMultipartFile file = new MockMultipartFile(
-            "file",
-            "test.jpg",
-            "image/jpeg",
-            "test image content".getBytes()
-        );
-        MaterialDTO material = materialService.upload(file, AdType.IMAGE.getCode());
+    void testGetById() {
+        // 配置Mock行为
+        when(materialMapper.selectById(1L)).thenReturn(testMaterial);
+        when(adConverter.toMaterialDTO(testMaterial)).thenReturn(testMaterialDTO);
 
-        // 关联到广告
-        Long adId = 1L;
-        materialService.saveAdMaterials(adId, Arrays.asList(material.getId()));
+        // 执行测试
+        MaterialDTO result = materialService.getById(1L);
 
-        // 获取列表
-        List<MaterialDTO> results = materialService.listByAdId(adId);
+        // 验证结果
+        assertNotNull(result);
+        assertEquals(testMaterial.getId(), result.getId());
+        verify(materialMapper).selectById(1L);
+    }
 
+    @Test
+    void testListByAdId() {
+        // 配置Mock行为
+        List<Material> materials = Arrays.asList(testMaterial);
+        when(relationMapper.selectMaterialsByAdId(1L)).thenReturn(materials);
+        when(adConverter.toMaterialDTO(testMaterial)).thenReturn(testMaterialDTO);
+
+        // 执行测试
+        List<MaterialDTO> results = materialService.listByAdId(1L);
+
+        // 验证结果
         assertNotNull(results);
         assertFalse(results.isEmpty());
-        assertEquals(material.getId(), results.get(0).getId());
+        assertEquals(1, results.size());
+        verify(relationMapper).selectMaterialsByAdId(1L);
     }
 
-    /**
-     * 测试删除素材
-     */
     @Test
-    public void testDelete() throws Exception {
-        // 先上传素材
-        MockMultipartFile file = new MockMultipartFile(
-            "file",
-            "test.jpg",
-            "image/jpeg",
-            "test image content".getBytes()
-        );
-        MaterialDTO material = materialService.upload(file, AdType.IMAGE.getCode());
+    void testDelete() {
+        // 配置Mock行为
+        when(materialMapper.selectById(1L)).thenReturn(testMaterial);
 
-        // 删除素材
-        materialService.delete(material.getId());
+        // 执行测试
+        materialService.delete(1L);
 
-        // 验证是否删除成功
-        assertThrows(RuntimeException.class, () -> {
-            materialService.getById(material.getId());
-        });
+        // 验证结果
+        verify(materialMapper).deleteById(1L);
+        verify(ossService).delete(testMaterial.getUrl());
+        verify(relationMapper).delete(any());
     }
 
-    /**
-     * 测试保存广告素材关联
-     */
     @Test
-    public void testSaveAdMaterials() throws Exception {
-        // 先上传两个素材
-        MockMultipartFile file1 = new MockMultipartFile(
-            "file1",
-            "test1.jpg",
-            "image/jpeg",
-            "test image content 1".getBytes()
-        );
-        MockMultipartFile file2 = new MockMultipartFile(
-            "file2",
-            "test2.jpg",
-            "image/jpeg",
-            "test image content 2".getBytes()
-        );
-        MaterialDTO material1 = materialService.upload(file1, AdType.IMAGE.getCode());
-        MaterialDTO material2 = materialService.upload(file2, AdType.IMAGE.getCode());
+    void testAddMaterialToAd() {
+        // 配置Mock行为
+        when(materialMapper.selectById(1L)).thenReturn(testMaterial);
+        when(relationMapper.selectCount(any())).thenReturn(0L);
 
-        // 关联到广告
-        Long adId = 1L;
-        List<Long> materialIds = Arrays.asList(material1.getId(), material2.getId());
-        materialService.saveAdMaterials(adId, materialIds);
+        // 执行测试
+        materialService.addMaterialToAd(1L, 1L);
 
-        // 验证关联是否成功
-        List<MaterialDTO> results = materialService.listByAdId(adId);
+        // 验证结果
+        verify(relationMapper).insert(any());
+    }
+
+    @Test
+    void testAddMaterialToAdWhenAlreadyExists() {
+        // 配置Mock行为
+        when(materialMapper.selectById(1L)).thenReturn(testMaterial);
+        when(relationMapper.selectCount(any())).thenReturn(1L);
+
+        // 执行测试
+        materialService.addMaterialToAd(1L, 1L);
+
+        // 验证结果
+        verify(relationMapper, never()).insert(any());
+    }
+
+    @Test
+    void testRemoveMaterialFromAd() {
+        // 执行测试
+        materialService.removeMaterialFromAd(1L, 1L);
+
+        // 验证结果
+        verify(relationMapper).delete(any());
+    }
+
+    @Test
+    void testListAdsByMaterialId() {
+        // 配置Mock行为
+        List<Long> adIds = Arrays.asList(1L, 2L);
+        when(relationMapper.selectAdIdsByMaterialId(1L)).thenReturn(adIds);
+
+        // 执行测试
+        List<Long> results = materialService.listAdsByMaterialId(1L);
+
+        // 验证结果
         assertNotNull(results);
         assertEquals(2, results.size());
+        verify(relationMapper).selectAdIdsByMaterialId(1L);
+    }
+
+    @Test
+    void testGetByIdWhenMaterialNotFound() {
+        // 配置Mock行为
+        when(materialMapper.selectById(1L)).thenReturn(null);
+
+        // 验证异常抛出
+        assertThrows(RuntimeException.class, () -> materialService.getById(1L));
+    }
+
+    @Test
+    void testUploadWithEmptyFile() {
+        // 准备测试数据
+        MultipartFile emptyFile = new MockMultipartFile(
+            "empty.jpg",
+            "empty.jpg",
+            "image/jpeg",
+            new byte[0]
+        );
+
+        // 验证异常抛出
+        assertThrows(RuntimeException.class, () -> materialService.upload(emptyFile, 1));
     }
 } 

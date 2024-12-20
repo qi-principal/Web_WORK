@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @Api(tags = "用户管理接口")
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/v1/users")
 @RequiredArgsConstructor
 public class UserController {
 

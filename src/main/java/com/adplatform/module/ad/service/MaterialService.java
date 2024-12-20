@@ -48,11 +48,27 @@ public interface MaterialService {
     void delete(Long id);
 
     /**
-     * 保存广告素材关联
+     * 添加素材到广告
      *
+     * @param materialId 素材ID
      * @param adId 广告ID
-     * @param materialIds 素材ID列表
      */
-    void saveAdMaterials(Long adId, List<Long> materialIds);
+    void addMaterialToAd(Long materialId, Long adId);
+
+    /**
+     * 从广告中移除素材
+     *
+     * @param materialId 素材ID
+     * @param adId 广告ID
+     */
+    void removeMaterialFromAd(Long materialId, Long adId);
+
+    /**
+     * 获取使用该素材的广告ID列表
+     *
+     * @param materialId 素材ID
+     * @return 广告ID列表
+     */
+    List<Long> listAdsByMaterialId(Long materialId);
 
 } 

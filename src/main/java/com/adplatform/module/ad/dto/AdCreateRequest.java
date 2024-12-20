@@ -1,4 +1,4 @@
- package com.adplatform.module.ad.dto;
+package com.adplatform.module.ad.dto;
 
 import lombok.Data;
 

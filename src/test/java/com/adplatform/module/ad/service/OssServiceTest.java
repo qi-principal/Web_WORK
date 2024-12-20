@@ -34,8 +34,16 @@ public class OssServiceTest {
 
         String url = ossService.upload(file, "test");
 
+        System.out.println("上传的文件URL: " + url);
+
+        // 从 URL 或路径中提取文件名（UUID）
+        String expectedFileName = "test.jpg"; // 假设你不修改扩展名
+        String actualFileName = url.substring(url.lastIndexOf("/") + 1);
+
+        System.out.println("实际文件名: " + actualFileName);
+
         assertNotNull(url);
-        assertTrue(url.contains("test.jpg"));
+        assertTrue(actualFileName.contains(expectedFileName));  // 验证文件名部分是否符合预期
     }
 
     /**

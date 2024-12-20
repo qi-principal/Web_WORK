@@ -10,7 +10,6 @@ import lombok.Getter;
  */
 @Getter
 public enum AdStatus {
-    
     DRAFT(0, "草稿"),
     PENDING_REVIEW(1, "待审核"),
     REVIEWING(2, "审核中"),
@@ -18,22 +17,28 @@ public enum AdStatus {
     APPROVED(4, "已通过"),
     RUNNING(5, "投放中"),
     PAUSED(6, "已暂停"),
-    COMPLETED(7, "已完成");
+    FINISHED(7, "已完成");
 
     private final Integer code;
-    private final String description;
+    private final String name;
 
-    AdStatus(Integer code, String description) {
+    AdStatus(Integer code, String name) {
         this.code = code;
-        this.description = description;
+        this.name = name;
     }
 
-    /**
-     * 根据状态码获取枚举值
-     *
-     * @param code 状态码
-     * @return 枚举值
-     */
+    public static String getNameByCode(Integer code) {
+        if (code == null) {
+            return null;
+        }
+        for (AdStatus status : values()) {
+            if (status.getCode().equals(code)) {
+                return status.getName();
+            }
+        }
+        return null;
+    }
+
     public static AdStatus getByCode(Integer code) {
         if (code == null) {
             return null;

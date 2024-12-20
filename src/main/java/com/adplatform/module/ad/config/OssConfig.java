@@ -21,27 +21,27 @@ public class OssConfig {
     /**
      * endpoint地址
      */
-    private String endpoint = "oss-cn-hangzhou.aliyuncs.com"; // TODO: 配置endpoint
+    private String endpoint = "oss-cn-shanghai.aliyuncs.com"; // 配置endpoint
 
     /**
      * accessKeyId
      */
-    private String accessKeyId = "your-access-key-id"; // TODO: 配置accessKeyId
+    private String accessKeyId = "LTAI5tEYmdwCYYmnFua1jaMz"; // 配置accessKeyId
 
     /**
      * accessKeySecret
      */
-    private String accessKeySecret = "your-access-key-secret"; // TODO: 配置accessKeySecret
+    private String accessKeySecret = "3H5QBpDZyUpM1uHqP03RO0GvvHewJu"; // 配置accessKeySecret
 
     /**
      * bucket名称
      */
-    private String bucketName = "your-bucket-name"; // TODO: 配置bucketName
+    private String bucketName = "web-andrew"; // 配置bucketName
 
     /**
      * 访问域名
      */
-    private String domain = "https://your-bucket-name.oss-cn-hangzhou.aliyuncs.com"; // TODO: 配置domain
+    private String domain = "https://web-andrew.oss-cn-shanghai.aliyuncs.com"; // 配置domain
 
     @Bean
     public OSS ossClient() {
