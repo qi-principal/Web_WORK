@@ -1,16 +1,10 @@
 package com.web.ads.dto;
 
 import lombok.Data;
-import java.util.List;
 
 @Data
 public class TrackingDTO {
-    private String deviceId;
-    private List<TrackingItem> items;
+    private String cookieId;
+    private String goodsUrl;
+}
 
-    @Data
-    public static class TrackingItem {
-        private String name;
-        private Integer quantity;
-    }
-} 

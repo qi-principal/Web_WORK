@@ -28,4 +28,8 @@ const AdConfig = {
         COMPLETED: 'COMPLETED',
         FAILED: 'FAILED'
     }
+};
+
+window.AD_CONFIG = {
+    domain: 'localhost:8080' // 替换为实际的广告域名
 }; 

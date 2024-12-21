@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class Track {
     private Integer trackId;
-    private String deviceId;
-    private String goodsName;
-    private Integer goodsQuantity;
-} 
+    private String cookieId;
+    private String goodsUrl;
+}
+

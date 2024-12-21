@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface TrackMapper {
-    @Insert("INSERT INTO track (device_id, goods_name, goods_quantity) " +
-            "VALUES (#{deviceId}, #{goodsName}, #{goodsQuantity})")
+    @Insert("INSERT INTO track (cookie_id, goods_url) VALUES (#{cookieId}, #{goodsUrl})")
     void insert(Track track);
-} 
+}
+

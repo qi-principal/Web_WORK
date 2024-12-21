@@ -1,72 +1,74 @@
 (function() {
-    // 生成唯一设备ID
+    // 生成唯一的设备ID
     function generateDeviceId() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            const r = Math.random() * 16 | 0;
+            const v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
+    // 获取或创建设备ID
+    function getOrCreateDeviceId() {
         let deviceId = localStorage.getItem('device_id');
         if (!deviceId) {
-            deviceId = 'dev_' + Math.random().toString(36).substr(2, 9);
+            deviceId = generateDeviceId();
             localStorage.setItem('device_id', deviceId);
         }
         return deviceId;
     }
 
-    // 发送跟踪数据
-    function sendTrackingData(data) {
-        fetch('/track', {
+    // 设置第三方cookie
+    function setCrossDomainCookie(deviceId) {
+        // 创建一个隐藏的iframe
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        // 通过URL参数传递deviceId
+        iframe.src = `http://localhost:8081/api/setCookie?deviceId=${deviceId}`;
+
+        // 添加到文档中
+        document.body.appendChild(iframe);
+
+        // 一段时间后移除iframe
+        setTimeout(() => {
+            document.body.removeChild(iframe);
+        }, 1000);
+    }
+
+    // 发送购物数据到广告网站
+    function sendPurchaseData(purchaseData) {
+        const deviceId = getOrCreateDeviceId();
+
+        // 设置第三方cookie
+        setCrossDomainCookie(deviceId);
+
+        // 发送购物数据
+        fetch('http://localhost:8081/api/track', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify({
+                deviceId: deviceId,
+                purchases: purchaseData
+            }),
+            mode: 'cors'
         }).catch(console.error);
     }
 
-    // 等待Vue应用加载完成
-    function waitForApp() {
-        if (window.Vue) {
-            // 创建Vue混入
-            window.Vue.mixin({
-                mounted() {
-                    if (this.$options.name === 'Cart') {
-                        this.$nextTick(() => {
-                            const originalPay = this.pay;
-                            this.pay = function(...args) {
-                                if (this.selectedData && this.selectedData.length > 0) {
-                                    const trackingData = {
-                                        device_id: generateDeviceId(),
-                                        items: this.selectedData.map(item => ({
-                                            name: item.goodsName,
-                                            quantity: item.num
-                                        }))
-                                    };
-                                    sendTrackingData(trackingData);
-                                }
-                                return originalPay.apply(this, args);
-                            };
-                        });
-                    }
-                }
-            });
-        } else {
-            // ��果Vue还没加载完成，等待100ms后重试
-            setTimeout(waitForApp, 100);
+    // 注入追踪代码到Vue组件
+    const originalPay = Vue.prototype.$pay;
+    Vue.prototype.$pay = function(data) {
+        if (originalPay) {
+            originalPay.call(this, data);
         }
-    }
 
-    // 开始等待Vue加载
-    waitForApp();
+        // 发送购买数据
+        const purchaseData = data.cartData.map(item => ({
+            goodsName: item.goodsName,
+            quantity: item.num,
+        }));
+
+        sendPurchaseData(purchaseData);
+    };
 })();
-
-/*数据格式
-* {
-  "device_id": "dev_abc123xyz",
-  "items": [
-    {
-      "name": "商品名称",
-      "quantity": 2
-    },
-    {
-      "name": "商品名称2",
-      "quantity": 1
-    }
-  ]
-}*/
