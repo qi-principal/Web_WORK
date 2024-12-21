@@ -2,10 +2,8 @@ package com.adplatform.module.website.security;
 
 import com.adplatform.module.user.security.UserPrincipal;
 import com.adplatform.module.website.entity.AdSpace;
-import com.adplatform.module.website.entity.Page;
 import com.adplatform.module.website.entity.Website;
 import com.adplatform.module.website.service.AdSpaceService;
-import com.adplatform.module.website.service.PageService;
 import com.adplatform.module.website.service.WebsiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -19,9 +17,6 @@ public class WebsiteSecurityService {
 
     @Autowired
     private AdSpaceService adSpaceService;
-
-    @Autowired
-    private PageService pageService;
 
     /**
      * 检查用户是否是网站的所有者
@@ -50,18 +45,6 @@ public class WebsiteSecurityService {
     }
 
     /**
-     * 检查用户是否是页面的所有者
-     */
-    public boolean isPageOwner(Long pageId, Authentication authentication) {
-        Page page = pageService.getPageById(pageId);
-        if (page == null) {
-            return false;
-        }
-        
-        return isAdSpaceOwner(page.getAdSpaceId(), authentication);
-    }
-
-    /**
      * 检查用户是否可以访问网站
      */
     public boolean canAccessWebsite(Long websiteId, Authentication authentication) {
@@ -85,19 +68,6 @@ public class WebsiteSecurityService {
         
         // 如果是广告位所有者,可以访问自己的广告位
         return isAdSpaceOwner(adSpaceId, authentication);
-    }
-
-    /**
-     * 检查用户是否可以访问页面
-     */
-    public boolean canAccessPage(Long pageId, Authentication authentication) {
-        // 如果是管理员,可以访问所有页面
-        if (hasRole(authentication, WebsitePermissions.ROLE_ADMIN)) {
-            return true;
-        }
-        
-        // 如果是页面所有者,可以访问自己的页面
-        return isPageOwner(pageId, authentication);
     }
 
     /**

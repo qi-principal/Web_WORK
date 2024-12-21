@@ -75,22 +75,6 @@ public interface AdvertisementService {
     AdvertisementDTO reject(Long id, String reason);
 
     /**
-     * 开始投放
-     *
-     * @param id 广告ID
-     * @return 更新后的广告信息
-     */
-    AdvertisementDTO start(Long id);
-
-    /**
-     * 暂停投放
-     *
-     * @param id 广告ID
-     * @return 更新后的广告信息
-     */
-    AdvertisementDTO pause(Long id);
-
-    /**
      * 删除广告
      *
      * @param id 广告ID

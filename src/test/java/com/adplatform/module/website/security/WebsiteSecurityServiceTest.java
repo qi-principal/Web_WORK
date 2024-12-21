@@ -2,10 +2,8 @@ package com.adplatform.module.website.security;
 
 import com.adplatform.module.user.security.UserPrincipal;
 import com.adplatform.module.website.entity.AdSpace;
-import com.adplatform.module.website.entity.Page;
 import com.adplatform.module.website.entity.Website;
 import com.adplatform.module.website.service.AdSpaceService;
-import com.adplatform.module.website.service.PageService;
 import com.adplatform.module.website.service.WebsiteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,9 +31,6 @@ public class WebsiteSecurityServiceTest {
     @Autowired
     private AdSpaceService adSpaceService;
 
-    @Autowired
-    private PageService pageService;
-
     private Authentication adminAuth;
     private Authentication publisherAuth;
     private Authentication otherPublisherAuth;
@@ -51,7 +46,7 @@ public class WebsiteSecurityServiceTest {
 
         // 创建网站主认证
         publisherAuth = new UsernamePasswordAuthenticationToken(
-            createUserPrincipal(2L, "publisher", 2),
+            createUserPrincipal(2L, "sun", 2),
             null,
             Collections.singletonList(new SimpleGrantedAuthority("ROLE_PUBLISHER"))
         );
@@ -106,35 +101,6 @@ public class WebsiteSecurityServiceTest {
     }
 
     @Test
-    public void testIsPageOwner() {
-        // 创建测试网站、广告位和页面
-        Website website = new Website();
-        website.setUserId(2L);
-        website.setName("测试网站");
-        website.setUrl("http://test.com");
-        websiteService.createWebsite(website);
-
-        AdSpace adSpace = new AdSpace();
-        adSpace.setWebsiteId(website.getId());
-        adSpace.setName("测试广告位");
-        adSpace.setWidth(300);
-        adSpace.setHeight(250);
-        adSpaceService.createAdSpace(website.getId(), adSpace);
-
-        Page page = new Page();
-        page.setAdSpaceId(adSpace.getId());
-        page.setUrl("http://test.com/page1");
-        pageService.createPage(adSpace.getId(), page);
-
-        // 测试页面所有者
-        assertTrue(securityService.isPageOwner(page.getId(), publisherAuth));
-        // 测试其他用户
-        assertFalse(securityService.isPageOwner(page.getId(), otherPublisherAuth));
-        // 测试管理员
-        assertFalse(securityService.isPageOwner(page.getId(), adminAuth));
-    }
-
-    @Test
     public void testCanAccessWebsite() {
         // 创建测试网站
         Website website = new Website();
@@ -173,35 +139,6 @@ public class WebsiteSecurityServiceTest {
         assertFalse(securityService.canAccessAdSpace(adSpace.getId(), otherPublisherAuth));
         // 测试管理员
         assertTrue(securityService.canAccessAdSpace(adSpace.getId(), adminAuth));
-    }
-
-    @Test
-    public void testCanAccessPage() {
-        // 创建测试网站、广告位和页面
-        Website website = new Website();
-        website.setUserId(2L);
-        website.setName("测试网站");
-        website.setUrl("http://test.com");
-        websiteService.createWebsite(website);
-
-        AdSpace adSpace = new AdSpace();
-        adSpace.setWebsiteId(website.getId());
-        adSpace.setName("测试广告位");
-        adSpace.setWidth(300);
-        adSpace.setHeight(250);
-        adSpaceService.createAdSpace(website.getId(), adSpace);
-
-        Page page = new Page();
-        page.setAdSpaceId(adSpace.getId());
-        page.setUrl("http://test.com/page1");
-        pageService.createPage(adSpace.getId(), page);
-
-        // 测试页面所有者
-        assertTrue(securityService.canAccessPage(page.getId(), publisherAuth));
-        // 测试其他用户
-        assertFalse(securityService.canAccessPage(page.getId(), otherPublisherAuth));
-        // 测试管理员
-        assertTrue(securityService.canAccessPage(page.getId(), adminAuth));
     }
 
     private UserPrincipal createUserPrincipal(Long id, String username, Integer userType) {

@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-12-20T13:02:44+0800",
-    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 11.0.24 (Amazon.com Inc.)"
+    date = "2024-12-22T02:21:17+0800",
+    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.12 (Amazon.com Inc.)"
 )
 @Component
 public class AdConverterImpl implements AdConverter {
@@ -35,6 +35,7 @@ public class AdConverterImpl implements AdConverter {
         advertisementDTO.setDailyBudget( entity.getDailyBudget() );
         advertisementDTO.setStartTime( entity.getStartTime() );
         advertisementDTO.setEndTime( entity.getEndTime() );
+        advertisementDTO.setClickUrl( entity.getClickUrl() );
         advertisementDTO.setCreateTime( entity.getCreateTime() );
         advertisementDTO.setUpdateTime( entity.getUpdateTime() );
         advertisementDTO.setMaterials( materialListToMaterialDTOList( entity.getMaterials() ) );

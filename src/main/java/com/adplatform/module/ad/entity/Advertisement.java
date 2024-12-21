@@ -69,6 +69,11 @@ public class Advertisement {
     private LocalDateTime endTime;
 
     /**
+     * 点击链接
+     */
+    private String clickUrl;
+
+    /**
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)

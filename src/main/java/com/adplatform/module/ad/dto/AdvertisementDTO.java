@@ -2,6 +2,8 @@ package com.adplatform.module.ad.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,6 +24,7 @@ public class AdvertisementDTO {
     /**
      * 广告标题
      */
+    @NotBlank(message = "广告标题不能为空")
     private String title;
 
     /**
@@ -37,6 +40,7 @@ public class AdvertisementDTO {
     /**
      * 广告类型：1-图片 2-视频 3-文字
      */
+    @NotNull(message = "广告类型不能为空")
     private Integer type;
 
     /**
@@ -57,22 +61,32 @@ public class AdvertisementDTO {
     /**
      * 总预算
      */
+    @NotNull(message = "总预算不能为空")
     private BigDecimal budget;
 
     /**
      * 日预算
      */
+    @NotNull(message = "日预算不能为空")
     private BigDecimal dailyBudget;
 
     /**
      * 投放开始时间
      */
+    @NotNull(message = "投放开始时间不能为空")
     private LocalDateTime startTime;
 
     /**
      * 投放结束时间
      */
+    @NotNull(message = "投放结束时间不能为空")
     private LocalDateTime endTime;
+
+    /**
+     * 点击链接
+     */
+    @NotBlank(message = "点击链接不能为空")
+    private String clickUrl;
 
     /**
      * 创建时间

@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -15,6 +17,8 @@ public class WebsiteServiceImpl extends ServiceImpl<WebsiteMapper, Website> impl
     @Override
     @Transactional
     public void createWebsite(Website website) {
+        website.setCreateTime(LocalDateTime.now());
+        website.setUpdateTime(LocalDateTime.now());
         website.setStatus(0); // 待审核
         this.save(website);
     }
@@ -29,6 +33,7 @@ public class WebsiteServiceImpl extends ServiceImpl<WebsiteMapper, Website> impl
             existing.setDescription(website.getDescription());
             existing.setStatus(0); // 更新后重新审核
             this.updateById(existing);
+
         }
     }
 

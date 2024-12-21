@@ -12,12 +12,17 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/websites")
+@RequestMapping("/v1/websites")
 public class WebsiteController {
 
     @Autowired
     private WebsiteService websiteService;
 
+    /**
+     * 创建网站
+     * @param website
+     * @return
+    */
     @PostMapping
     @PreAuthorize("hasAuthority('" + WebsitePermissions.WEBSITE_CREATE + "')")
     public ResponseEntity<?> createWebsite(@RequestBody Website website) {
@@ -30,6 +35,12 @@ public class WebsiteController {
         );
     }
 
+    /**
+     * 更新网站
+     * @param id
+     * @param website
+     * @return
+    */
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('" + WebsitePermissions.WEBSITE_UPDATE + "') and @websiteSecurityService.isWebsiteOwner(#id, principal)")
     public ResponseEntity<?> updateWebsite(@PathVariable Long id, @RequestBody Website website) {
@@ -37,6 +48,11 @@ public class WebsiteController {
         return ResponseEntity.ok(Map.of("message", "网站更新成功，待审核。"));
     }
 
+    /**
+     * 获取网站
+     * @param id
+     * @return
+    */
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('" + WebsitePermissions.WEBSITE_READ + "') and @websiteSecurityService.canAccessWebsite(#id, principal)")
     public ResponseEntity<?> getWebsite(@PathVariable Long id) {
@@ -49,6 +65,14 @@ public class WebsiteController {
         return ResponseEntity.ok(website);
     }
 
+    /**
+     * 获取网站列表
+     * @param userId
+     * @param status
+     * @param page
+     * @param size
+     * @return
+    */
     @GetMapping
     @PreAuthorize("hasAuthority('" + WebsitePermissions.WEBSITE_READ + "')")
     public ResponseEntity<?> getWebsites(
@@ -66,6 +90,11 @@ public class WebsiteController {
         );
     }
 
+    /**
+     * 审核通过网站
+     * @param id
+     * @return
+    */
     @PostMapping("/{id}/approve")
     @PreAuthorize("hasAuthority('" + WebsitePermissions.WEBSITE_APPROVE + "')")
     public ResponseEntity<?> approveWebsite(@PathVariable Long id) {
@@ -73,6 +102,11 @@ public class WebsiteController {
         return ResponseEntity.ok(Map.of("message", "网站已审核通过。"));
     }
 
+    /**
+     * 审核通过网站
+     * @param id
+     * @return
+    */
     @PostMapping("/{id}/reject")
     @PreAuthorize("hasAuthority('" + WebsitePermissions.WEBSITE_APPROVE + "')")
     public ResponseEntity<?> rejectWebsite(@PathVariable Long id) {

@@ -12,12 +12,18 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/v1")
 public class AdSpaceController {
 
     @Autowired
     private AdSpaceService adSpaceService;
 
+    /**
+     * 创建广告位
+     * @param websiteId
+     * @param adSpace
+     * @return
+    */
     @PostMapping("/websites/{websiteId}/spaces")
     @PreAuthorize("hasAuthority('" + WebsitePermissions.AD_SPACE_CREATE + "') and @websiteSecurityService.isWebsiteOwner(#websiteId, principal)")
     public ResponseEntity<?> createAdSpace(@PathVariable Long websiteId, @RequestBody AdSpace adSpace) {
@@ -31,6 +37,12 @@ public class AdSpaceController {
         );
     }
 
+    /**
+     * 更新广告位
+     * @param id
+     * @param adSpace
+     * @return
+    */
     @PutMapping("/spaces/{id}")
     @PreAuthorize("hasAuthority('" + WebsitePermissions.AD_SPACE_UPDATE + "') and @websiteSecurityService.isAdSpaceOwner(#id, principal)")
     public ResponseEntity<?> updateAdSpace(@PathVariable Long id, @RequestBody AdSpace adSpace) {
@@ -44,6 +56,11 @@ public class AdSpaceController {
         );
     }
 
+    /**
+     * 获取广告位
+     * @param id
+     * @return
+    */
     @GetMapping("/spaces/{id}")
     @PreAuthorize("hasAuthority('" + WebsitePermissions.AD_SPACE_READ + "') and @websiteSecurityService.canAccessAdSpace(#id, principal)")
     public ResponseEntity<?> getAdSpace(@PathVariable Long id) {
@@ -56,6 +73,14 @@ public class AdSpaceController {
         return ResponseEntity.ok(adSpace);
     }
 
+    /**
+     * 获取广告位列表
+     * @param websiteId
+     * @param status
+     * @param page
+     * @param size
+     * @return
+    */
     @GetMapping("/websites/{websiteId}/spaces")
     @PreAuthorize("hasAuthority('" + WebsitePermissions.AD_SPACE_READ + "') and @websiteSecurityService.canAccessWebsite(#websiteId, principal)")
     public ResponseEntity<?> getAdSpaces(
@@ -73,6 +98,11 @@ public class AdSpaceController {
         );
     }
 
+    /**
+     * 获取广告位代码
+     * @param id
+     * @return
+    */
     @GetMapping("/spaces/{id}/code")
     @PreAuthorize("hasAuthority('" + WebsitePermissions.AD_SPACE_READ + "') and @websiteSecurityService.canAccessAdSpace(#id, principal)")
     public ResponseEntity<?> getAdCode(@PathVariable Long id) {
@@ -85,6 +115,11 @@ public class AdSpaceController {
         return ResponseEntity.ok(Map.of("adCode", adSpace.getCode()));
     }
 
+    /**
+     * 审核通过广告位
+     * @param id
+     * @return
+    */
     @PostMapping("/spaces/{id}/approve")
     @PreAuthorize("hasAuthority('" + WebsitePermissions.AD_SPACE_APPROVE + "')")
     public ResponseEntity<?> approveAdSpace(@PathVariable Long id) {
@@ -98,6 +133,11 @@ public class AdSpaceController {
         );
     }
 
+    /**
+     * 拒绝广告位
+     * @param id
+     * @return
+    */  
     @PostMapping("/spaces/{id}/reject")
     @PreAuthorize("hasAuthority('" + WebsitePermissions.AD_SPACE_APPROVE + "')")
     public ResponseEntity<?> rejectAdSpace(@PathVariable Long id) {

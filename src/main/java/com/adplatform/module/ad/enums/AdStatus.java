@@ -14,10 +14,7 @@ public enum AdStatus {
     PENDING_REVIEW(1, "待审核"),
     REVIEWING(2, "审核中"),
     REJECTED(3, "已拒绝"),
-    APPROVED(4, "已通过"),
-    RUNNING(5, "投放中"),
-    PAUSED(6, "已暂停"),
-    FINISHED(7, "已完成");
+    APPROVED(4, "已通过");
 
     private final Integer code;
     private final String name;

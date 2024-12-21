@@ -23,41 +23,6 @@
 - 路由：Vue Router
 - 状态管理：Vuex
 
-## 3. 项目结构
-
-```
-src/
-├── main/
-│   ├── java/
-│   │   └── com/adplatform/
-│   │       ├── common/           # 公共组件
-│   │       │   ├── config/       # 配置类
-│   │       │   ├── exception/    # 异常处理
-│   │       │   └── util/         # 工具类
-│   │       ├── module/
-│   │       │   ├── ad/          # 广告模块
-│   │       │   │   ├── controller/
-│   │       │   │   ├── service/
-│   │       │   │   ├── mapper/
-│   │       │   │   ├── entity/
-│   │       │   │   ├── dto/
-│   │       │   │   ├── converter/
-│   │       │   │   └── enums/
-│   │       │   └── user/        # 用户模块
-│   │       │       ├── controller/
-│   │       │       ├── service/
-│   │       │       ├── mapper/
-│   │       │       ├── entity/
-│   │       │       └── security/
-│   ├── resources/
-│   │   ├── static/             # 静态资源
-│   │   ├── templates/          # 模板文件
-│   │   ├── application.yml     # 应用配置
-│   │   └── db/                 # 数据库脚本
-│   └── webapp/                 # Web资源
-└── test/                       # 测试代码
-```
-
 ## 4. 核心模块说明
 
 ### 4.1 广告模块 (ad)
