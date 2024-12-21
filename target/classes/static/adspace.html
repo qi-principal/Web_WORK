@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>广告位管理</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/main.css" rel="stylesheet">
+    <style>
+        .code-block {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .preview-container {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">广告平台</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/index.html">首页</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/adspace.html">广告位</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="logoutBtn">退出</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2>广告位管理</h2>
+        
+        <!-- 创建广告位表单 -->
+        <div class="card mb-4">
+            <div class="card-header">
+                创建广告位
+            </div>
+            <div class="card-body">
+                <form id="adSpaceForm">
+                    <div class="mb-3">
+                        <label class="form-label">网站ID</label>
+                        <input type="number" class="form-control" name="websiteId" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">广告位名称</label>
+                        <input type="text" class="form-control" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">宽度(px)</label>
+                        <input type="number" class="form-control" name="width" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">高度(px)</label>
+                        <input type="number" class="form-control" name="height" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">创建</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 广告位列表 -->
+        <div class="card">
+            <div class="card-header">
+                广告位列表
+            </div>
+            <div class="card-body">
+                <div id="adSpaceList">
+                    <!-- 广告位列表将通过JavaScript动态加载 -->
+                </div>
+            </div>
+        </div>
+
+        <!-- 预览区域 -->
+        <div class="preview-container" id="previewContainer" style="display:none;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="mb-0">广告预览</h4>
+                <button type="button" class="btn-close" onclick="$('#previewContainer').hide()"></button>
+            </div>
+            <div id="previewContent"></div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/adspace.js"></script>
+</body>
+</html> 
