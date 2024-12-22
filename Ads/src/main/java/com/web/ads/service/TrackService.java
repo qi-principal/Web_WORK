@@ -6,6 +6,8 @@ import com.web.ads.mapper.TrackMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -35,6 +37,10 @@ public class TrackService {
         }
         
         return sb.toString();
+    }
+
+    public List<Track> getTrackByCookieValue(String cookieValue){
+        return trackMapper.findByCookieValue(cookieValue);
     }
 }
 

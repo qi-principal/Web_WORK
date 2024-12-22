@@ -8,7 +8,7 @@ public class Track {
     private Integer trackId;
     private String cookieValue;
     private String goodsUrl;
-    private String goodsName;
+    private String goodsName;// goodsName没用，请忽略
     private LocalDateTime visitDate;
 }
 
