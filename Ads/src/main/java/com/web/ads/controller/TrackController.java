@@ -1,6 +1,6 @@
 package com.web.ads.controller;
 
-import com.web.ads.dto.TrackingDTO;
+import com.web.ads.dto.TrackDTO;
 import com.web.ads.service.TrackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/track")
@@ -30,6 +31,12 @@ public class TrackController {
                 }
             }
         }
+        // 获取 referer
+        String referer = request.getHeader("referer");
+        // 如果没有referer则直接return
+        if (referer == null){
+            return ResponseEntity.ok().build();
+        }
         
         // 如果没有找到 device_id，生成新的
         if (deviceId == null) {
@@ -39,16 +46,15 @@ public class TrackController {
             cookie.setPath("/");
             response.addCookie(cookie);
         }
-        
-        // 获取 referer
-        String referer = request.getHeader("referer");
+
         
         // 保存跟踪信息
-        TrackingDTO trackingDTO = new TrackingDTO();
-        trackingDTO.setCookieId(deviceId);
-        trackingDTO.setGoodsUrl(referer);
+        TrackDTO trackDTO = new TrackDTO();
+        trackDTO.setCookieValue(deviceId);
+        trackDTO.setGoodsUrl(referer);
+        trackDTO.setVisitDate(LocalDateTime.now());
         
-        trackService.saveTracking(trackingDTO);
+        trackService.saveTrack(trackDTO);
         
         return ResponseEntity.ok().build();
     }

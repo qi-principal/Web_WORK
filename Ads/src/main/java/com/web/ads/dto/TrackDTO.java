@@ -1,14 +1,12 @@
-package com.web.ads.entity;
+package com.web.ads.dto;
 
 import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class Track {
-    private Integer trackId;
+public class TrackDTO {
     private String cookieValue;
     private String goodsUrl;
-    private String goodsName;
     private LocalDateTime visitDate;
 }
 

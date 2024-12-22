@@ -1,6 +1,6 @@
 package com.web.ads.service;
 
-import com.web.ads.dto.TrackingDTO;
+import com.web.ads.dto.TrackDTO;
 import com.web.ads.entity.Track;
 import com.web.ads.mapper.TrackMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +15,16 @@ public class TrackService {
     private TrackMapper trackMapper;
     
     @Transactional
-    public void saveTracking(TrackingDTO trackingDTO) {
+    public void saveTrack(TrackDTO trackDTO) {
         Track track = new Track();
-        track.setCookieId(trackingDTO.getCookieId());
-        track.setGoodsUrl(trackingDTO.getGoodsUrl());
+        track.setCookieValue(trackDTO.getCookieValue());
+        track.setGoodsUrl(trackDTO.getGoodsUrl());
+        track.setVisitDate(trackDTO.getVisitDate());
         trackMapper.insert(track);
     }
     
     public String generateDeviceId() {
+        //生成一个长度为16的随机字符串作为用户的唯一识别标识
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder sb = new StringBuilder(16);
         Random random = new Random();
