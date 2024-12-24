@@ -1,125 +1,125 @@
-//package com.adplatform.module.delivery.service.impl;
-//
-//import com.adplatform.module.delivery.converter.DeliveryConverter;
-//import com.adplatform.module.delivery.dto.request.DeliveryTaskRequest;
-//import com.adplatform.module.delivery.dto.response.DeliveryTaskResponse;
-//import com.adplatform.module.delivery.entity.AdDeliveryJob;
-//import com.adplatform.module.delivery.entity.AdDeliveryTask;
-//import com.adplatform.module.delivery.enums.DeliveryStatus;
+package com.adplatform.module.delivery.service.impl;
+
+import com.adplatform.module.delivery.converter.DeliveryConverter;
+import com.adplatform.module.delivery.dto.request.DeliveryTaskRequest;
+import com.adplatform.module.delivery.dto.response.DeliveryTaskResponse;
+import com.adplatform.module.delivery.entity.AdDeliveryJob;
+import com.adplatform.module.delivery.entity.AdDeliveryTask;
+import com.adplatform.module.delivery.enums.DeliveryStatus;
 //import com.adplatform.module.delivery.executor.SimpleDeliveryExecutor;
-//import com.adplatform.module.delivery.mapper.AdDeliveryJobMapper;
-//import com.adplatform.module.delivery.mapper.AdDeliveryTaskMapper;
-//import com.adplatform.module.delivery.service.AdDeliveryService;
-//import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-//import com.baomidou.mybatisplus.core.metadata.IPage;
-//import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//import org.springframework.transaction.annotation.Transactional;
-//
-//import java.util.Objects;
-//import java.util.stream.Collectors;
-//
-///**
-// * 广告投放服务实现类
-// */
-//@Service
-//public class AdDeliveryServiceImpl implements AdDeliveryService {
-//
-//    @Autowired
-//    private AdDeliveryTaskMapper taskMapper;
-//
-//    @Autowired
-//    private AdDeliveryJobMapper jobMapper;
-//
+import com.adplatform.module.delivery.mapper.AdDeliveryJobMapper;
+import com.adplatform.module.delivery.mapper.AdDeliveryTaskMapper;
+import com.adplatform.module.delivery.service.AdDeliveryService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+/**
+ * 广告投放服务实现类
+ */
+@Service
+public class AdDeliveryServiceImpl implements AdDeliveryService {
+
+    @Autowired
+    private AdDeliveryTaskMapper taskMapper;
+
+    @Autowired
+    private AdDeliveryJobMapper jobMapper;
+
 //    @Autowired
 //    private SimpleDeliveryExecutor deliveryExecutor;
-//
-//    @Override
-//    @Transactional(rollbackFor = Exception.class)
-//    public DeliveryTaskResponse createDeliveryTask(DeliveryTaskRequest request) {
-//
-//        // 转换请求为实体
-//        AdDeliveryTask task = DeliveryConverter.INSTANCE.toEntity(request);
-//
-//
-//        task.setDeliveryStatus(DeliveryStatus.PENDING);
-//
-//        // 保存任务
-//        taskMapper.insert(task);
-//
-//        return DeliveryConverter.INSTANCE.toResponse(task);
-//    }
-//
-//    @Override
-//    @Transactional(rollbackFor = Exception.class)
-//    public DeliveryTaskResponse updateDeliveryTask(Long taskId, DeliveryTaskRequest request) {
-//        AdDeliveryTask task = taskMapper.selectById(taskId);
-//        if (Objects.isNull(task)) {
-//            throw new RuntimeException("投放任务不存在");
-//        }
-//
-//        // 更新任务信息
-//        task.setAdId(request.getAdId());
-//        task.setAdSpaceId(request.getAdSpaceId());
-//        task.setStartTime(request.getStartTime());
-//        task.setEndTime(request.getEndTime());
-//        task.setPriority(request.getPriority());
-//
-//        taskMapper.updateById(task);
-//
-//        return DeliveryConverter.INSTANCE.toResponse(task);
-//    }
-//
-//    @Override
-//    @Transactional(rollbackFor = Exception.class)
-//    public void deleteDeliveryTask(Long taskId) {
-//        AdDeliveryTask task = taskMapper.selectById(taskId);
-//        if (Objects.isNull(task)) {
-//            throw new RuntimeException("投放任务不存在");
-//        }
-//
-//        // 删除任务
-//        taskMapper.deleteById(taskId);
-//
-//        // 删除相关的作业
-//        jobMapper.delete(new LambdaQueryWrapper<AdDeliveryJob>()
-//                .eq(AdDeliveryJob::getTaskId, taskId));
-//    }
-//
-//    @Override
-//    public DeliveryTaskResponse getDeliveryTask(Long taskId) {
-//        AdDeliveryTask task = taskMapper.selectById(taskId);
-//        if (Objects.isNull(task)) {
-//            throw new RuntimeException("投放任务不存在");
-//        }
-//        return DeliveryConverter.INSTANCE.toResponse(task);
-//    }
-//
-//    @Override
-//    public IPage<DeliveryTaskResponse> pageDeliveryTasks(Page<DeliveryTaskResponse> page, Long adId, Long adSpaceId, Integer status) {
-//        Page<AdDeliveryTask> taskPage = taskMapper.selectPage(
-//            new Page<>(page.getCurrent(), page.getSize()),
-//            new LambdaQueryWrapper<AdDeliveryTask>()
-//                .eq(Objects.nonNull(adId), AdDeliveryTask::getAdId, adId)
-//                .eq(Objects.nonNull(adSpaceId), AdDeliveryTask::getAdSpaceId, adSpaceId)
-//                .eq(Objects.nonNull(status), AdDeliveryTask::getStatus, status)
-//                .orderByDesc(AdDeliveryTask::getCreateTime)
-//        );
-//
-//        // 转换为响应DTO
-//        IPage<DeliveryTaskResponse> responsePage = new Page<>(
-//            taskPage.getCurrent(),
-//            taskPage.getSize(),
-//            taskPage.getTotal()
-//        );
-//        responsePage.setRecords(taskPage.getRecords().stream()
-//            .map(DeliveryConverter.INSTANCE::toResponse)
-//            .collect(Collectors.toList()));
-//
-//        return responsePage;
-//    }
-//
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public DeliveryTaskResponse createDeliveryTask(DeliveryTaskRequest request) {
+
+        // 转换请求为实体
+        AdDeliveryTask task = DeliveryConverter.INSTANCE.toEntity(request);
+
+
+        task.setDeliveryStatus(DeliveryStatus.PENDING);
+
+        // 保存任务
+        taskMapper.insert(task);
+
+        return DeliveryConverter.INSTANCE.toResponse(task);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public DeliveryTaskResponse updateDeliveryTask(Long taskId, DeliveryTaskRequest request) {
+        AdDeliveryTask task = taskMapper.selectById(taskId);
+        if (Objects.isNull(task)) {
+            throw new RuntimeException("投放任务不存在");
+        }
+
+        // 更新任务信息
+        task.setAdId(request.getAdId());
+        task.setAdSpaceId(request.getAdSpaceId());
+        task.setStartTime(request.getStartTime());
+        task.setEndTime(request.getEndTime());
+        task.setPriority(request.getPriority());
+
+        taskMapper.updateById(task);
+
+        return DeliveryConverter.INSTANCE.toResponse(task);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteDeliveryTask(Long taskId) {
+        AdDeliveryTask task = taskMapper.selectById(taskId);
+        if (Objects.isNull(task)) {
+            throw new RuntimeException("投放任务不存在");
+        }
+
+        // 删除任务
+        taskMapper.deleteById(taskId);
+
+        // 删除相关的作业
+        jobMapper.delete(new LambdaQueryWrapper<AdDeliveryJob>()
+                .eq(AdDeliveryJob::getTaskId, taskId));
+    }
+
+    @Override
+    public DeliveryTaskResponse getDeliveryTask(Long taskId) {
+        AdDeliveryTask task = taskMapper.selectById(taskId);
+        if (Objects.isNull(task)) {
+            throw new RuntimeException("投放任务不存在");
+        }
+        return DeliveryConverter.INSTANCE.toResponse(task);
+    }
+
+    @Override
+    public IPage<DeliveryTaskResponse> pageDeliveryTasks(Page<DeliveryTaskResponse> page, Long adId, Long adSpaceId, Integer status) {
+        Page<AdDeliveryTask> taskPage = taskMapper.selectPage(
+            new Page<>(page.getCurrent(), page.getSize()),
+            new LambdaQueryWrapper<AdDeliveryTask>()
+                .eq(Objects.nonNull(adId), AdDeliveryTask::getAdId, adId)
+                .eq(Objects.nonNull(adSpaceId), AdDeliveryTask::getAdSpaceId, adSpaceId)
+                .eq(Objects.nonNull(status), AdDeliveryTask::getStatus, status)
+                .orderByDesc(AdDeliveryTask::getCreateTime)
+        );
+
+        // 转换为响应DTO
+        IPage<DeliveryTaskResponse> responsePage = new Page<>(
+            taskPage.getCurrent(),
+            taskPage.getSize(),
+            taskPage.getTotal()
+        );
+        responsePage.setRecords(taskPage.getRecords().stream()
+            .map(DeliveryConverter.INSTANCE::toResponse)
+            .collect(Collectors.toList()));
+
+        return responsePage;
+    }
+
 //    @Override
 //    @Transactional(rollbackFor = Exception.class)
 //    public void executeDeliveryTask(Long taskId) {
@@ -234,4 +234,4 @@
 //            latestJob.getDeliveryStatus().getDescription(),
 //            latestJob.getResult());
 //    }
-//}
+}

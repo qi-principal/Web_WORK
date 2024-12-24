@@ -2,98 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>广告展示</title>
+    <title>广告展示页面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        .ad-container {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        #ad-container {
             width: 100%;
-            height: 100%;
-        }
-        .ad-content {
+            min-height: 100px;
+            margin: 0 auto;
             position: relative;
         }
-        .ad-image {
-            display: block;
-            max-width: 100%;
-            height: auto;
-        }
     </style>
-    <script th:inline="javascript">
-        // 广告内容数据
-        var adContent = /*[[${adContent}]]*/ {};
-        
-        // 页面加载完成后初始化广告
-        document.addEventListener('DOMContentLoaded', function() {
-            initAd();
-            recordImpression();
-        });
-
-        // 初始化广告
-        function initAd() {
-            var container = document.querySelector('.ad-content');
-            if (adContent && adContent.content) {
-                var content = adContent.content;
-                if (content.type === 'image') {
-                    var link = document.createElement('a');
-                    link.href = content.clickUrl;
-                    link.target = '_blank';
-                    link.onclick = recordClick;
-
-                    var img = document.createElement('img');
-                    img.src = content.imageUrl;
-                    img.width = content.width;
-                    img.height = content.height;
-                    img.className = 'ad-image';
-                    img.alt = '广告';
-
-                    link.appendChild(img);
-                    container.appendChild(link);
-                }
-            }
-        }
-
-        // 记录展示
-        function recordImpression() {
-            if (adContent) {
-                fetch('/api/v1/delivery/stats/impression', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        adId: adContent.adId,
-                        adSpaceId: adContent.adSpaceId
-                    })
-                });
-            }
-        }
-
-        // 记录点击
-        function recordClick() {
-            if (adContent) {
-                fetch('/api/v1/delivery/stats/click', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        adId: adContent.adId,
-                        adSpaceId: adContent.adSpaceId
-                    })
-                });
-            }
-        }
-    </script>
 </head>
 <body>
-    <div class="ad-container">
-        <div class="ad-content">
-            <!-- 广告内容将通过JavaScript动态加载 -->
-        </div>
+    <div id="ad-container" th:attr="data-ad-space-id=${adSpaceId}">
+        <!-- 广告内容将通过JavaScript动态加载 -->
     </div>
+    <script th:src="@{/ad/js/loader.js}"></script>
 </body>
 </html> 

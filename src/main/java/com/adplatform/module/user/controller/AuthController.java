@@ -44,7 +44,7 @@ public class AuthController {
         @ApiParam(value = "注册请求参数，包含用户名、密码、邮箱等信息", required = true, name = "registerRequest", example = "{\"username\":\"test\",\"password\":\"123456\",\"email\":\"test@example.com\"}")
         @Validated @RequestBody RegisterRequest request
     ) {
-        log.info("收到注册请求，用户名: {}, 邮箱: {}", request.getUsername(), request.getEmail());
+        System.out.println("register request: " + request);
         Result<UserDTO> result = Result.success(userService.register(request));
         log.info("注册成功，用户ID: {}", result.getData().getId());
         return result;

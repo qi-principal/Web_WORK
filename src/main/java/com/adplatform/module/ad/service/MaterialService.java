@@ -1,8 +1,8 @@
 package com.adplatform.module.ad.service;
 
 import com.adplatform.module.ad.dto.MaterialDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -71,4 +71,20 @@ public interface MaterialService {
      */
     List<Long> listAdsByMaterialId(Long materialId);
 
+    /**
+     * 获取指定用户的所有素材列表
+     *
+     * @param userId 用户ID
+     * @return 素材列表
+     */
+    List<MaterialDTO> listUserMaterials(Long userId);
+
+    /**
+     * 分页获取指定用户的素材列表
+     *
+     * @param page 分页参数
+     * @param userId 用户ID
+     * @return 分页后的素材列表
+     */
+    IPage<MaterialDTO> pageUserMaterials(Page<MaterialDTO> page, Long userId);
 } 

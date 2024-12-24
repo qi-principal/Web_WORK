@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-12-22T02:21:17+0800",
+    date = "2024-12-24T02:24:44+0800",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.12 (Amazon.com Inc.)"
 )
 @Component
@@ -52,18 +52,18 @@ public class AdConverterImpl implements AdConverter {
             return null;
         }
 
-        MaterialDTO.MaterialDTOBuilder materialDTO = MaterialDTO.builder();
+        MaterialDTO materialDTO = new MaterialDTO();
 
-        materialDTO.id( entity.getId() );
-        materialDTO.type( entity.getType() );
-        materialDTO.content( entity.getContent() );
-        materialDTO.url( entity.getUrl() );
-        materialDTO.size( entity.getSize() );
-        materialDTO.createTime( entity.getCreateTime() );
+        materialDTO.setId( entity.getId() );
+        materialDTO.setType( entity.getType() );
+        materialDTO.setContent( entity.getContent() );
+        materialDTO.setUrl( entity.getUrl() );
+        materialDTO.setSize( entity.getSize() );
+        materialDTO.setCreateTime( entity.getCreateTime() );
 
-        materialDTO.typeName( com.adplatform.module.ad.enums.MaterialType.getNameByCode(entity.getType()) );
+        materialDTO.setTypeName( com.adplatform.module.ad.enums.MaterialType.getNameByCode(entity.getType()) );
 
-        return materialDTO.build();
+        return materialDTO;
     }
 
     protected List<MaterialDTO> materialListToMaterialDTOList(List<Material> list) {

@@ -3,6 +3,8 @@ package com.adplatform.module.ad.mapper;
 import com.adplatform.module.ad.entity.AdMaterialRelation;
 import com.adplatform.module.ad.entity.Material;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import java.util.List;
@@ -35,4 +37,29 @@ public interface AdMaterialRelationMapper extends BaseMapper<AdMaterialRelation>
      */
     @Select("SELECT ad_id FROM ad_material_relation WHERE material_id = #{materialId}")
     List<Long> selectAdIdsByMaterialId(Long materialId);
+
+    /**
+     * 根据用户ID查询素材列表（带分页）
+     *
+     * @param page 分页参数
+     * @param userId 用户ID
+     * @return 分页后的素材列表
+     */
+    @Select("SELECT DISTINCT m.* FROM ad_material m " +
+            "INNER JOIN ad_material_relation r ON m.id = r.material_id " +
+            "INNER JOIN advertisement a ON r.ad_id = a.id " +
+            "WHERE a.user_id = #{userId}")
+    IPage<Material> selectMaterialsByUserId(Page<Material> page, Long userId);
+
+    /**
+     * 根据用户ID查询素材列表（不分页）
+     *
+     * @param userId 用户ID
+     * @return 素材列表
+     */
+    @Select("SELECT DISTINCT m.* FROM ad_material m " +
+            "INNER JOIN ad_material_relation r ON m.id = r.material_id " +
+            "INNER JOIN advertisement a ON r.ad_id = a.id " +
+            "WHERE a.user_id = #{userId}")
+    List<Material> selectAllMaterialsByUserId(Long userId);
 } 

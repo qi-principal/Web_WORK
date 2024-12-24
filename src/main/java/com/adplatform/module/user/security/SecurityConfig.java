@@ -50,7 +50,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/favicon.ico",
                 "/material/**",
                 "/site/**",
-                "/admin/**"
+                "/admin/**",
+                "/advertiser/**",
+                "/publisher/**"
             );
     }
 
@@ -75,7 +77,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/*/api-docs").permitAll()
                 // 静态资源
                 .antMatchers("/", "/*.html", "/css/**", "/js/**", "/img/**",
-                           "/material/**", "/site/**", "/admin/**").permitAll()
+                           "/material/**", "/site/**", "/admin/**",
+                           "/advertiser/**", "/publisher/**").permitAll()
                 // 网站模块的公开接口
                 .antMatchers(HttpMethod.GET, "/api/v1/websites/*/spaces/*/code").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/v1/pages/*/display").permitAll()

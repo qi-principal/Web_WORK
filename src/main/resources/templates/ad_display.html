@@ -3,97 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <title>广告展示</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         .ad-container {
-            margin: 0;
-            padding: 0;
+            width: 100%;
+            min-height: 100px;
+            margin: 0 auto;
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 100%;
-            height: 100%;
         }
         .ad-content {
+            max-width: 100%;
             position: relative;
         }
         .ad-image {
-            display: block;
             max-width: 100%;
             height: auto;
+            display: block;
+        }
+        .ad-video {
+            max-width: 100%;
+        }
+        .ad-text {
+            padding: 15px;
+            text-align: center;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .ad-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .ad-description {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
         }
     </style>
+</head>
+<body>
+    <div class="ad-container" th:attr="data-ad-space-id=${adSpaceId}">
+        <div class="ad-content">
+            <!-- 广告内容将通过 JavaScript 动态加载 -->
+        </div>
+    </div>
+
     <script th:inline="javascript">
-        // 广告内容数据
-        var adContent = /*[[${adContent}]]*/ {};
-        
-        // 页面加载完成后初始化广告
-        document.addEventListener('DOMContentLoaded', function() {
-            initAd();
-            recordImpression();
-        });
+        class AdManager {
+            constructor(adSpaceId) {
+                this.adSpaceId = adSpaceId;
+                this.container = document.querySelector('.ad-content');
+                this.currentAd = null;
+                this.refreshInterval = 30000; // 30秒刷新一次
+            }
 
-        // 初始化广告
-        function initAd() {
-            var container = document.querySelector('.ad-content');
-            if (adContent && adContent.content) {
-                var content = adContent.content;
-                if (content.type === 'image') {
-                    var link = document.createElement('a');
-                    link.href = content.clickUrl;
-                    link.target = '_blank';
-                    link.onclick = recordClick;
+            // 初始化
+            async init() {
+                await this.loadAd();
+                this.startRefreshTimer();
+            }
 
-                    var img = document.createElement('img');
-                    img.src = content.imageUrl;
-                    img.width = content.width;
-                    img.height = content.height;
-                    img.className = 'ad-image';
-                    img.alt = '广告';
+            // 开始定时刷新
+            startRefreshTimer() {
+                setInterval(() => this.loadAd(), this.refreshInterval);
+            }
 
-                    link.appendChild(img);
-                    container.appendChild(link);
+            // 加载广告
+            async loadAd() {
+                try {
+                    const response = await fetch(`/api/v1/delivery/ads/${this.adSpaceId}`, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('广告加载失败');
+                    }
+
+                    const adData = await response.json();
+                    if (adData && adData.data) {
+                        this.currentAd = adData.data;
+                        this.renderAd();
+                        this.recordImpression();
+                    }
+                } catch (error) {
+                    console.error('加载广告失败:', error);
+                }
+            }
+
+            // 渲染广告
+            renderAd() {
+                if (!this.currentAd) return;
+
+                let content = '';
+                switch (this.currentAd.type) {
+                    case 1: // 图片广告
+                        if (this.currentAd.materials && this.currentAd.materials.length > 0) {
+                            content = `
+                                <a href="${this.currentAd.clickUrl}" target="_blank" onclick="adManager.recordClick()">
+                                    <img class="ad-image" 
+                                         src="${this.currentAd.materials[0].url}"
+                                         alt="${this.currentAd.title}">
+                                </a>
+                            `;
+                        }
+                        break;
+
+                    case 2: // 视频广告
+                        if (this.currentAd.materials && this.currentAd.materials.length > 0) {
+                            content = `
+                                <video class="ad-video" controls onplay="adManager.recordVideoPlay()">
+                                    <source src="${this.currentAd.materials[0].url}" type="video/mp4">
+                                    您的浏览器不支持视频播放
+                                </video>
+                            `;
+                        }
+                        break;
+
+                    case 3: // 文字广告
+                        content = `
+                            <a href="${this.currentAd.clickUrl}" target="_blank" onclick="adManager.recordClick()">
+                                <div class="ad-text">
+                                    <div class="ad-title">${this.currentAd.title}</div>
+                                    <div class="ad-description">${this.currentAd.description}</div>
+                                </div>
+                            </a>
+                        `;
+                        break;
+                }
+
+                this.container.innerHTML = content;
+            }
+
+            // 记录展示
+            async recordImpression() {
+                if (!this.currentAd) return;
+
+                try {
+                    await fetch('/api/v1/delivery/stats/impression', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            adId: this.currentAd.id,
+                            adSpaceId: this.adSpaceId
+                        })
+                    });
+                } catch (error) {
+                    console.error('记录展示失败:', error);
+                }
+            }
+
+            // 记录点击
+            async recordClick() {
+                if (!this.currentAd) return;
+
+                try {
+                    await fetch('/api/v1/delivery/stats/click', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            adId: this.currentAd.id,
+                            adSpaceId: this.adSpaceId
+                        })
+                    });
+                } catch (error) {
+                    console.error('记录点击失败:', error);
+                }
+            }
+
+            // 记录视频播放
+            async recordVideoPlay() {
+                if (!this.currentAd) return;
+
+                try {
+                    await fetch('/api/v1/delivery/stats/video-play', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            adId: this.currentAd.id,
+                            adSpaceId: this.adSpaceId
+                        })
+                    });
+                } catch (error) {
+                    console.error('记录视频播放失败:', error);
                 }
             }
         }
 
-        // 记录展示
-        function recordImpression() {
-            if (adContent) {
-                fetch('/api/v1/delivery/stats/impression', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        adId: adContent.adId,
-                        adSpaceId: adContent.adSpaceId
-                    })
-                });
-            }
-        }
-
-        // 记录点击
-        function recordClick() {
-            if (adContent) {
-                fetch('/api/v1/delivery/stats/click', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        adId: adContent.adId,
-                        adSpaceId: adContent.adSpaceId
-                    })
-                });
-            }
-        }
+        // 初始化广告管理器
+        const adSpaceId = document.querySelector('.ad-container').dataset.adSpaceId;
+        const adManager = new AdManager(adSpaceId);
+        adManager.init();
     </script>
-</head>
-<body>
-    <div class="ad-container">
-        <div class="ad-content">
-            <!-- 广告内容将通过JavaScript动态加载 -->
-        </div>
-    </div>
 </body>
 </html> 

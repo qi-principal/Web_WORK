@@ -103,3 +103,13 @@ aliyun:
     access-key-secret: 3H5QBpDZyUpM1uHqP03RO0GvvHewJu  # 配置accessKeySecret
     bucket-name: web-andrew  # 配置bucketName
     domain: https://web-andrew.oss-cn-shanghai.aliyuncs.com  # 配置domain
+
+# Thymeleaf配置
+thymeleaf:
+  prefix: classpath:/templates/
+  suffix: .html
+  mode: HTML
+  encoding: UTF-8
+  cache: false  # 开发环境设置为false，生产环境应该设置为true
+  check-template-location: true
+  enable-spring-el-compiler: false

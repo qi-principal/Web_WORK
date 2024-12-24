@@ -8,7 +8,12 @@ import com.adplatform.module.ad.mapper.AdMaterialRelationMapper;
 import com.adplatform.module.ad.mapper.MaterialMapper;
 import com.adplatform.module.ad.service.MaterialService;
 import com.adplatform.module.ad.service.OssService;
+import com.adplatform.module.user.security.SecurityService;
+import com.adplatform.module.ad.mapper.AdvertisementMapper;
+import com.adplatform.module.ad.entity.Advertisement;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +24,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 广告素材服务实现类
@@ -34,6 +41,8 @@ public class MaterialServiceImpl implements MaterialService {
     private final AdMaterialRelationMapper relationMapper;
     private final AdConverter adConverter;
     private final OssService ossService;
+    private final SecurityService securityService;
+    private final AdvertisementMapper advertisementMapper;
 
     private static final String MATERIAL_DIR = "materials";
 
@@ -45,12 +54,15 @@ public class MaterialServiceImpl implements MaterialService {
         try {
             String url = ossService.upload(file, MATERIAL_DIR);
 
+            System.out.println("url:"+url);
             Material material = new Material();
             material.setType(type);
+            material.setContent(file.getName());
             material.setUrl(url);
             material.setSize(file.getSize());
             material.setCreateTime(LocalDateTime.now());
 
+            System.out.println("material:"+material.toString());
             materialMapper.insert(material);
 
             return adConverter.toMaterialDTO(material);
@@ -123,6 +135,36 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public List<Long> listAdsByMaterialId(Long materialId) {
         return relationMapper.selectAdIdsByMaterialId(materialId);
+    }
+
+    @Override
+    public List<MaterialDTO> listUserMaterials(Long userId) {
+        if (userId == null) {
+            throw new RuntimeException("用户ID不能为空");
+        }
+        
+        // 使用优化后的单条SQL查询
+        List<Material> materials = relationMapper.selectAllMaterialsByUserId(userId);
+        
+        return materials.stream()
+                .map(adConverter::toMaterialDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public IPage<MaterialDTO> pageUserMaterials(Page<MaterialDTO> dtoPage, Long userId) {
+        if (userId == null) {
+            throw new RuntimeException("用户ID不能为空");
+        }
+
+        // 创建实体分页对象
+        Page<Material> entityPage = new Page<>(dtoPage.getCurrent(), dtoPage.getSize());
+        
+        // 使用优化后的分页查询
+        IPage<Material> materialPage = relationMapper.selectMaterialsByUserId(entityPage, userId);
+        
+        // 转换结果
+        return materialPage.convert(adConverter::toMaterialDTO);
     }
 
     /**

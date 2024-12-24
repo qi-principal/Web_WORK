@@ -17,10 +17,24 @@ public class WebsiteServiceImpl extends ServiceImpl<WebsiteMapper, Website> impl
     @Override
     @Transactional
     public void createWebsite(Website website) {
-        website.setCreateTime(LocalDateTime.now());
-        website.setUpdateTime(LocalDateTime.now());
-        website.setStatus(0); // 待审核
-        this.save(website);
+        // 检查用户是否已有网站
+        Website existingWebsite = this.getWebsiteByUserId(website.getUserId());
+        
+        if (existingWebsite != null) {
+            // 用户已有网站，执行更新操作
+            existingWebsite.setName(website.getName());
+            existingWebsite.setUrl(website.getUrl());
+            existingWebsite.setDescription(website.getDescription());
+            existingWebsite.setStatus(0); // 更新后重新审核
+            existingWebsite.setUpdateTime(LocalDateTime.now());
+            this.updateById(existingWebsite);
+        } else {
+            // 用户没有网站，执行创建操作
+            website.setCreateTime(LocalDateTime.now());
+            website.setUpdateTime(LocalDateTime.now());
+            website.setStatus(0); // 待审核
+            this.save(website);
+        }
     }
 
     @Override
@@ -33,7 +47,6 @@ public class WebsiteServiceImpl extends ServiceImpl<WebsiteMapper, Website> impl
             existing.setDescription(website.getDescription());
             existing.setStatus(0); // 更新后重新审核
             this.updateById(existing);
-
         }
     }
 
@@ -70,5 +83,14 @@ public class WebsiteServiceImpl extends ServiceImpl<WebsiteMapper, Website> impl
             website.setStatus(2); // 已拒绝
             this.updateById(website);
         }
+    }
+
+    @Override
+    public Website getWebsiteByUserId(Long userId) {
+        return this.lambdaQuery()
+                .eq(Website::getUserId, userId)
+                .orderByDesc(Website::getCreateTime)
+                .last("LIMIT 1")
+                .one();
     }
 } 

@@ -2,8 +2,10 @@ package com.adplatform.module.ad.service.impl;
 
 import com.adplatform.module.ad.converter.AdConverter;
 import com.adplatform.module.ad.dto.AdvertisementDTO;
+import com.adplatform.module.ad.entity.AdMaterialRelation;
 import com.adplatform.module.ad.entity.Advertisement;
 import com.adplatform.module.ad.enums.AdStatus;
+import com.adplatform.module.ad.mapper.AdMaterialRelationMapper;
 import com.adplatform.module.ad.mapper.AdvertisementMapper;
 import com.adplatform.module.ad.mapper.MaterialMapper;
 import com.adplatform.module.ad.service.AdvertisementService;
@@ -14,6 +16,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
@@ -31,6 +34,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     private final AdvertisementMapper advertisementMapper;
     private final MaterialMapper materialMapper;
+    private final AdMaterialRelationMapper adMaterialRelationMapper;
     private final AdConverter adConverter;
     private final SecurityService securityService;
 
@@ -45,16 +49,29 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         // 创建广告
         Advertisement advertisement = new Advertisement();
         copyProperties(dto, advertisement);
-        
+
         // 自动设置当前登录用户ID
         Long currentUserId = securityService.getCurrentUserId();
         advertisement.setUserId(currentUserId);
-        
         advertisement.setStatus(AdStatus.DRAFT.getCode());
         advertisement.setCreateTime(LocalDateTime.now());
         advertisement.setUpdateTime(LocalDateTime.now());
 
+        System.out.println("===========================================================");
+        System.out.println("advertisement"+advertisement);
+        System.out.println("===========================================================");
         advertisementMapper.insert(advertisement);
+
+        // 处理广告素材关联
+        if (!CollectionUtils.isEmpty(dto.getMaterialIds())) {
+            for (Long materialId : dto.getMaterialIds()) {
+                AdMaterialRelation relation = new AdMaterialRelation();
+                relation.setAdId(advertisement.getId());
+                relation.setMaterialId(materialId);
+                relation.setCreateTime(LocalDateTime.now());
+                adMaterialRelationMapper.insert(relation);
+            }
+        }
         
         return adConverter.toAdvertisementDTO(advertisement);
     }
@@ -78,6 +95,24 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         advertisement.setUpdateTime(LocalDateTime.now());
         
         advertisementMapper.updateById(advertisement);
+
+        // 更新广告素材关联
+        if (!CollectionUtils.isEmpty(dto.getMaterialIds())) {
+            // 删除旧的关联关系
+            adMaterialRelationMapper.delete(
+                new LambdaQueryWrapper<AdMaterialRelation>()
+                    .eq(AdMaterialRelation::getAdId, id)
+            );
+            
+            // 创建新的关联关系
+            for (Long materialId : dto.getMaterialIds()) {
+                AdMaterialRelation relation = new AdMaterialRelation();
+                relation.setAdId(id);
+                relation.setMaterialId(materialId);
+                relation.setCreateTime(LocalDateTime.now());
+                adMaterialRelationMapper.insert(relation);
+            }
+        }
         
         return adConverter.toAdvertisementDTO(advertisement);
     }

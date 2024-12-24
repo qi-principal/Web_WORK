@@ -1,75 +1,75 @@
-//package com.adplatform.module.delivery.controller;
-//
-//import com.adplatform.module.delivery.dto.request.DeliveryTaskRequest;
-//import com.adplatform.module.delivery.dto.response.DeliveryTaskResponse;
-//import com.adplatform.module.delivery.service.AdDeliveryService;
-//import com.baomidou.mybatisplus.core.metadata.IPage;
-//import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.*;
-//
-//import javax.validation.Valid;
-//
-///**
-// * 广告投放控制器
-// */
-//@RestController
-//@RequestMapping("/api/delivery")
-//public class AdDeliveryController {
-//
-//    @Autowired
-//    private AdDeliveryService deliveryService;
-//
-//    /**
-//     * 创建投放任务
-//     */
-//    @PostMapping("/tasks")
-//    public ResponseEntity<DeliveryTaskResponse> createDeliveryTask(@Valid @RequestBody DeliveryTaskRequest request) {
-//        return ResponseEntity.ok(deliveryService.createDeliveryTask(request));
-//    }
-//
-//    /**
-//     * 更新投放任务
-//     */
-//    @PutMapping("/tasks/{taskId}")
-//    public ResponseEntity<DeliveryTaskResponse> updateDeliveryTask(
-//            @PathVariable Long taskId,
-//            @Valid @RequestBody DeliveryTaskRequest request) {
-//        return ResponseEntity.ok(deliveryService.updateDeliveryTask(taskId, request));
-//    }
-//
-//    /**
-//     * 删除投放任务
-//     */
-//    @DeleteMapping("/tasks/{taskId}")
-//    public ResponseEntity<Void> deleteDeliveryTask(@PathVariable Long taskId) {
-//        deliveryService.deleteDeliveryTask(taskId);
-//        return ResponseEntity.ok().build();
-//    }
-//
-//    /**
-//     * 获取投放任务详情
-//     */
-//    @GetMapping("/tasks/{taskId}")
-//    public ResponseEntity<DeliveryTaskResponse> getDeliveryTask(@PathVariable Long taskId) {
-//        return ResponseEntity.ok(deliveryService.getDeliveryTask(taskId));
-//    }
-//
-//    /**
-//     * 分页查询投放任务
-//     */
-//    @GetMapping("/tasks")
-//    public ResponseEntity<IPage<DeliveryTaskResponse>> pageDeliveryTasks(
-//            @RequestParam(defaultValue = "1") Integer current,
-//            @RequestParam(defaultValue = "10") Integer size,
-//            @RequestParam(required = false) Long adId,
-//            @RequestParam(required = false) Long adSpaceId,
-//            @RequestParam(required = false) Integer status) {
-//        Page<DeliveryTaskResponse> page = new Page<>(current, size);
-//        return ResponseEntity.ok(deliveryService.pageDeliveryTasks(page, adId, adSpaceId, status));
-//    }
-//
+package com.adplatform.module.delivery.controller;
+
+import com.adplatform.module.delivery.dto.request.DeliveryTaskRequest;
+import com.adplatform.module.delivery.dto.response.DeliveryTaskResponse;
+import com.adplatform.module.delivery.service.AdDeliveryService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+
+/**
+ * 广告投放控制器
+ */
+@RestController
+@RequestMapping("/api/delivery")
+public class AdDeliveryController {
+
+    @Autowired
+    private AdDeliveryService deliveryService;
+
+    /**
+     * 创建投放任务
+     */
+    @PostMapping("/tasks")
+    public ResponseEntity<DeliveryTaskResponse> createDeliveryTask(@Valid @RequestBody DeliveryTaskRequest request) {
+        return ResponseEntity.ok(deliveryService.createDeliveryTask(request));
+    }
+
+    /**
+     * 更新投放任务
+     */
+    @PutMapping("/tasks/{taskId}")
+    public ResponseEntity<DeliveryTaskResponse> updateDeliveryTask(
+            @PathVariable Long taskId,
+            @Valid @RequestBody DeliveryTaskRequest request) {
+        return ResponseEntity.ok(deliveryService.updateDeliveryTask(taskId, request));
+    }
+
+    /**
+     * 删除投放任务
+     */
+    @DeleteMapping("/tasks/{taskId}")
+    public ResponseEntity<Void> deleteDeliveryTask(@PathVariable Long taskId) {
+        deliveryService.deleteDeliveryTask(taskId);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 获取投放任务详情
+     */
+    @GetMapping("/tasks/{taskId}")
+    public ResponseEntity<DeliveryTaskResponse> getDeliveryTask(@PathVariable Long taskId) {
+        return ResponseEntity.ok(deliveryService.getDeliveryTask(taskId));
+    }
+
+    /**
+     * 分页查询投放任务
+     */
+    @GetMapping("/tasks")
+    public ResponseEntity<IPage<DeliveryTaskResponse>> pageDeliveryTasks(
+            @RequestParam(defaultValue = "1") Integer current,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(required = false) Long adId,
+            @RequestParam(required = false) Long adSpaceId,
+            @RequestParam(required = false) Integer status) {
+        Page<DeliveryTaskResponse> page = new Page<>(current, size);
+        return ResponseEntity.ok(deliveryService.pageDeliveryTasks(page, adId, adSpaceId, status));
+    }
+
 //    /**
 //     * 执行投放任务
 //     */
@@ -104,4 +104,4 @@
 //    public ResponseEntity<String> getTaskExecutionStatus(@PathVariable Long taskId) {
 //        return ResponseEntity.ok(deliveryService.getTaskExecutionStatus(taskId));
 //    }
-//}
+}

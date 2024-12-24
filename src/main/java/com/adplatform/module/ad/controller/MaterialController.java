@@ -1,7 +1,10 @@
 package com.adplatform.module.ad.controller;
 
+import com.adplatform.common.response.Result;
 import com.adplatform.module.ad.dto.MaterialDTO;
 import com.adplatform.module.ad.service.MaterialService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -34,10 +37,11 @@ public class MaterialController {
     })
     @PostMapping("/upload")
     @PreAuthorize("hasRole('ADVERTISER')")
-    public MaterialDTO upload(
+    public Result<MaterialDTO> upload(
             @RequestParam("file") MultipartFile file,
             @RequestParam("type") Integer type) {
-        return materialService.upload(file, type);
+        System.out.println("controller upload"+file);
+        return Result.success(materialService.upload(file, type));
     }
 
     /**
@@ -49,8 +53,8 @@ public class MaterialController {
         @ApiResponse(code = 404, message = "素材不存在")
     })
     @GetMapping("/{id}")
-    public MaterialDTO getById(@PathVariable Long id) {
-        return materialService.getById(id);
+    public Result<MaterialDTO> getById(@PathVariable Long id) {
+        return Result.success(materialService.getById(id));
     }
 
     /**
@@ -62,8 +66,8 @@ public class MaterialController {
         @ApiResponse(code = 404, message = "广告不存在")
     })
     @GetMapping("/ad/{adId}")
-    public List<MaterialDTO> listByAdId(@PathVariable Long adId) {
-        return materialService.listByAdId(adId);
+    public Result<List<MaterialDTO>> listByAdId(@PathVariable Long adId) {
+        return Result.success(materialService.listByAdId(adId));
     }
 
     /**
@@ -76,8 +80,9 @@ public class MaterialController {
     })
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADVERTISER')")
-    public void delete(@PathVariable Long id) {
+    public Result<Void> delete(@PathVariable Long id) {
         materialService.delete(id);
+        return Result.success();
     }
 
     /**
@@ -90,10 +95,11 @@ public class MaterialController {
     })
     @PostMapping("/{materialId}/ads/{adId}")
     @PreAuthorize("hasRole('ADVERTISER')")
-    public void addMaterialToAd(
+    public Result<Void> addMaterialToAd(
             @PathVariable Long materialId,
             @PathVariable Long adId) {
         materialService.addMaterialToAd(materialId, adId);
+        return Result.success();
     }
 
     /**
@@ -106,10 +112,11 @@ public class MaterialController {
     })
     @DeleteMapping("/{materialId}/ads/{adId}")
     @PreAuthorize("hasRole('ADVERTISER')")
-    public void removeMaterialFromAd(
+    public Result<Void> removeMaterialFromAd(
             @PathVariable Long materialId,
             @PathVariable Long adId) {
         materialService.removeMaterialFromAd(materialId, adId);
+        return Result.success();
     }
 
     /**
@@ -121,7 +128,41 @@ public class MaterialController {
         @ApiResponse(code = 404, message = "素材不存在")
     })
     @GetMapping("/{materialId}/ads")
-    public List<Long> listAdsByMaterialId(@PathVariable Long materialId) {
-        return materialService.listAdsByMaterialId(materialId);
+    public Result<List<Long>> listAdsByMaterialId(@PathVariable Long materialId) {
+        return Result.success(materialService.listAdsByMaterialId(materialId));
+    }
+
+    /**
+     * 获取指定用户的所有素材列表
+     */
+    @ApiOperation("获取指定用户的所有素材列表")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "获取成功"),
+        @ApiResponse(code = 400, message = "参数错误")
+    })
+    @GetMapping("/user/{userId}")
+    @PreAuthorize("hasRole('ADVERTISER')")
+    public Result<List<MaterialDTO>> listUserMaterials(@PathVariable Long userId) {
+        return Result.success(materialService.listUserMaterials(userId));
+    }
+
+    /**
+     * 分页获取指定用户的素材列表
+     */
+    @ApiOperation("分页获取指定用户的素材列表")
+    @ApiResponses({
+        @ApiResponse(code = 200, message = "获取成功"),
+        @ApiResponse(code = 400, message = "参数错误")
+    })
+    @GetMapping("/user/{userId}/page")
+    @PreAuthorize("hasRole('ADVERTISER')")
+    public Result<IPage<MaterialDTO>> pageUserMaterials(
+            @PathVariable Long userId,
+            @ApiParam(value = "页码", defaultValue = "1")
+            @RequestParam(defaultValue = "1") Long current,
+            @ApiParam(value = "每页数量", defaultValue = "10")
+            @RequestParam(defaultValue = "10") Long size) {
+        Page<MaterialDTO> page = new Page<>(current, size);
+        return Result.success(materialService.pageUserMaterials(page, userId));
     }
 } 

@@ -1,6 +1,9 @@
 package com.adplatform.module.ad.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -15,6 +18,8 @@ import java.util.List;
  * @date 2023-12-19
  */
 @Data
+@NoArgsConstructor  // 添加无参构造函数
+@AllArgsConstructor // 添加全参构造函数
 public class AdvertisementDTO {
     /**
      * 广告ID
@@ -102,4 +107,12 @@ public class AdvertisementDTO {
      * 广告素材列表
      */
     private List<MaterialDTO> materials;
+
+    /**
+     * 素材ID列表
+     * 注意：此字段仅用于接收前端传入的素材ID列表，用于创建广告-素材关联关系
+     * 不会存储在广告表中，而是会在ad_material_relation表中创建关联记录
+     */
+    @JsonProperty("materialIds")
+    private List<Long> materialIds;
 } 

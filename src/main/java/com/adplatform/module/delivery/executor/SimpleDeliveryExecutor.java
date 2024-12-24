@@ -118,10 +118,10 @@
 //            // 更新页面的当前广告
 //            page.setCurrentAdId(task.getAdId());
 //            pageMapper.updateById(page);
-//
-//            // 生成广告内容并缓存
-//            String content = contentCacheService.generateAdContent(task);
-//            contentCacheService.cacheContent(page.getUniquePath(), content);
+//// ToDO
+////            // 生成广告内容并缓存
+////            String content = contentCacheService.generateAdContent(task);
+////            contentCacheService.cacheContent(page.getUniquePath(), content);
 //
 //            // 更新作业状态为已完成
 //            job.setStatus(2); // 已完成
@@ -135,30 +135,30 @@
 //            jobMapper.updateById(job);
 //        }
 //    }
-//
-//    /**
-//     * 清理投放作业
-//     */
-//    private void cleanupDeliveryJob(AdDeliveryJob job) {
-//        try {
-//            // 获取页面信息
-//            AdDisplayPage page = pageMapper.selectById(job.getDisplayPageId());
-//            if (page != null && page.getCurrentAdId() != null) {
-//                // 清除页面的当前广告
-//                page.setCurrentAdId(null);
-//                pageMapper.updateById(page);
-//
-//                // 清除缓存的广告内容
-//                contentCacheService.deleteContent(page.getUniquePath());
-//            }
-//
-//            // 更新作业状态
-//            job.setStatus(2); // 已完成
-//            job.setResult("任务已结束，投放已清理");
-//            jobMapper.updateById(job);
-//
-//        } catch (Exception e) {
-//            log.error("清理投放作业失败：jobId=" + job.getId(), e);
-//        }
-//    }
+//// TODO
+////    /**
+////     * 清理投放作业
+////     */
+////    private void cleanupDeliveryJob(AdDeliveryJob job) {
+////        try {
+////            // 获取页面信息
+////            AdDisplayPage page = pageMapper.selectById(job.getDisplayPageId());
+////            if (page != null && page.getCurrentAdId() != null) {
+////                // 清除页面的当前广告
+////                page.setCurrentAdId(null);
+////                pageMapper.updateById(page);
+////
+////                // 清除缓存的广告内容
+////                contentCacheService.deleteContent(page.getUniquePath());
+////            }
+////
+////            // 更新作业状态
+////            job.setStatus(2); // 已完成
+////            job.setResult("任务已结束，投放已清理");
+////            jobMapper.updateById(job);
+////
+////        } catch (Exception e) {
+////            log.error("清理投放作业失败：jobId=" + job.getId(), e);
+////        }
+////    }
 //}
