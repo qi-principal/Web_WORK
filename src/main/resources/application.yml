@@ -10,6 +10,8 @@ server:
 spring:
   application:
     name: ad-platform
+  profiles:
+    active: dev
   
   # 数据源配置
   datasource:
@@ -103,6 +105,12 @@ aliyun:
     access-key-secret: 3H5QBpDZyUpM1uHqP03RO0GvvHewJu  # 配置accessKeySecret
     bucket-name: web-andrew  # 配置bucketName
     domain: https://web-andrew.oss-cn-shanghai.aliyuncs.com  # 配置domain
+
+# 广告代理配置
+ad:
+  proxy:
+    # 广告代理接口的基础URL,默认为/public/ad-proxy
+    url: /public/ad-proxy
 
 # Thymeleaf配置
 thymeleaf:

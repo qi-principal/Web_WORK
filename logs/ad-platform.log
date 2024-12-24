@@ -9272,3 +9272,278 @@ Consider defining a bean of type 'com.adplatform.module.website.service.AdSpaceS
 2024-12-24 22:14:01.979  INFO 20632 --- [restartedMain] c.a.m.user.service.AdminInitService      : 管理员账号已存在，无需初始化
 2024-12-24 22:14:01.979  INFO 20632 --- [restartedMain] c.a.module.user.config.AdminInitializer  : 管理员账号初始化完成
 2024-12-24 22:14:01.981  INFO 20632 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2024-12-24 22:14:31.981  INFO 20632 --- [Quartz Scheduler [schedulerFactoryBean]] o.s.s.quartz.SchedulerFactoryBean        : Starting Quartz Scheduler now, after delay of 30 seconds
+2024-12-24 22:14:31.981  INFO 20632 --- [Quartz Scheduler [schedulerFactoryBean]] org.quartz.core.QuartzScheduler          : Scheduler schedulerFactoryBean_$_NON_CLUSTERED started.
+2024-12-24 22:22:29.650  INFO 20632 --- [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 2 class path changes (0 additions, 0 deletions, 2 modifications)
+2024-12-24 22:22:29.652  INFO 20632 --- [Thread-8] org.quartz.core.QuartzScheduler          : Scheduler schedulerFactoryBean_$_NON_CLUSTERED paused.
+2024-12-24 22:22:29.659  INFO 20632 --- [Thread-8] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2024-12-24 22:22:29.661  INFO 20632 --- [Thread-8] org.quartz.core.QuartzScheduler          : Scheduler schedulerFactoryBean_$_NON_CLUSTERED shutting down.
+2024-12-24 22:22:29.661  INFO 20632 --- [Thread-8] org.quartz.core.QuartzScheduler          : Scheduler schedulerFactoryBean_$_NON_CLUSTERED paused.
+2024-12-24 22:22:29.661  INFO 20632 --- [Thread-8] org.quartz.core.QuartzScheduler          : Scheduler schedulerFactoryBean_$_NON_CLUSTERED shutdown complete.
+2024-12-24 22:22:29.661  INFO 20632 --- [Thread-8] o.s.s.quartz.SchedulerFactoryBean        : Shutting down Quartz Scheduler
+2024-12-24 22:22:29.664  INFO 20632 --- [Thread-8] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2024-12-24 22:22:29.665  INFO 20632 --- [Thread-8] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
+2024-12-24 22:22:29.710  INFO 20632 --- [restartedMain] com.adplatform.AdPlatformApplication     : Starting AdPlatformApplication using Java 17.0.12 on sya with PID 20632 (D:\Project\School\work\JAVA WEB\ads\target\classes started by 31174 in D:\Project\School\work\JAVA WEB\ads)
+2024-12-24 22:22:29.710 DEBUG 20632 --- [restartedMain] com.adplatform.AdPlatformApplication     : Running with Spring Boot v2.7.5, Spring v5.3.23
+2024-12-24 22:22:29.710  INFO 20632 --- [restartedMain] com.adplatform.AdPlatformApplication     : No active profile set, falling back to 1 default profile: "default"
+2024-12-24 22:22:29.846  INFO 20632 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2024-12-24 22:22:29.846  INFO 20632 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2024-12-24 22:22:29.850  INFO 20632 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 4 ms. Found 0 Redis repository interfaces.
+2024-12-24 22:22:29.919  INFO 20632 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8181 (http)
+2024-12-24 22:22:29.919  INFO 20632 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-12-24 22:22:29.919  INFO 20632 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.68]
+2024-12-24 22:22:29.929  INFO 20632 --- [restartedMain] o.a.c.c.C.[Tomcat-1].[localhost].[/api]  : Initializing Spring embedded WebApplicationContext
+2024-12-24 22:22:29.929  INFO 20632 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 218 ms
+2024-12-24 22:22:29.986 DEBUG 20632 --- [restartedMain] c.a.m.u.s.JwtAuthenticationFilter        : Filter 'jwtAuthenticationFilter' configured for use
+2024-12-24 22:22:30.225  INFO 20632 --- [restartedMain] pertySourcedRequestMappingHandlerMapping : Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2024-12-24 22:22:30.235  INFO 20632 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2024-12-24 22:22:30.243  INFO 20632 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2024-12-24 22:22:30.857  INFO 20632 --- [restartedMain] org.quartz.impl.StdSchedulerFactory      : Using default implementation for ThreadExecutor
+2024-12-24 22:22:30.858  INFO 20632 --- [restartedMain] org.quartz.core.SchedulerSignalerImpl    : Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+2024-12-24 22:22:30.858  INFO 20632 --- [restartedMain] org.quartz.core.QuartzScheduler          : Quartz Scheduler v.2.3.2 created.
+2024-12-24 22:22:30.858  INFO 20632 --- [restartedMain] org.quartz.simpl.RAMJobStore             : RAMJobStore initialized.
+2024-12-24 22:22:30.858  INFO 20632 --- [restartedMain] org.quartz.core.QuartzScheduler          : Scheduler meta-data: Quartz Scheduler (v2.3.2) 'schedulerFactoryBean' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+2024-12-24 22:22:30.858  INFO 20632 --- [restartedMain] org.quartz.impl.StdSchedulerFactory      : Quartz scheduler 'schedulerFactoryBean' initialized from an externally provided properties instance.
+2024-12-24 22:22:30.858  INFO 20632 --- [restartedMain] org.quartz.impl.StdSchedulerFactory      : Quartz scheduler version: 2.3.2
+2024-12-24 22:22:30.858  INFO 20632 --- [restartedMain] org.quartz.core.QuartzScheduler          : JobFactory set to: org.springframework.scheduling.quartz.SpringBeanJobFactory@22a6e07c
+2024-12-24 22:22:30.866  WARN 20632 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:22:30.866  INFO 20632 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/']
+2024-12-24 22:22:30.866  WARN 20632 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/*.html']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:22:30.866  INFO 20632 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/*.html']
+2024-12-24 22:22:30.866  WARN 20632 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/css/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:22:30.866  INFO 20632 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/css/**']
+2024-12-24 22:22:30.866  WARN 20632 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/js/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:22:30.866  INFO 20632 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/js/**']
+2024-12-24 22:22:30.866  WARN 20632 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/img/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:22:30.866  INFO 20632 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/img/**']
+2024-12-24 22:22:30.866  WARN 20632 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/fonts/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:22:30.866  INFO 20632 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/fonts/**']
+2024-12-24 22:22:30.866  WARN 20632 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/favicon.ico']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:22:30.866  INFO 20632 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/favicon.ico']
+2024-12-24 22:22:30.866  WARN 20632 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/material/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:22:30.866  INFO 20632 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/material/**']
+2024-12-24 22:22:30.866  WARN 20632 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/site/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:22:30.866  INFO 20632 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/site/**']
+2024-12-24 22:22:30.866  WARN 20632 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/admin/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:22:30.866  INFO 20632 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/admin/**']
+2024-12-24 22:22:30.866  WARN 20632 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/advertiser/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:22:30.866  INFO 20632 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/advertiser/**']
+2024-12-24 22:22:30.866  WARN 20632 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/publisher/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:22:30.866  INFO 20632 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/publisher/**']
+2024-12-24 22:22:30.872  INFO 20632 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7017506b, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@288d896, org.springframework.security.web.context.SecurityContextPersistenceFilter@3196b61e, org.springframework.security.web.header.HeaderWriterFilter@3bb26596, org.springframework.web.filter.CorsFilter@29697152, org.springframework.security.web.authentication.logout.LogoutFilter@432f3bfa, com.adplatform.module.user.security.JwtAuthenticationFilter@41d90fa7, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1636959b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3e80cc1e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4fd59ad1, org.springframework.security.web.session.SessionManagementFilter@6be61107, org.springframework.security.web.access.ExceptionTranslationFilter@3b538a95, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@157e748a]
+2024-12-24 22:22:30.897  INFO 20632 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-12-24 22:22:30.901  INFO 20632 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2024-12-24 22:22:30.972  INFO 20632 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8181 (http) with context path '/api'
+2024-12-24 22:22:30.972  INFO 20632 --- [restartedMain] d.s.w.p.DocumentationPluginsBootstrapper : Context refreshed
+2024-12-24 22:22:30.972  INFO 20632 --- [restartedMain] d.s.w.p.DocumentationPluginsBootstrapper : Found 1 custom documentation plugin(s)
+2024-12-24 22:22:30.977  INFO 20632 --- [restartedMain] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+2024-12-24 22:22:31.009  INFO 20632 --- [restartedMain] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: deleteUsingDELETE_1
+2024-12-24 22:22:31.010  INFO 20632 --- [restartedMain] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: getByIdUsingGET_1
+2024-12-24 22:22:31.025  INFO 20632 --- [restartedMain] o.s.s.quartz.SchedulerFactoryBean        : Will start Quartz Scheduler [schedulerFactoryBean] in 30 seconds
+2024-12-24 22:22:31.027  INFO 20632 --- [restartedMain] com.adplatform.AdPlatformApplication     : Started AdPlatformApplication in 1.333 seconds (JVM running for 760.071)
+2024-12-24 22:22:31.028  INFO 20632 --- [restartedMain] c.a.module.user.config.AdminInitializer  : 开始初始化管理员账号...
+2024-12-24 22:22:31.035  INFO 20632 --- [restartedMain] c.a.m.user.service.AdminInitService      : 管理员账号已存在，无需初始化
+2024-12-24 22:22:31.035  INFO 20632 --- [restartedMain] c.a.module.user.config.AdminInitializer  : 管理员账号初始化完成
+2024-12-24 22:22:31.036  INFO 20632 --- [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2024-12-24 22:23:01.037  INFO 20632 --- [Quartz Scheduler [schedulerFactoryBean]] o.s.s.quartz.SchedulerFactoryBean        : Starting Quartz Scheduler now, after delay of 30 seconds
+2024-12-24 22:23:01.037  INFO 20632 --- [Quartz Scheduler [schedulerFactoryBean]] org.quartz.core.QuartzScheduler          : Scheduler schedulerFactoryBean_$_NON_CLUSTERED started.
+2024-12-24 22:31:12.197  INFO 20632 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler schedulerFactoryBean_$_NON_CLUSTERED paused.
+2024-12-24 22:31:12.205  INFO 20632 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler schedulerFactoryBean_$_NON_CLUSTERED shutting down.
+2024-12-24 22:31:12.206  INFO 20632 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler schedulerFactoryBean_$_NON_CLUSTERED paused.
+2024-12-24 22:31:12.206  INFO 20632 --- [SpringApplicationShutdownHook] org.quartz.core.QuartzScheduler          : Scheduler schedulerFactoryBean_$_NON_CLUSTERED shutdown complete.
+2024-12-24 22:31:12.206  INFO 20632 --- [SpringApplicationShutdownHook] o.s.s.quartz.SchedulerFactoryBean        : Shutting down Quartz Scheduler
+2024-12-24 22:31:12.209  INFO 20632 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
+2024-12-24 22:31:12.216  INFO 20632 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
+2024-12-24 22:33:25.138  INFO 5232 --- [restartedMain] com.adplatform.AdPlatformApplication     : Starting AdPlatformApplication using Java 17.0.12 on sya with PID 5232 (D:\Project\School\work\JAVA WEB\ads\target\classes started by 31174 in D:\Project\School\work\JAVA WEB\ads)
+2024-12-24 22:33:25.138 DEBUG 5232 --- [restartedMain] com.adplatform.AdPlatformApplication     : Running with Spring Boot v2.7.5, Spring v5.3.23
+2024-12-24 22:33:25.139  INFO 5232 --- [restartedMain] com.adplatform.AdPlatformApplication     : No active profile set, falling back to 1 default profile: "default"
+2024-12-24 22:33:25.170  INFO 5232 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-12-24 22:33:25.170  INFO 5232 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-12-24 22:33:25.689  INFO 5232 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2024-12-24 22:33:25.691  INFO 5232 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2024-12-24 22:33:25.709  INFO 5232 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 9 ms. Found 0 Redis repository interfaces.
+2024-12-24 22:33:26.147  INFO 5232 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8181 (http)
+2024-12-24 22:33:26.153  INFO 5232 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-12-24 22:33:26.154  INFO 5232 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.68]
+2024-12-24 22:33:26.206  INFO 5232 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/api]    : Initializing Spring embedded WebApplicationContext
+2024-12-24 22:33:26.207  INFO 5232 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1037 ms
+2024-12-24 22:33:26.436 DEBUG 5232 --- [restartedMain] c.a.m.u.s.JwtAuthenticationFilter        : Filter 'jwtAuthenticationFilter' configured for use
+2024-12-24 22:33:26.900  WARN 5232 --- [restartedMain] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'adDisplayPageServiceImpl': Injection of autowired dependencies failed; nested exception is java.lang.IllegalArgumentException: Could not resolve placeholder 'ad.proxy.url' in value "${ad.proxy.url}"
+2024-12-24 22:33:26.910  INFO 5232 --- [restartedMain] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2024-12-24 22:33:26.918  INFO 5232 --- [restartedMain] ConditionEvaluationReportLoggingListener : 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2024-12-24 22:33:26.931 ERROR 5232 --- [restartedMain] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'adDisplayPageServiceImpl': Injection of autowired dependencies failed; nested exception is java.lang.IllegalArgumentException: Could not resolve placeholder 'ad.proxy.url' in value "${ad.proxy.url}"
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:405) ~[spring-beans-5.3.23.jar:5.3.23]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1431) ~[spring-beans-5.3.23.jar:5.3.23]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619) ~[spring-beans-5.3.23.jar:5.3.23]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.23.jar:5.3.23]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.23.jar:5.3.23]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.23.jar:5.3.23]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.23.jar:5.3.23]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.23.jar:5.3.23]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:955) ~[spring-beans-5.3.23.jar:5.3.23]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:918) ~[spring-context-5.3.23.jar:5.3.23]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583) ~[spring-context-5.3.23.jar:5.3.23]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147) ~[spring-boot-2.7.5.jar:2.7.5]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:734) ~[spring-boot-2.7.5.jar:2.7.5]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408) ~[spring-boot-2.7.5.jar:2.7.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:308) ~[spring-boot-2.7.5.jar:2.7.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1306) ~[spring-boot-2.7.5.jar:2.7.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1295) ~[spring-boot-2.7.5.jar:2.7.5]
+	at com.adplatform.AdPlatformApplication.main(AdPlatformApplication.java:20) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:49) ~[spring-boot-devtools-2.7.5.jar:2.7.5]
+Caused by: java.lang.IllegalArgumentException: Could not resolve placeholder 'ad.proxy.url' in value "${ad.proxy.url}"
+	at org.springframework.util.PropertyPlaceholderHelper.parseStringValue(PropertyPlaceholderHelper.java:180) ~[spring-core-5.3.23.jar:5.3.23]
+	at org.springframework.util.PropertyPlaceholderHelper.replacePlaceholders(PropertyPlaceholderHelper.java:126) ~[spring-core-5.3.23.jar:5.3.23]
+	at org.springframework.core.env.AbstractPropertyResolver.doResolvePlaceholders(AbstractPropertyResolver.java:239) ~[spring-core-5.3.23.jar:5.3.23]
+	at org.springframework.core.env.AbstractPropertyResolver.resolveRequiredPlaceholders(AbstractPropertyResolver.java:210) ~[spring-core-5.3.23.jar:5.3.23]
+	at org.springframework.context.support.PropertySourcesPlaceholderConfigurer.lambda$processProperties$0(PropertySourcesPlaceholderConfigurer.java:191) ~[spring-context-5.3.23.jar:5.3.23]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.resolveEmbeddedValue(AbstractBeanFactory.java:936) ~[spring-beans-5.3.23.jar:5.3.23]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1332) ~[spring-beans-5.3.23.jar:5.3.23]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1311) ~[spring-beans-5.3.23.jar:5.3.23]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:656) ~[spring-beans-5.3.23.jar:5.3.23]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:639) ~[spring-beans-5.3.23.jar:5.3.23]
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:119) ~[spring-beans-5.3.23.jar:5.3.23]
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:399) ~[spring-beans-5.3.23.jar:5.3.23]
+	... 22 common frames omitted
+
+2024-12-24 22:41:39.677  INFO 16888 --- [restartedMain] com.adplatform.AdPlatformApplication     : Starting AdPlatformApplication using Java 17.0.12 on sya with PID 16888 (D:\Project\School\work\JAVA WEB\ads\target\classes started by 31174 in D:\Project\School\work\JAVA WEB\ads)
+2024-12-24 22:41:39.678 DEBUG 16888 --- [restartedMain] com.adplatform.AdPlatformApplication     : Running with Spring Boot v2.7.5, Spring v5.3.23
+2024-12-24 22:41:39.678  INFO 16888 --- [restartedMain] com.adplatform.AdPlatformApplication     : The following 1 profile is active: "dev"
+2024-12-24 22:41:39.705  INFO 16888 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-12-24 22:41:39.705  INFO 16888 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-12-24 22:41:40.201  INFO 16888 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2024-12-24 22:41:40.202  INFO 16888 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2024-12-24 22:41:40.218  INFO 16888 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 8 ms. Found 0 Redis repository interfaces.
+2024-12-24 22:41:40.637  INFO 16888 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8181 (http)
+2024-12-24 22:41:40.643  INFO 16888 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2024-12-24 22:41:40.644  INFO 16888 --- [restartedMain] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.68]
+2024-12-24 22:41:40.696  INFO 16888 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/api]    : Initializing Spring embedded WebApplicationContext
+2024-12-24 22:41:40.696  INFO 16888 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 990 ms
+2024-12-24 22:41:40.920 DEBUG 16888 --- [restartedMain] c.a.m.u.s.JwtAuthenticationFilter        : Filter 'jwtAuthenticationFilter' configured for use
+2024-12-24 22:41:41.679  INFO 16888 --- [restartedMain] pertySourcedRequestMappingHandlerMapping : Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2024-12-24 22:41:41.706  INFO 16888 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2024-12-24 22:41:41.844  INFO 16888 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2024-12-24 22:41:42.426  INFO 16888 --- [restartedMain] org.quartz.impl.StdSchedulerFactory      : Using default implementation for ThreadExecutor
+2024-12-24 22:41:42.432  INFO 16888 --- [restartedMain] org.quartz.core.SchedulerSignalerImpl    : Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+2024-12-24 22:41:42.432  INFO 16888 --- [restartedMain] org.quartz.core.QuartzScheduler          : Quartz Scheduler v.2.3.2 created.
+2024-12-24 22:41:42.432  INFO 16888 --- [restartedMain] org.quartz.simpl.RAMJobStore             : RAMJobStore initialized.
+2024-12-24 22:41:42.432  INFO 16888 --- [restartedMain] org.quartz.core.QuartzScheduler          : Scheduler meta-data: Quartz Scheduler (v2.3.2) 'schedulerFactoryBean' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+2024-12-24 22:41:42.432  INFO 16888 --- [restartedMain] org.quartz.impl.StdSchedulerFactory      : Quartz scheduler 'schedulerFactoryBean' initialized from an externally provided properties instance.
+2024-12-24 22:41:42.433  INFO 16888 --- [restartedMain] org.quartz.impl.StdSchedulerFactory      : Quartz scheduler version: 2.3.2
+2024-12-24 22:41:42.433  INFO 16888 --- [restartedMain] org.quartz.core.QuartzScheduler          : JobFactory set to: org.springframework.scheduling.quartz.SpringBeanJobFactory@298e3e4d
+2024-12-24 22:41:42.474  WARN 16888 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:41:42.475  INFO 16888 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/']
+2024-12-24 22:41:42.475  WARN 16888 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/*.html']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:41:42.475  INFO 16888 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/*.html']
+2024-12-24 22:41:42.475  WARN 16888 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/css/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:41:42.475  INFO 16888 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/css/**']
+2024-12-24 22:41:42.475  WARN 16888 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/js/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:41:42.475  INFO 16888 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/js/**']
+2024-12-24 22:41:42.475  WARN 16888 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/img/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:41:42.475  INFO 16888 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/img/**']
+2024-12-24 22:41:42.475  WARN 16888 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/fonts/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:41:42.476  INFO 16888 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/fonts/**']
+2024-12-24 22:41:42.476  WARN 16888 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/favicon.ico']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:41:42.476  INFO 16888 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/favicon.ico']
+2024-12-24 22:41:42.476  WARN 16888 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/material/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:41:42.476  INFO 16888 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/material/**']
+2024-12-24 22:41:42.476  WARN 16888 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/site/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:41:42.476  INFO 16888 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/site/**']
+2024-12-24 22:41:42.476  WARN 16888 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/admin/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:41:42.476  INFO 16888 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/admin/**']
+2024-12-24 22:41:42.476  WARN 16888 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/advertiser/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:41:42.476  INFO 16888 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/advertiser/**']
+2024-12-24 22:41:42.476  WARN 16888 --- [restartedMain] o.s.s.c.a.web.builders.WebSecurity       : You are asking Spring Security to ignore Ant [pattern='/publisher/**']. This is not recommended -- please use permitAll via HttpSecurity#authorizeHttpRequests instead.
+2024-12-24 22:41:42.476  INFO 16888 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will not secure Ant [pattern='/publisher/**']
+2024-12-24 22:41:42.491  INFO 16888 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1e135a6b, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@14e74720, org.springframework.security.web.context.SecurityContextPersistenceFilter@2f400a36, org.springframework.security.web.header.HeaderWriterFilter@bc9f0e2, org.springframework.web.filter.CorsFilter@6bbdd55c, org.springframework.security.web.authentication.logout.LogoutFilter@218cf23, com.adplatform.module.user.security.JwtAuthenticationFilter@2873baca, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4f697dce, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@da728c4, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6229a72, org.springframework.security.web.session.SessionManagementFilter@4c329f6a, org.springframework.security.web.access.ExceptionTranslationFilter@334d9a69, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@60ce3739]
+2024-12-24 22:41:42.547  INFO 16888 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2024-12-24 22:41:42.565  INFO 16888 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2024-12-24 22:41:42.761  INFO 16888 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8181 (http) with context path '/api'
+2024-12-24 22:41:42.761  INFO 16888 --- [restartedMain] d.s.w.p.DocumentationPluginsBootstrapper : Context refreshed
+2024-12-24 22:41:42.770  INFO 16888 --- [restartedMain] d.s.w.p.DocumentationPluginsBootstrapper : Found 1 custom documentation plugin(s)
+2024-12-24 22:41:42.800  INFO 16888 --- [restartedMain] s.d.s.w.s.ApiListingReferenceScanner     : Scanning for api listing references
+2024-12-24 22:41:42.922  INFO 16888 --- [restartedMain] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: deleteUsingDELETE_1
+2024-12-24 22:41:42.924  INFO 16888 --- [restartedMain] .d.s.w.r.o.CachingOperationNameGenerator : Generating unique operation named: getByIdUsingGET_1
+2024-12-24 22:41:42.954  INFO 16888 --- [restartedMain] o.s.s.quartz.SchedulerFactoryBean        : Will start Quartz Scheduler [schedulerFactoryBean] in 30 seconds
+2024-12-24 22:41:42.961  INFO 16888 --- [restartedMain] com.adplatform.AdPlatformApplication     : Started AdPlatformApplication in 3.515 seconds (JVM running for 3.862)
+2024-12-24 22:41:42.963  INFO 16888 --- [restartedMain] c.a.module.user.config.AdminInitializer  : 开始初始化管理员账号...
+2024-12-24 22:41:42.996  WARN 16888 --- [restartedMain] c.b.m.c.t.support.ReflectLambdaMeta      : Unable to make field private final java.lang.Class java.lang.invoke.SerializedLambda.capturingClass accessible: module java.base does not "opens java.lang.invoke" to unnamed module @4218d6a3
+2024-12-24 22:41:43.037  INFO 16888 --- [restartedMain] c.a.m.user.service.AdminInitService      : 管理员账号已存在，无需初始化
+2024-12-24 22:41:43.038  INFO 16888 --- [restartedMain] c.a.module.user.config.AdminInitializer  : 管理员账号初始化完成
+2024-12-24 22:41:55.349  INFO 16888 --- [http-nio-8181-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/api]    : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-12-24 22:41:55.349  INFO 16888 --- [http-nio-8181-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2024-12-24 22:41:55.350  INFO 16888 --- [http-nio-8181-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2024-12-24 22:41:55.413  INFO 16888 --- [http-nio-8181-exec-1] c.a.m.u.security.UserDetailsServiceImpl  : 开始加载用户详情，用户名: 2235061017
+2024-12-24 22:41:55.417  INFO 16888 --- [http-nio-8181-exec-1] c.a.m.u.security.UserDetailsServiceImpl  : 用户详情加载成功，用户ID: 66
+2024-12-24 22:41:55.444  INFO 16888 --- [http-nio-8181-exec-1] c.a.m.user.controller.UserController     : 接收到获取当前用户信息请求，用户ID: 66
+2024-12-24 22:41:55.452  INFO 16888 --- [http-nio-8181-exec-1] c.a.m.user.service.impl.UserServiceImpl  : 开始获取用户信息，用户ID: 66
+2024-12-24 22:41:55.462  INFO 16888 --- [http-nio-8181-exec-1] c.a.m.user.service.impl.UserServiceImpl  : 获取用户信息成功，用户ID: 66
+2024-12-24 22:41:55.462  INFO 16888 --- [http-nio-8181-exec-1] c.a.m.user.controller.UserController     : 获取当前用户信息成功，用户ID: 66
+2024-12-24 22:41:57.468  INFO 16888 --- [http-nio-8181-exec-3] c.a.m.u.security.UserDetailsServiceImpl  : 开始加载用户详情，用户名: 2235061017
+2024-12-24 22:41:57.470  INFO 16888 --- [http-nio-8181-exec-3] c.a.m.u.security.UserDetailsServiceImpl  : 用户详情加载成功，用户ID: 66
+2024-12-24 22:41:57.472  INFO 16888 --- [http-nio-8181-exec-3] c.a.m.user.controller.UserController     : 接收到获取当前用户信息请求，用户ID: 66
+2024-12-24 22:41:57.472  INFO 16888 --- [http-nio-8181-exec-3] c.a.m.user.service.impl.UserServiceImpl  : 开始获取用户信息，用户ID: 66
+2024-12-24 22:41:57.473  INFO 16888 --- [http-nio-8181-exec-3] c.a.m.user.service.impl.UserServiceImpl  : 获取用户信息成功，用户ID: 66
+2024-12-24 22:41:57.473  INFO 16888 --- [http-nio-8181-exec-3] c.a.m.user.controller.UserController     : 获取当前用户信息成功，用户ID: 66
+2024-12-24 22:41:57.479  INFO 16888 --- [http-nio-8181-exec-4] c.a.m.u.security.UserDetailsServiceImpl  : 开始加载用户详情，用户名: 2235061017
+2024-12-24 22:41:57.481  INFO 16888 --- [http-nio-8181-exec-4] c.a.m.u.security.UserDetailsServiceImpl  : 用户详情加载成功，用户ID: 66
+2024-12-24 22:41:57.511  INFO 16888 --- [http-nio-8181-exec-2] c.a.m.u.security.UserDetailsServiceImpl  : 开始加载用户详情，用户名: 2235061017
+2024-12-24 22:41:57.513  INFO 16888 --- [http-nio-8181-exec-2] c.a.m.u.security.UserDetailsServiceImpl  : 用户详情加载成功，用户ID: 66
+2024-12-24 22:42:10.703  INFO 16888 --- [http-nio-8181-exec-5] c.a.m.u.security.UserDetailsServiceImpl  : 开始加载用户详情，用户名: 2235061017
+2024-12-24 22:42:10.704  INFO 16888 --- [http-nio-8181-exec-5] c.a.m.u.security.UserDetailsServiceImpl  : 用户详情加载成功，用户ID: 66
+2024-12-24 22:42:10.727  INFO 16888 --- [http-nio-8181-exec-5] c.a.m.d.s.impl.AdDisplayPageServiceImpl  : 开始创建广告展示页面，广告位ID: 8
+2024-12-24 22:42:10.849  INFO 16888 --- [http-nio-8181-exec-5] c.a.m.d.s.impl.AdDisplayPageServiceImpl  : 生成HTML内容完成
+2024-12-24 22:42:10.849  INFO 16888 --- [http-nio-8181-exec-5] c.a.m.d.s.impl.AdDisplayPageServiceImpl  : 生成文件名: display_page_8_20241224_224210_prod_9e366e.html
+2024-12-24 22:42:11.119  INFO 16888 --- [http-nio-8181-exec-5] c.a.m.d.s.impl.AdDisplayPageServiceImpl  : 上传到OSS成功，URL: https://web-andrew.oss-cn-shanghai.aliyuncs.com/ad/display/2024/12/24/display_page_8_20241224_224210_prod_9e366e.html
+2024-12-24 22:42:11.122  INFO 16888 --- [http-nio-8181-exec-5] c.a.m.d.s.impl.AdDisplayPageServiceImpl  : 保存展示页面成功，页面ID: 3
+2024-12-24 22:42:11.143  INFO 16888 --- [http-nio-8181-exec-6] c.a.m.u.security.UserDetailsServiceImpl  : 开始加载用户详情，用户名: 2235061017
+2024-12-24 22:42:11.146  INFO 16888 --- [http-nio-8181-exec-6] c.a.m.u.security.UserDetailsServiceImpl  : 用户详情加载成功，用户ID: 66
+2024-12-24 22:42:12.964  INFO 16888 --- [Quartz Scheduler [schedulerFactoryBean]] o.s.s.quartz.SchedulerFactoryBean        : Starting Quartz Scheduler now, after delay of 30 seconds
+2024-12-24 22:42:12.965  INFO 16888 --- [Quartz Scheduler [schedulerFactoryBean]] org.quartz.core.QuartzScheduler          : Scheduler schedulerFactoryBean_$_NON_CLUSTERED started.
+2024-12-24 22:49:26.671  INFO 16888 --- [http-nio-8181-exec-7] c.a.m.u.security.UserDetailsServiceImpl  : 开始加载用户详情，用户名: 2235061017
+2024-12-24 22:49:26.676  INFO 16888 --- [http-nio-8181-exec-7] c.a.m.u.security.UserDetailsServiceImpl  : 用户详情加载成功，用户ID: 66
+2024-12-24 22:49:26.676  INFO 16888 --- [http-nio-8181-exec-7] c.a.m.user.controller.UserController     : 接收到获取当前用户信息请求，用户ID: 66
+2024-12-24 22:49:26.677  INFO 16888 --- [http-nio-8181-exec-7] c.a.m.user.service.impl.UserServiceImpl  : 开始获取用户信息，用户ID: 66
+2024-12-24 22:49:26.679  INFO 16888 --- [http-nio-8181-exec-7] c.a.m.user.service.impl.UserServiceImpl  : 获取用户信息成功，用户ID: 66
+2024-12-24 22:49:26.679  INFO 16888 --- [http-nio-8181-exec-7] c.a.m.user.controller.UserController     : 获取当前用户信息成功，用户ID: 66
+2024-12-24 22:49:28.877  INFO 16888 --- [http-nio-8181-exec-8] c.a.m.u.security.UserDetailsServiceImpl  : 开始加载用户详情，用户名: 2235061017
+2024-12-24 22:49:28.887  INFO 16888 --- [http-nio-8181-exec-8] c.a.m.u.security.UserDetailsServiceImpl  : 用户详情加载成功，用户ID: 66
+2024-12-24 22:49:28.888  INFO 16888 --- [http-nio-8181-exec-8] c.a.m.user.controller.UserController     : 接收到获取当前用户信息请求，用户ID: 66
+2024-12-24 22:49:28.888  INFO 16888 --- [http-nio-8181-exec-8] c.a.m.user.service.impl.UserServiceImpl  : 开始获取用户信息，用户ID: 66
+2024-12-24 22:49:28.890  INFO 16888 --- [http-nio-8181-exec-8] c.a.m.user.service.impl.UserServiceImpl  : 获取用户信息成功，用户ID: 66
+2024-12-24 22:49:28.890  INFO 16888 --- [http-nio-8181-exec-8] c.a.m.user.controller.UserController     : 获取当前用户信息成功，用户ID: 66
+2024-12-24 22:49:28.907  INFO 16888 --- [http-nio-8181-exec-10] c.a.m.u.security.UserDetailsServiceImpl  : 开始加载用户详情，用户名: 2235061017
+2024-12-24 22:49:28.909  INFO 16888 --- [http-nio-8181-exec-10] c.a.m.u.security.UserDetailsServiceImpl  : 用户详情加载成功，用户ID: 66
+2024-12-24 22:49:28.932  INFO 16888 --- [http-nio-8181-exec-9] c.a.m.u.security.UserDetailsServiceImpl  : 开始加载用户详情，用户名: 2235061017
+2024-12-24 22:49:28.939  INFO 16888 --- [http-nio-8181-exec-9] c.a.m.u.security.UserDetailsServiceImpl  : 用户详情加载成功，用户ID: 66
+2024-12-24 22:49:40.002  INFO 16888 --- [http-nio-8181-exec-1] c.a.m.u.security.UserDetailsServiceImpl  : 开始加载用户详情，用户名: 2235061017
+2024-12-24 22:49:40.009  INFO 16888 --- [http-nio-8181-exec-1] c.a.m.u.security.UserDetailsServiceImpl  : 用户详情加载成功，用户ID: 66
+2024-12-24 22:49:40.016  INFO 16888 --- [http-nio-8181-exec-1] c.a.m.d.s.impl.AdDisplayPageServiceImpl  : 开始创建广告展示页面，广告位ID: 9
+2024-12-24 22:49:40.042  INFO 16888 --- [http-nio-8181-exec-1] c.a.m.d.s.impl.AdDisplayPageServiceImpl  : 生成HTML内容完成
+2024-12-24 22:49:40.043  INFO 16888 --- [http-nio-8181-exec-1] c.a.m.d.s.impl.AdDisplayPageServiceImpl  : 生成文件名: display_page_9_20241224_224940_prod_b8ad2e.html
+2024-12-24 22:49:40.203  INFO 16888 --- [http-nio-8181-exec-1] c.a.m.d.s.impl.AdDisplayPageServiceImpl  : 上传到OSS成功，URL: https://web-andrew.oss-cn-shanghai.aliyuncs.com/ad/display/2024/12/24/display_page_9_20241224_224940_prod_b8ad2e.html
+2024-12-24 22:49:40.205  INFO 16888 --- [http-nio-8181-exec-1] c.a.m.d.s.impl.AdDisplayPageServiceImpl  : 保存展示页面成功，页面ID: 4
+2024-12-24 22:49:40.242  INFO 16888 --- [http-nio-8181-exec-3] c.a.m.u.security.UserDetailsServiceImpl  : 开始加载用户详情，用户名: 2235061017
+2024-12-24 22:49:40.247  INFO 16888 --- [http-nio-8181-exec-3] c.a.m.u.security.UserDetailsServiceImpl  : 用户详情加载成功，用户ID: 66

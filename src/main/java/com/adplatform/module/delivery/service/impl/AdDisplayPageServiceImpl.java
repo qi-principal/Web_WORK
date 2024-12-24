@@ -7,6 +7,7 @@ import com.adplatform.module.delivery.service.AdDisplayPageService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
@@ -29,6 +30,9 @@ public class AdDisplayPageServiceImpl implements AdDisplayPageService {
 
     private static final String TEMPLATE_NAME = "ad_display";
     private static final String OSS_DIR = "ad/display";
+
+    @Value("${ad.proxy.url:/public/ad-proxy}")
+    private String proxyUrl;
 
     private final AdDisplayPageMapper displayPageMapper;
     private final OssService ossService;
@@ -103,6 +107,7 @@ public class AdDisplayPageServiceImpl implements AdDisplayPageService {
             // 创建模板上下文
             Context context = new Context();
             context.setVariable("adSpaceId", adSpaceId);
+            context.setVariable("proxyUrl", proxyUrl);
             
             // 使用模板引擎处理模板
             String content = templateEngine.process(TEMPLATE_NAME, context);
