@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Newsletter</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header">
+            <div class="header-container">
+                <h1 class="logo">NEWSLETTER</h1>
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="搜索新闻...">
+                    <button onclick="searchNews()">搜索</button>
+                </div>
+            </div>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="#" class="active">首页</a></li>
+                <li><a href="politics.html">政治</a></li>
+                <li><a href="economy.html">经济</a></li>
+                <li><a href="law.html">法制</a></li>
+                <li><a href="entertainment.html">文娱</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="featured">
+            <div class="carousel">
+                <div class="carousel-images">
+                    <img src="https://p3.img.cctvpic.com/photoAlbum/page/performance/img/2024/11/28/1732749612228_566.jpg" alt="Featured Story 1" class="active">
+                    <img src="https://p1.img.cctvpic.com/photoAlbum/page/performance/img/2024/11/28/1732752139960_168.jpg" alt="Featured Story 2">
+                    <img src="https://p2.img.cctvpic.com/photoAlbum/page/performance/img/2024/11/28/1732753090058_842.jpg" alt="Featured Story 3">
+                    <img src="https://p2.img.cctvpic.com/photoworkspace/2024/11/24/2024112417091768530.jpg" alt="Featured Story 4">
+                </div>
+            </div>
+        </section>
+
+        <section class="latest-news">
+            <div class="latest-news-header">
+                <h2>Latest News</h2>
+                <hr class="divider">
+            </div>
+            <div class="news-grid" id="newsContainer">
+                <!-- 新闻卡片将通过 JavaScript 动态插入 -->
+            </div>
+        </section>
+
+        <aside class="trending">
+            <div class="trending-header">
+                <h3>Trending Headlines</h3>
+                <button class="view-all">View All</button>
+            </div>
+            <hr class="divider">
+            <div class="trending-list" id="trendingContainer">
+                <!-- 热门新闻将通过 JavaScript 动态插入 -->
+            </div>
+        </aside>
+    </main>
+
+    <footer>
+        <div class="footer-logo">新闻快讯</div>
+        <div class="footer-links">
+            <a href="#">隐私政策</a>
+            <a href="#">服务条款</a>
+            <a href="#">版权政策</a>
+            <a href="#">网站地图</a>
+            <a href="#">无障碍访问</a>
+            <a href="#">帮助中心</a>
+        </div>
+    </footer>
+
+    <button id="refreshBtn" class="refresh-button">
+        <i class="refresh-icon">↻</i>
+    </button>
+
+    <script>
+        // 轮播图功能
+        let currentIndex = 0;
+        const items = document.querySelectorAll('.carousel-images img');
+        const totalItems = items.length;
+
+        function showNextItem() {
+            items[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + 1) % totalItems;
+            items[currentIndex].classList.add('active');
+        }
+
+        setInterval(showNextItem, 1500);
+
+        // 搜索功能
+        function searchNews() {
+            const keyword = document.getElementById('searchInput').value;
+            if (keyword.trim()) {
+                window.location.href = `result.html?keyword=${encodeURIComponent(keyword)}`;
+            }
+        }
+
+        // 监听回车键
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchNews();
+            }
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html> 
