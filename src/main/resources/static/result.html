@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>搜索结果 - Newsletter</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header">
+            <div class="header-container">
+                <h1 class="logo">NEWSLETTER</h1>
+                <div class="search-bar">
+                    <input type="text" id="searchInput" placeholder="搜索新闻...">
+                    <button onclick="searchNews()">搜索</button>
+                </div>
+            </div>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">返回首页</a></li>
+                <li><a href="politics.html">政治</a></li>
+                <li><a href="economy.html">经济</a></li>
+                <li><a href="law.html">法制</a></li>
+                <li><a href="entertainment.html">文娱</a></li>
+            </ul>
+        </nav>
+    </header>
+
+        <section class="news-content">
+            <div class="news-header"></div>
+                <h2>搜索结果</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="politicsNewsContainer" id="searchResultContainer">
+                <!-- 搜索结果将通过JavaScript动态插入 -->
+            </div>
+        </section>
+
+    <footer>
+        <div class="footer-logo">新闻快讯</div>
+        <div class="footer-links">
+            <a href="#">隐私政策</a>
+            <a href="#">服务条款</a>
+            <a href="#">版权政策</a>
+            <a href="#">网站地图</a>
+            <a href="#">无障碍访问</a>
+            <a href="#">帮助中心</a>
+        </div>
+    </footer>
+
+    <script>
+        // 获取URL参数中的关键字
+        const urlParams = new URLSearchParams(window.location.search);
+        const keyword = urlParams.get('keyword');
+        
+        // 页面加载时自动获取搜索结果
+        window.onload = function() {
+            if (keyword) {
+                document.getElementById('searchInput').value = keyword;
+                fetchSearchResults(keyword);
+            }
+        }
+
+        // 搜索功能
+        function searchNews() {
+            const keyword = document.getElementById('searchInput').value;
+            if (keyword.trim()) {
+                window.location.href = `result.html?keyword=${encodeURIComponent(keyword)}`;
+            }
+        }
+
+        // 获取搜索结果
+        function fetchSearchResults(keyword) {
+            console.log('开始搜索，关键字:', keyword);
+            
+            fetch(`/api/news/search?keyword=${encodeURIComponent(keyword)}`)
+                .then(response => {
+                    console.log('收到响应:', response);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('解析数据:', data);
+                    const container = document.getElementById('searchResultContainer');
+                    container.innerHTML = ''; // 清空现有内容
+                    
+                    if (!data.code) {
+                        console.error('搜索失败:', data.msg);
+                        container.innerHTML = `<p class="error">${data.msg || '搜索失败'}</p>`;
+                        return;
+                    }
+
+                    const newsList = data.data || [];
+                    console.log('找到新闻数量:', newsList.length);
+                    
+                    if (newsList.length === 0) {
+                        container.innerHTML = '<p class="no-results">未找到相关新闻</p>';
+                        return;
+                    }
+
+                    newsList.forEach(news => {
+                        console.log('处理新闻:', news);
+                        const newsCard = document.createElement('div');
+                        newsCard.className = 'news-card';
+                        newsCard.innerHTML = `
+                            <img src="${news.imageUrl || 'default_news_image.jpg'}" alt="${news.title}" onerror="this.src='default_news_image.jpg'">
+                            <div class="news-content">
+                                <h3>${news.title}</h3>
+                                <p>${news.brief || '暂无简介'}</p>
+                                <div class="news-meta">
+                                    <span class="category">${news.category || '未分类'}</span>
+                                    <span class="date">${formatDate(news.createTime)}</span>
+                                </div>
+                            </div>
+                        `;
+                        container.appendChild(newsCard);
+                    });
+                })
+                .catch(error => {
+                    console.error('搜索出错:', error);
+                    document.getElementById('searchResultContainer').innerHTML = 
+                        `<p class="error">搜索出错: ${error.message}</p>`;
+                });
+        }
+
+        // 格式化日期
+        function formatDate(dateString) {
+            if (!dateString) return '未知日期';
+            try {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('zh-CN', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                });
+            } catch (e) {
+                console.error('日期格式化错误:', e);
+                return '日期格式错误';
+            }
+        }
+
+        // 监听回车键
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchNews();
+            }
+        });
+    </script>
+</body>
+</html> 
