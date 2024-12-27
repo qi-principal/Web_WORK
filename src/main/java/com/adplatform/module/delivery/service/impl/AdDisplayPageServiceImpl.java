@@ -1,5 +1,11 @@
 package com.adplatform.module.delivery.service.impl;
 
+import com.adplatform.module.ad.dto.MaterialDTO;
+import com.adplatform.module.ad.entity.Advertisement;
+import com.adplatform.module.ad.entity.Material;
+import com.adplatform.module.ad.mapper.AdvertisementMapper;
+import com.adplatform.module.ad.mapper.MaterialMapper;
+import com.adplatform.module.ad.service.MaterialService;
 import com.adplatform.module.ad.service.OssService;
 import com.adplatform.module.delivery.entity.AdDisplayPage;
 import com.adplatform.module.delivery.mapper.AdDisplayPageMapper;
@@ -19,6 +25,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.UUID;
+import java.util.List;
 
 /**
  * 广告展示页面服务实现类
@@ -36,33 +43,35 @@ public class AdDisplayPageServiceImpl implements AdDisplayPageService {
 
     private final AdDisplayPageMapper displayPageMapper;
     private final OssService ossService;
-
+    private final AdvertisementMapper advertisementMapper;
+    private final MaterialService materialService;
+    
     @Autowired
     private SpringTemplateEngine templateEngine;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public AdDisplayPage createDisplayPage(Long adSpaceId) {
+    public AdDisplayPage createDisplayPage(Long adId) {
         try {
-            log.info("开始创建广告展示页面，广告位ID: {}", adSpaceId);
+            log.info("开始创建广告展示页面，广告ID: {}", adId);
             
             // 检查是否已存在展示页面
-            AdDisplayPage existingPage = getDisplayPage(adSpaceId);
+            AdDisplayPage existingPage = getDisplayPage(adId);
             if (existingPage != null) {
-                log.info("广告位{}已存在展示页面", adSpaceId);
+                log.info("广告{}已存在展示页面", adId);
                 return existingPage;
             }
 
             // 创建新的展示页面
             AdDisplayPage page = new AdDisplayPage();
-            page.setAdSpaceId(adSpaceId);
+            page.setAdId(adId);
             
             // 使用模板生成HTML内容
-            String htmlContent = generateHtmlContent(adSpaceId);
+            String htmlContent = generateHtmlContent(adId);
             log.info("生成HTML内容完成");
             
             // 生成文件名
-            String fileName = generateFileName(adSpaceId);
+            String fileName = generateFileName(adId);
             log.info("生成文件名: {}", fileName);
             
             // 上传到OSS
@@ -102,11 +111,21 @@ public class AdDisplayPageServiceImpl implements AdDisplayPageService {
     /**
      * 生成HTML内容
      */
-    private String generateHtmlContent(Long adSpaceId) {
+    private String generateHtmlContent(Long adId) {
         try {
+            // 获取广告信息
+            Advertisement advertisement = advertisementMapper.selectById(adId);
+            if (advertisement == null) {
+                throw new RuntimeException("广告不存在");
+            }
+
+            // 使用MaterialService获取广告素材
+            List<MaterialDTO> materials = materialService.listByAdId(adId);
+            
             // 创建模板上下文
             Context context = new Context();
-            context.setVariable("adSpaceId", adSpaceId);
+            context.setVariable("advertisement", advertisement);
+            context.setVariable("materials", materials);
             context.setVariable("proxyUrl", proxyUrl);
             
             // 使用模板引擎处理模板
@@ -126,10 +145,10 @@ public class AdDisplayPageServiceImpl implements AdDisplayPageService {
 
     /**
      * 生成文件名
-     * 格式：display_page_{广告位ID}_{年月日}_{时分秒}_{环境标识}_{随机数}.html
+     * 格式：display_page_{广告ID}_{年月日}_{时分秒}_{环境标识}_{随机数}.html
      * 示例：display_page_123_20231224_153022_prod_7a8b9c.html
      */
-    private String generateFileName(Long adSpaceId) {
+    private String generateFileName(Long adId) {
         LocalDateTime now = LocalDateTime.now();
         String date = now.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String time = now.format(DateTimeFormatter.ofPattern("HHmmss"));
@@ -137,7 +156,7 @@ public class AdDisplayPageServiceImpl implements AdDisplayPageService {
         String randomSuffix = UUID.randomUUID().toString().substring(0, 6);
 
         return String.format("display_page_%d_%s_%s_%s_%s.html",
-                adSpaceId,
+                adId,
                 date,
                 time,
                 env,
@@ -145,14 +164,14 @@ public class AdDisplayPageServiceImpl implements AdDisplayPageService {
     }
 
     @Override
-    public AdDisplayPage getDisplayPage(Long adSpaceId) {
-        System.out.println("查询广告位" + adSpaceId + "的展示页面");
+    public AdDisplayPage getDisplayPage(Long adId) {
+        log.info("查询广告ID {} 的展示页面", adId);
         AdDisplayPage page = displayPageMapper.selectOne(
             new LambdaQueryWrapper<AdDisplayPage>()
-                .eq(AdDisplayPage::getAdSpaceId, adSpaceId)
+                .eq(AdDisplayPage::getAdId, adId)
                 .last("LIMIT 1")
         );
-        System.out.println("查询结果: " + (page != null ? "找到展示页面" : "未找到展示页面"));
+        log.info("查询结果: {}", page != null ? "找到展示页面" : "未找到展示页面");
         return page;
     }
 

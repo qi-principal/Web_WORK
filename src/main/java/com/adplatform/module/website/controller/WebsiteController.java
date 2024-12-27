@@ -19,6 +19,14 @@ public class WebsiteController {
     @Autowired
     private WebsiteService websiteService;
 
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ADVERTISER')")
+    public Result<List<Website>> getAll(){
+        List<Website> list=websiteService.getAll();
+        return Result.success(list);
+    }
+
+
     /**
      * 创建网站
      * 如果用户已有网站，则更新现有网站信息

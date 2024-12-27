@@ -10,18 +10,18 @@ public interface AdDisplayPageService {
     /**
      * 为广告位创建展示页面
      *
-     * @param adSpaceId 广告位ID
+     * @param adId 广告ID
      * @return 创建的展示页面
      */
-    AdDisplayPage createDisplayPage(Long adSpaceId);
+    AdDisplayPage createDisplayPage(Long adId);
 
     /**
      * 获取广告位的展示页面
      *
-     * @param adSpaceId 广告位ID
+     * @param adId 广告位ID
      * @return 展示页面
      */
-    AdDisplayPage getDisplayPage(Long adSpaceId);
+    AdDisplayPage getDisplayPage(Long adId);
 
     /**
      * 更新展示页面状态

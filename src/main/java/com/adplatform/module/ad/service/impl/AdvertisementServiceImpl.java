@@ -9,11 +9,14 @@ import com.adplatform.module.ad.mapper.AdMaterialRelationMapper;
 import com.adplatform.module.ad.mapper.AdvertisementMapper;
 import com.adplatform.module.ad.mapper.MaterialMapper;
 import com.adplatform.module.ad.service.AdvertisementService;
+import com.adplatform.module.delivery.entity.AdDisplayPage;
+import com.adplatform.module.delivery.service.AdDisplayPageService;
 import com.adplatform.module.user.security.SecurityService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -21,6 +24,7 @@ import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>广告服务实现类</p>
@@ -28,6 +32,7 @@ import java.time.LocalDateTime;
  * @author andrew
  * @date 2023-12-19
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AdvertisementServiceImpl implements AdvertisementService {
@@ -37,6 +42,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     private final AdMaterialRelationMapper adMaterialRelationMapper;
     private final AdConverter adConverter;
     private final SecurityService securityService;
+    private final AdDisplayPageService adDisplayPageService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -71,6 +77,19 @@ public class AdvertisementServiceImpl implements AdvertisementService {
                 relation.setCreateTime(LocalDateTime.now());
                 adMaterialRelationMapper.insert(relation);
             }
+        }
+
+        try {
+            // 创建广告展示页面
+            AdDisplayPage displayPage = adDisplayPageService.createDisplayPage(advertisement.getId());
+            if (displayPage != null) {
+                // 设置展示页面URL
+                AdvertisementDTO resultDto = adConverter.toAdvertisementDTO(advertisement);
+                resultDto.setDisplayPageUrl(displayPage.getUrl());
+                return resultDto;
+            }
+        } catch (Exception e) {
+            log.error("创建广告展示页面失败：{}", e.getMessage());
         }
         
         return adConverter.toAdvertisementDTO(advertisement);
@@ -114,13 +133,28 @@ public class AdvertisementServiceImpl implements AdvertisementService {
             }
         }
         
-        return adConverter.toAdvertisementDTO(advertisement);
+        // 获取展示页面URL
+        AdvertisementDTO resultDto = adConverter.toAdvertisementDTO(advertisement);
+        AdDisplayPage displayPage = adDisplayPageService.getDisplayPage(id);
+        if (displayPage != null) {
+            resultDto.setDisplayPageUrl(displayPage.getUrl());
+        }
+        
+        return resultDto;
     }
 
     @Override
     public AdvertisementDTO getById(Long id) {
         Advertisement advertisement = getAdvertisement(id);
-        return adConverter.toAdvertisementDTO(advertisement);
+        AdvertisementDTO dto = adConverter.toAdvertisementDTO(advertisement);
+        
+        // 获取展示页面URL
+        AdDisplayPage displayPage = adDisplayPageService.getDisplayPage(id);
+        if (displayPage != null) {
+            dto.setDisplayPageUrl(displayPage.getUrl());
+        }
+        
+        return dto;
     }
 
     @Override
@@ -134,7 +168,15 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         
         IPage<Advertisement> entityResult = advertisementMapper.selectPage(entityPage, wrapper);
         
-        return entityResult.convert(adConverter::toAdvertisementDTO);
+        // 转换结果并添加展示页面URL
+        return entityResult.convert(ad -> {
+            AdvertisementDTO dto = adConverter.toAdvertisementDTO(ad);
+            AdDisplayPage displayPage = adDisplayPageService.getDisplayPage(ad.getId());
+            if (displayPage != null) {
+                dto.setDisplayPageUrl(displayPage.getUrl());
+            }
+            return dto;
+        });
     }
 
     @Override
@@ -184,7 +226,34 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     public void delete(Long id) {
         Advertisement advertisement = getAdvertisement(id);
         validateStatus(advertisement, AdStatus.DRAFT, AdStatus.REJECTED);
-        advertisementMapper.deleteById(id);
+        
+        try {
+            // 删除广告展示页面
+            AdDisplayPage displayPage = adDisplayPageService.getDisplayPage(id);
+            if (displayPage != null) {
+                adDisplayPageService.deletePage(displayPage.getId());
+                log.info("删除广告展示页面成功：pageId={}", displayPage.getId());
+            }
+            
+            // 删除广告素材关联
+            adMaterialRelationMapper.delete(
+                new LambdaQueryWrapper<AdMaterialRelation>()
+                    .eq(AdMaterialRelation::getAdId, id)
+            );
+            
+            // 删除广告
+            advertisementMapper.deleteById(id);
+            log.info("删除广告成功：adId={}", id);
+            
+        } catch (Exception e) {
+            log.error("删除广告失败：{}", e.getMessage(), e);
+            throw new RuntimeException("删除广告失败：" + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<Advertisement> getall() {
+        return advertisementMapper.selectList(null);
     }
 
     private Advertisement getAdvertisement(Long id) {

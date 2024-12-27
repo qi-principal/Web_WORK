@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-12-24T02:24:44+0800",
-    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.12 (Amazon.com Inc.)"
+    date = "2024-12-27T22:45:48+0800",
+    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 11.0.23 (Amazon.com Inc.)"
 )
 @Component
 public class AdvertisementConverterImpl implements AdvertisementConverter {
