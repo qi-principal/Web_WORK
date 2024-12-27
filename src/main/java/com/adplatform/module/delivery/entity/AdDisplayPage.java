@@ -11,13 +11,16 @@ import java.util.Date;
 @TableName("ad_display_page")
 public class AdDisplayPage {
     
+    /**
+     * 页面ID
+     */
     @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
-     * 广告位ID
+     * 广告ID
      */
-    private Long adSpaceId;
+    private Long adId;
 
     /**
      * 唯一路径
@@ -25,29 +28,22 @@ public class AdDisplayPage {
     private String uniquePath;
 
     /**
-     * 广告展示页面URL
+     * 页面URL
      */
     private String url;
 
     /**
-     * 当前展示的广告ID
-     */
-    private Long currentAdId;
-
-    /**
-     * 状态：0-禁用、1-启用
+     * 状态：0-无效 1-有效
      */
     private Integer status;
 
     /**
      * 创建时间
      */
-    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
     /**
      * 更新时间
      */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 } 

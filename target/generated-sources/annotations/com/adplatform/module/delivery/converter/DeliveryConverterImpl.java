@@ -7,8 +7,8 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-12-24T02:24:44+0800",
-    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.12 (Amazon.com Inc.)"
+    date = "2024-12-29T20:25:00+0800",
+    comments = "version: 1.5.3.Final, compiler: Eclipse JDT (IDE) 3.41.0.v20241217-1506, environment: Java 17.0.13 (Eclipse Adoptium)"
 )
 public class DeliveryConverterImpl implements DeliveryConverter {
 
@@ -22,9 +22,9 @@ public class DeliveryConverterImpl implements DeliveryConverter {
 
         adDeliveryTask.setAdId( request.getAdId() );
         adDeliveryTask.setAdSpaceId( request.getAdSpaceId() );
-        adDeliveryTask.setStartTime( request.getStartTime() );
         adDeliveryTask.setEndTime( request.getEndTime() );
         adDeliveryTask.setPriority( request.getPriority() );
+        adDeliveryTask.setStartTime( request.getStartTime() );
 
         adDeliveryTask.setStatus( 0 );
 
@@ -39,10 +39,13 @@ public class DeliveryConverterImpl implements DeliveryConverter {
 
         DeliveryTaskResponse deliveryTaskResponse = new DeliveryTaskResponse();
 
-        deliveryTaskResponse.setId( entity.getId() );
         deliveryTaskResponse.setAdId( entity.getAdId() );
         deliveryTaskResponse.setAdSpaceId( entity.getAdSpaceId() );
         deliveryTaskResponse.setCreateTime( entity.getCreateTime() );
+        deliveryTaskResponse.setEndTime( entity.getEndTime() );
+        deliveryTaskResponse.setId( entity.getId() );
+        deliveryTaskResponse.setPriority( entity.getPriority() );
+        deliveryTaskResponse.setStartTime( entity.getStartTime() );
         deliveryTaskResponse.setUpdateTime( entity.getUpdateTime() );
 
         deliveryTaskResponse.setStatus( entity.getDeliveryStatus() );

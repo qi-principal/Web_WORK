@@ -1,7 +1,10 @@
 package com.adplatform.module.delivery.mapper;
 
+import com.adplatform.module.delivery.dto.request.DeliveryTaskRequest;
 import com.adplatform.module.delivery.entity.AdDeliveryTask;
+import com.adplatform.module.delivery.entity.Time;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -45,4 +48,17 @@ public interface AdDeliveryTaskMapper extends BaseMapper<AdDeliveryTask> {
      */
     @Select("SELECT * FROM ad_delivery_job WHERE task_id = #{taskId}")
     List<AdDeliveryTask> findByTaskId(Long taskId);
-} 
+
+    @Insert("insert into ad_delivery_task (ad_id, ad_space_id, start_time, end_time, priority,status) VALUES " +
+            "(#{adId},#{adSpaceId},#{startTime},#{endTime},#{priority},#{status})")
+    void insetTask(DeliveryTaskRequest request);
+
+    @Select("SELECT start_time,end_time FROM ad_delivery_task WHERE id=#{adId}")
+    Time find(Long adId);
+
+
+    void updateStatus(Long taskId, Integer status);
+
+    @Select("SELECT ad_id from ad_delivery_task where status=1")
+    List<Integer> selectIDS();
+}

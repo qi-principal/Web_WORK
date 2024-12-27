@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-12-24T02:24:44+0800",
-    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.12 (Amazon.com Inc.)"
+    date = "2024-12-29T20:25:00+0800",
+    comments = "version: 1.5.3.Final, compiler: Eclipse JDT (IDE) 3.41.0.v20241217-1506, environment: Java 17.0.13 (Eclipse Adoptium)"
 )
 @Component
 public class AdvertisementConverterImpl implements AdvertisementConverter {
@@ -25,17 +25,17 @@ public class AdvertisementConverterImpl implements AdvertisementConverter {
 
         Advertisement advertisement = new Advertisement();
 
-        advertisement.setTitle( dto.getTitle() );
-        advertisement.setDescription( dto.getDescription() );
-        advertisement.setUserId( dto.getUserId() );
-        advertisement.setType( dto.getType() );
-        advertisement.setStatus( dto.getStatus() );
         advertisement.setBudget( dto.getBudget() );
-        advertisement.setDailyBudget( dto.getDailyBudget() );
-        advertisement.setStartTime( dto.getStartTime() );
-        advertisement.setEndTime( dto.getEndTime() );
         advertisement.setClickUrl( dto.getClickUrl() );
+        advertisement.setDailyBudget( dto.getDailyBudget() );
+        advertisement.setDescription( dto.getDescription() );
+        advertisement.setEndTime( dto.getEndTime() );
         advertisement.setMaterials( materialDTOListToMaterialList( dto.getMaterials() ) );
+        advertisement.setStartTime( dto.getStartTime() );
+        advertisement.setStatus( dto.getStatus() );
+        advertisement.setTitle( dto.getTitle() );
+        advertisement.setType( dto.getType() );
+        advertisement.setUserId( dto.getUserId() );
 
         return advertisement;
     }
@@ -48,20 +48,20 @@ public class AdvertisementConverterImpl implements AdvertisementConverter {
 
         AdvertisementDTO advertisementDTO = new AdvertisementDTO();
 
-        advertisementDTO.setId( entity.getId() );
-        advertisementDTO.setTitle( entity.getTitle() );
-        advertisementDTO.setDescription( entity.getDescription() );
-        advertisementDTO.setUserId( entity.getUserId() );
-        advertisementDTO.setType( entity.getType() );
-        advertisementDTO.setStatus( entity.getStatus() );
         advertisementDTO.setBudget( entity.getBudget() );
-        advertisementDTO.setDailyBudget( entity.getDailyBudget() );
-        advertisementDTO.setStartTime( entity.getStartTime() );
-        advertisementDTO.setEndTime( entity.getEndTime() );
         advertisementDTO.setClickUrl( entity.getClickUrl() );
         advertisementDTO.setCreateTime( entity.getCreateTime() );
-        advertisementDTO.setUpdateTime( entity.getUpdateTime() );
+        advertisementDTO.setDailyBudget( entity.getDailyBudget() );
+        advertisementDTO.setDescription( entity.getDescription() );
+        advertisementDTO.setEndTime( entity.getEndTime() );
+        advertisementDTO.setId( entity.getId() );
         advertisementDTO.setMaterials( materialListToMaterialDTOList( entity.getMaterials() ) );
+        advertisementDTO.setStartTime( entity.getStartTime() );
+        advertisementDTO.setStatus( entity.getStatus() );
+        advertisementDTO.setTitle( entity.getTitle() );
+        advertisementDTO.setType( entity.getType() );
+        advertisementDTO.setUpdateTime( entity.getUpdateTime() );
+        advertisementDTO.setUserId( entity.getUserId() );
 
         advertisementDTO.setTypeName( getTypeName(entity.getType()) );
         advertisementDTO.setStatusName( getStatusName(entity.getStatus()) );
@@ -75,16 +75,11 @@ public class AdvertisementConverterImpl implements AdvertisementConverter {
             return;
         }
 
-        entity.setTitle( dto.getTitle() );
-        entity.setDescription( dto.getDescription() );
-        entity.setUserId( dto.getUserId() );
-        entity.setType( dto.getType() );
-        entity.setStatus( dto.getStatus() );
         entity.setBudget( dto.getBudget() );
-        entity.setDailyBudget( dto.getDailyBudget() );
-        entity.setStartTime( dto.getStartTime() );
-        entity.setEndTime( dto.getEndTime() );
         entity.setClickUrl( dto.getClickUrl() );
+        entity.setDailyBudget( dto.getDailyBudget() );
+        entity.setDescription( dto.getDescription() );
+        entity.setEndTime( dto.getEndTime() );
         if ( entity.getMaterials() != null ) {
             List<Material> list = materialDTOListToMaterialList( dto.getMaterials() );
             if ( list != null ) {
@@ -101,6 +96,11 @@ public class AdvertisementConverterImpl implements AdvertisementConverter {
                 entity.setMaterials( list );
             }
         }
+        entity.setStartTime( dto.getStartTime() );
+        entity.setStatus( dto.getStatus() );
+        entity.setTitle( dto.getTitle() );
+        entity.setType( dto.getType() );
+        entity.setUserId( dto.getUserId() );
     }
 
     protected Material materialDTOToMaterial(MaterialDTO materialDTO) {
@@ -110,12 +110,12 @@ public class AdvertisementConverterImpl implements AdvertisementConverter {
 
         Material material = new Material();
 
-        material.setId( materialDTO.getId() );
-        material.setType( materialDTO.getType() );
         material.setContent( materialDTO.getContent() );
-        material.setUrl( materialDTO.getUrl() );
-        material.setSize( materialDTO.getSize() );
         material.setCreateTime( materialDTO.getCreateTime() );
+        material.setId( materialDTO.getId() );
+        material.setSize( materialDTO.getSize() );
+        material.setType( materialDTO.getType() );
+        material.setUrl( materialDTO.getUrl() );
 
         return material;
     }
@@ -140,12 +140,12 @@ public class AdvertisementConverterImpl implements AdvertisementConverter {
 
         MaterialDTO materialDTO = new MaterialDTO();
 
-        materialDTO.setId( material.getId() );
-        materialDTO.setType( material.getType() );
         materialDTO.setContent( material.getContent() );
-        materialDTO.setUrl( material.getUrl() );
-        materialDTO.setSize( material.getSize() );
         materialDTO.setCreateTime( material.getCreateTime() );
+        materialDTO.setId( material.getId() );
+        materialDTO.setSize( material.getSize() );
+        materialDTO.setType( material.getType() );
+        materialDTO.setUrl( material.getUrl() );
 
         return materialDTO;
     }

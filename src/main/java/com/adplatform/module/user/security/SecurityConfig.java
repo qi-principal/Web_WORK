@@ -52,7 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/site/**",
                 "/admin/**",
                 "/advertiser/**",
-                "/publisher/**"
+                "/publisher/**",
+                "/api/track"
             );
     }
 
@@ -82,6 +83,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 网站模块的公开接口
                 .antMatchers(HttpMethod.GET, "/api/v1/websites/*/spaces/*/code").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/v1/pages/*/display").permitAll()
+                .antMatchers( "/api/track").permitAll()
+                .antMatchers("/track").permitAll()
+                // 广告代理的公开接口
+                .antMatchers("/public/ad-proxy/**", "/api/public/ad-proxy/**").permitAll()
                 // 网站模块的审核接口
                 .antMatchers("/api/v1/websites/*/approve", "/api/v1/websites/*/reject",
                            "/api/v1/spaces/*/approve", "/api/v1/spaces/*/reject",
@@ -92,7 +97,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
             // 禁用缓存
             .headers()
-                .cacheControl();
+                .cacheControl()
+                .and()
+                .frameOptions().disable();
 
         // 添加JWT filter
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

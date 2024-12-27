@@ -90,4 +90,5 @@ public class Advertisement {
      */
     @TableField(exist = false)
     private List<Material> materials;
+
 } 

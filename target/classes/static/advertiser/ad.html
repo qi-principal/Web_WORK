@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>广告管理</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/ad.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- 侧边栏 -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>广告主系统</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="dashboard.html">
+                            <span class="icon">📊</span>数据概览
+                        </a>
+                    </li>
+                    <li>
+                        <a href="campaign.html">
+                            <span class="icon">🎯</span>广告活动
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="ad.html">
+                            <span class="icon">📢</span>广告管理
+                        </a>
+                    </li>
+                    <li>
+                        <a href="material.html">
+                            <span class="icon">🖼️</span>素材管理
+                        </a>
+                    </li>
+                    <li>
+                        <a href="finance.html">
+                            <span class="icon">💰</span>财务中心
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- 主要内容区 -->
+        <div class="main-content">
+            <!-- 顶部栏 -->
+            <header class="top-bar">
+                <div class="user-info">
+                    <span id="currentUser">广告主</span>
+                    <button onclick="logout()" class="logout-btn">退出登录</button>
+                </div>
+            </header>
+
+            <!-- 广告管理面板 -->
+            <div class="content-panel">
+                <div class="ad-management-panel">
+                    <!-- 工具栏 -->
+                    <div class="toolbar">
+                        <div class="filter-group">
+                            <select id="campaignFilter" onchange="filterAds()">
+                                <option value="">所有活动</option>
+                                <!-- 活动列表将通过 JavaScript 动态加载 -->
+                            </select>
+                            <select id="statusFilter" onchange="filterAds()">
+                                <option value="">所有状态</option>
+                                <option value="1">待审核</option>
+                                <option value="2">投放中</option>
+                                <option value="3">已暂停</option>
+                                <option value="4">已拒绝</option>
+                                <option value="5">已结束</option>
+                            </select>
+                            <input type="text" id="searchInput" placeholder="搜索广告名称" onkeyup="filterAds()">
+                        </div>
+                        <button onclick="showCreateAdModal()" class="primary-btn">
+                            <span class="icon">➕</span>创建广告
+                        </button>
+                    </div>
+
+                    <!-- 广告列表 -->
+                    <div class="ad-list" id="adList">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>广告名称</th>
+                                    <th>所属活动</th>
+                                    <th>投放位置</th>
+                                    <th>素材预览</th>
+                                    <th>状态</th>
+                                    <th>开始时间</th>
+                                    <th>结束时间</th>
+                                    <th>展示次数</th>
+                                    <th>点击次数</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adTableBody">
+                                <!-- 广告列表将通过 JavaScript 动态加载 -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 分页控件 -->
+                    <div class="pagination" id="pagination">
+                        <!-- 分页将通过 JavaScript 动态加载 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 创建广告弹窗 -->
+    <div class="modal" id="adModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>创建广告</h3>
+                <button onclick="closeAdModal()" class="close-btn">&times;</button>
+            </div>
+            <form id="adForm">
+                <div class="form-group">
+                    <label>广告名称</label>
+                    <input type="text" name="name" required placeholder="请输入广告名称">
+                </div>
+                <div class="form-group">
+                    <label>所属活动</label>
+                    <select name="campaignId" required>
+                        <option value="">请选择活动</option>
+                        <!-- 活动列表将通过 JavaScript 动态加载 -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>投放位置</label>
+                    <select name="positionId" required>
+                        <option value="">请选择投放位置</option>
+                        <!-- 位置列表将通过 JavaScript 动态加载 -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>广告素材</label>
+                    <div class="material-selector">
+                        <button type="button" onclick="showMaterialSelector()" class="secondary-btn">选择素材</button>
+                        <div id="selectedMaterial" class="selected-material">
+                            <!-- 选中的素材将在这里显示 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>投放时间</label>
+                    <div class="date-range">
+                        <input type="datetime-local" name="startTime" required>
+                        <span>至</span>
+                        <input type="datetime-local" name="endTime" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>投放设置</label>
+                    <div class="targeting-options">
+                        <div class="option">
+                            <label>
+                                <input type="checkbox" name="deviceType" value="1"> PC端
+                            </label>
+                        </div>
+                        <div class="option">
+                            <label>
+                                <input type="checkbox" name="deviceType" value="2"> 移动端
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="primary-btn">提交审核</button>
+                    <button type="button" onclick="closeAdModal()" class="secondary-btn">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 素材选择弹窗 -->
+    <div class="modal" id="materialSelectorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>选择素材</h3>
+                <button onclick="closeMaterialSelector()" class="close-btn">&times;</button>
+            </div>
+            <div class="material-grid" id="materialSelectorGrid">
+                <!-- 素材列表将通过 JavaScript 动态加载 -->
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeMaterialSelector()" class="secondary-btn">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/dashboard.js"></script>
+    <script src="../js/ad.js"></script>
+</body>
+</html> 
