@@ -85,6 +85,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/v1/pages/*/display").permitAll()
                 .antMatchers( "/api/track").permitAll()
                 .antMatchers("/track").permitAll()
+                .antMatchers("api/delivery/recommend").permitAll()
+                .antMatchers("/delivery/recommend").permitAll()
+                .antMatchers("/recommend").permitAll()
                 // 广告代理的公开接口
                 .antMatchers("/public/ad-proxy/**", "/api/public/ad-proxy/**").permitAll()
                 // 网站模块的审核接口

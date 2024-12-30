@@ -27,7 +27,7 @@ public class AdDeliveryController {
 
     @Autowired
     private AdDeliveryService deliveryService;
-    private AdvertisementService advertisementService;
+//    private AdvertisementService advertisementService;
 
 
 
@@ -39,10 +39,14 @@ public class AdDeliveryController {
     }
 
     @GetMapping("/recommend")
-    public Result<AdvertisementDTO> recommendAd(@CookieValue(value = "device_id", required = false) String cookieValue){
+    public ResponseEntity<Void> recommendAd(@CookieValue(value = "device_id", required = false) String cookieValue){
         Advertisement ad = deliveryService.recommendAd(cookieValue);
-        AdvertisementDTO dto = advertisementService.getById(ad.getId());
-        return Result.success(dto);
+//        AdvertisementDTO dto = advertisementService.getById(ad.getId());
+//        return Result.success(dto);
+        //重定向到广告预览页面
+        return ResponseEntity.status(302)
+                .header("Location", "http://192.168.10.155:8080/#/ad-preview/" + ad.getId())
+                .build();
     }
 
     /**
