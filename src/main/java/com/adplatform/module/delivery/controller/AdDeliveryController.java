@@ -1,7 +1,9 @@
 package com.adplatform.module.delivery.controller;
 
 import com.adplatform.common.response.Result;
+import com.adplatform.module.ad.dto.AdvertisementDTO;
 import com.adplatform.module.ad.entity.Advertisement;
+import com.adplatform.module.ad.service.AdvertisementService;
 import com.adplatform.module.delivery.dto.request.DeliveryTaskRequest;
 import com.adplatform.module.delivery.dto.response.DeliveryTaskResponse;
 import com.adplatform.module.delivery.dto.response.News;
@@ -25,6 +27,7 @@ public class AdDeliveryController {
 
     @Autowired
     private AdDeliveryService deliveryService;
+    private AdvertisementService advertisementService;
 
 
 
@@ -36,9 +39,10 @@ public class AdDeliveryController {
     }
 
     @GetMapping("/recommend")
-    public Result<Advertisement> recommendAd(@CookieValue(value = "device_id", required = false) String cookieValue){
+    public Result<AdvertisementDTO> recommendAd(@CookieValue(value = "device_id", required = false) String cookieValue){
         Advertisement ad = deliveryService.recommendAd(cookieValue);
-        return Result.success(ad);
+        AdvertisementDTO dto = advertisementService.getById(ad.getId());
+        return Result.success(dto);
     }
 
     /**

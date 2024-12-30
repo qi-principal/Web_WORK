@@ -2,6 +2,7 @@ package com.adplatform.module.ad.service.impl;
 
 import com.adplatform.module.ad.converter.AdConverter;
 import com.adplatform.module.ad.dto.AdvertisementDTO;
+import com.adplatform.module.ad.dto.MaterialDTO;
 import com.adplatform.module.ad.entity.AdMaterialRelation;
 import com.adplatform.module.ad.entity.Advertisement;
 import com.adplatform.module.ad.enums.AdStatus;
@@ -9,6 +10,7 @@ import com.adplatform.module.ad.mapper.AdMaterialRelationMapper;
 import com.adplatform.module.ad.mapper.AdvertisementMapper;
 import com.adplatform.module.ad.mapper.MaterialMapper;
 import com.adplatform.module.ad.service.AdvertisementService;
+import com.adplatform.module.ad.service.MaterialService;
 import com.adplatform.module.delivery.entity.AdDisplayPage;
 import com.adplatform.module.delivery.service.AdDisplayPageService;
 import com.adplatform.module.user.security.SecurityService;
@@ -25,6 +27,7 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>广告服务实现类</p>
@@ -39,6 +42,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
     private final AdvertisementMapper advertisementMapper;
     private final MaterialMapper materialMapper;
+    private final MaterialService materialService;
     private final AdMaterialRelationMapper adMaterialRelationMapper;
     private final AdConverter adConverter;
     private final SecurityService securityService;
@@ -147,13 +151,29 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     public AdvertisementDTO getById(Long id) {
         Advertisement advertisement = getAdvertisement(id);
         AdvertisementDTO dto = adConverter.toAdvertisementDTO(advertisement);
-        
+
         // 获取展示页面URL
         AdDisplayPage displayPage = adDisplayPageService.getDisplayPage(id);
         if (displayPage != null) {
             dto.setDisplayPageUrl(displayPage.getUrl());
         }
-        
+
+        // 获取素材数据
+        List<MaterialDTO> materials = materialService.listByAdId(id);
+        dto.setMaterials(materials);
+
+        // 获取素材ID列表
+        if (!CollectionUtils.isEmpty(materials)) {
+            List<Long> materialIds = materials.stream()
+                    .map(MaterialDTO::getId)
+                    .collect(Collectors.toList());
+            dto.setMaterialIds(materialIds);
+        }
+
+        System.out.println("===========================================================");
+        System.out.println("dto"+dto);
+        System.out.println("===========================================================");
+
         return dto;
     }
 
