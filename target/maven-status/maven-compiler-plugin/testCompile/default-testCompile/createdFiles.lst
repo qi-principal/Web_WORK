@@ -1,0 +1,12 @@
+com\adplatform\module\ad\service\OssServiceTest.class
+com\adplatform\module\website\service\WebsiteServiceTest.class
+com\adplatform\module\ad\controller\AdvertisementControllerTest.class
+com\adplatform\module\ad\web\WebPageTest.class
+com\adplatform\module\user\security\JwtTokenProviderTest.class
+com\adplatform\module\user\service\UserServiceTest.class
+com\adplatform\module\user\config\TestSecurityConfig.class
+com\adplatform\module\website\security\WebsiteSecurityServiceTest.class
+com\adplatform\test\BCryptTest.class
+com\adplatform\module\user\controller\UserControllerTest.class
+com\adplatform\module\user\controller\AuthControllerTest.class
+com\adplatform\module\website\controller\WebsiteControllerTest.class

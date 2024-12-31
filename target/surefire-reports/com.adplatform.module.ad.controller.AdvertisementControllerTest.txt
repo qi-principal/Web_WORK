@@ -1,0 +1,36 @@
+-------------------------------------------------------------------------------
+Test set: com.adplatform.module.ad.controller.AdvertisementControllerTest
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 2, Errors: 4, Skipped: 0, Time elapsed: 22.51 s <<< FAILURE! - in com.adplatform.module.ad.controller.AdvertisementControllerTest
+testApprove  Time elapsed: 11.033 s  <<< ERROR!
+com.fasterxml.jackson.databind.exc.MismatchedInputException: 
+No content to map due to end-of-input
+ at [Source: (String)""; line: 1, column: 0]
+	at com.adplatform.module.ad.controller.AdvertisementControllerTest.testApprove(AdvertisementControllerTest.java:140)
+
+testPage  Time elapsed: 0.072 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<404>
+	at com.adplatform.module.ad.controller.AdvertisementControllerTest.testPage(AdvertisementControllerTest.java:105)
+
+testGetById  Time elapsed: 0.079 s  <<< ERROR!
+com.fasterxml.jackson.databind.exc.MismatchedInputException: 
+No content to map due to end-of-input
+ at [Source: (String)""; line: 1, column: 0]
+	at com.adplatform.module.ad.controller.AdvertisementControllerTest.testGetById(AdvertisementControllerTest.java:88)
+
+testCreate  Time elapsed: 0.067 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<404>
+	at com.adplatform.module.ad.controller.AdvertisementControllerTest.testCreate(AdvertisementControllerTest.java:49)
+
+testSubmit  Time elapsed: 0.076 s  <<< ERROR!
+com.fasterxml.jackson.databind.exc.MismatchedInputException: 
+No content to map due to end-of-input
+ at [Source: (String)""; line: 1, column: 0]
+	at com.adplatform.module.ad.controller.AdvertisementControllerTest.testSubmit(AdvertisementControllerTest.java:121)
+
+testUpdate  Time elapsed: 0.148 s  <<< ERROR!
+com.fasterxml.jackson.databind.exc.MismatchedInputException: 
+No content to map due to end-of-input
+ at [Source: (String)""; line: 1, column: 0]
+	at com.adplatform.module.ad.controller.AdvertisementControllerTest.testUpdate(AdvertisementControllerTest.java:65)
+

@@ -1,0 +1,16 @@
+-------------------------------------------------------------------------------
+Test set: com.adplatform.module.ad.service.OssServiceTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 4.776 s <<< FAILURE! - in com.adplatform.module.ad.service.OssServiceTest
+testUploadNonImage  Time elapsed: 0.49 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
+	at com.adplatform.module.ad.service.OssServiceTest.testUploadNonImage(OssServiceTest.java:83)
+
+testUploadLargeFile  Time elapsed: 0.26 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
+	at com.adplatform.module.ad.service.OssServiceTest.testUploadLargeFile(OssServiceTest.java:103)
+
+testUpload  Time elapsed: 0.039 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <true> but was: <false>
+	at com.adplatform.module.ad.service.OssServiceTest.testUpload(OssServiceTest.java:46)
+

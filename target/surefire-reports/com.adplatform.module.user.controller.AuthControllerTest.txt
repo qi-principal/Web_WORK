@@ -1,0 +1,20 @@
+-------------------------------------------------------------------------------
+Test set: com.adplatform.module.user.controller.AuthControllerTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 4, Errors: 0, Skipped: 0, Time elapsed: 0.244 s <<< FAILURE! - in com.adplatform.module.user.controller.AuthControllerTest
+testLoginWithWrongPassword  Time elapsed: 0.065 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<404>
+	at com.adplatform.module.user.controller.AuthControllerTest.testLoginWithWrongPassword(AuthControllerTest.java:113)
+
+testLogin  Time elapsed: 0.052 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<404>
+	at com.adplatform.module.user.controller.AuthControllerTest.testLogin(AuthControllerTest.java:83)
+
+testRegister  Time elapsed: 0.052 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<404>
+	at com.adplatform.module.user.controller.AuthControllerTest.testRegister(AuthControllerTest.java:48)
+
+testRegisterWithInvalidData  Time elapsed: 0.055 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<404>
+	at com.adplatform.module.user.controller.AuthControllerTest.testRegisterWithInvalidData(AuthControllerTest.java:66)
+

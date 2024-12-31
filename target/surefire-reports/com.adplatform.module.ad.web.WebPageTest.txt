@@ -1,0 +1,20 @@
+-------------------------------------------------------------------------------
+Test set: com.adplatform.module.ad.web.WebPageTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 4, Skipped: 0, Time elapsed: 8.785 s <<< FAILURE! - in com.adplatform.module.ad.web.WebPageTest
+testAdvertisementListPage  Time elapsed: 4.755 s  <<< ERROR!
+java.lang.AbstractMethodError: Receiver class org.openqa.selenium.chrome.ChromeDriverService$Builder does not define or inherit an implementation of the resolved method 'abstract java.io.File findDefaultExecutable()' of abstract class org.openqa.selenium.remote.service.DriverService$Builder.
+	at com.adplatform.module.ad.web.WebPageTest.setUp(WebPageTest.java:49)
+
+testMaterialPreview  Time elapsed: 0.11 s  <<< ERROR!
+java.lang.AbstractMethodError: Receiver class org.openqa.selenium.chrome.ChromeDriverService$Builder does not define or inherit an implementation of the resolved method 'abstract java.io.File findDefaultExecutable()' of abstract class org.openqa.selenium.remote.service.DriverService$Builder.
+	at com.adplatform.module.ad.web.WebPageTest.setUp(WebPageTest.java:49)
+
+testAdvertisementStatusFlow  Time elapsed: 0.036 s  <<< ERROR!
+java.lang.AbstractMethodError: Receiver class org.openqa.selenium.chrome.ChromeDriverService$Builder does not define or inherit an implementation of the resolved method 'abstract java.io.File findDefaultExecutable()' of abstract class org.openqa.selenium.remote.service.DriverService$Builder.
+	at com.adplatform.module.ad.web.WebPageTest.setUp(WebPageTest.java:49)
+
+testMaterialListPage  Time elapsed: 0.036 s  <<< ERROR!
+java.lang.AbstractMethodError: Receiver class org.openqa.selenium.chrome.ChromeDriverService$Builder does not define or inherit an implementation of the resolved method 'abstract java.io.File findDefaultExecutable()' of abstract class org.openqa.selenium.remote.service.DriverService$Builder.
+	at com.adplatform.module.ad.web.WebPageTest.setUp(WebPageTest.java:49)
+

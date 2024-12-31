@@ -1,0 +1,32 @@
+-------------------------------------------------------------------------------
+Test set: com.adplatform.module.website.controller.WebsiteControllerTest
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 7, Errors: 0, Skipped: 0, Time elapsed: 0.894 s <<< FAILURE! - in com.adplatform.module.website.controller.WebsiteControllerTest
+testRejectWebsite  Time elapsed: 0.132 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<403>
+	at com.adplatform.module.website.controller.WebsiteControllerTest.testRejectWebsite(WebsiteControllerTest.java:182)
+
+testGetWebsites  Time elapsed: 0.191 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<403>
+	at com.adplatform.module.website.controller.WebsiteControllerTest.testGetWebsites(WebsiteControllerTest.java:146)
+
+testApproveWebsite  Time elapsed: 0.107 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<403>
+	at com.adplatform.module.website.controller.WebsiteControllerTest.testApproveWebsite(WebsiteControllerTest.java:163)
+
+testCreateWebsite  Time elapsed: 0.068 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<201> but was:<403>
+	at com.adplatform.module.website.controller.WebsiteControllerTest.testCreateWebsite(WebsiteControllerTest.java:81)
+
+testGetWebsite  Time elapsed: 0.118 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<403>
+	at com.adplatform.module.website.controller.WebsiteControllerTest.testGetWebsite(WebsiteControllerTest.java:119)
+
+testUpdateWebsite  Time elapsed: 0.108 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<403>
+	at com.adplatform.module.website.controller.WebsiteControllerTest.testUpdateWebsite(WebsiteControllerTest.java:104)
+
+testUnauthorizedAccess  Time elapsed: 0.045 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<401> but was:<403>
+	at com.adplatform.module.website.controller.WebsiteControllerTest.testUnauthorizedAccess(WebsiteControllerTest.java:193)
+

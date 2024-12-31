@@ -1,0 +1,24 @@
+-------------------------------------------------------------------------------
+Test set: com.adplatform.module.user.controller.UserControllerTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 3, Errors: 2, Skipped: 0, Time elapsed: 5.367 s <<< FAILURE! - in com.adplatform.module.user.controller.UserControllerTest
+testGetCurrentUser  Time elapsed: 0.093 s  <<< ERROR!
+java.lang.IllegalStateException: Unable to create SecurityContext using @org.springframework.security.test.context.support.WithUserDetails(setupBefore=TEST_METHOD, userDetailsServiceBeanName="testUserDetailsService", value="test_user")
+Caused by: org.springframework.security.core.userdetails.UsernameNotFoundException: 用户名或密码错误
+
+testGetUserByIdWithoutPermission  Time elapsed: 0.078 s  <<< ERROR!
+java.lang.IllegalStateException: Unable to create SecurityContext using @org.springframework.security.test.context.support.WithUserDetails(setupBefore=TEST_METHOD, userDetailsServiceBeanName="testUserDetailsService", value="test_user")
+Caused by: org.springframework.security.core.userdetails.UsernameNotFoundException: 用户名或密码错误
+
+testUpdateStatus  Time elapsed: 0.46 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<404>
+	at com.adplatform.module.user.controller.UserControllerTest.testUpdateStatus(UserControllerTest.java:149)
+
+testUpdateStatusWithoutPermission  Time elapsed: 0.408 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<403> but was:<404>
+	at com.adplatform.module.user.controller.UserControllerTest.testUpdateStatusWithoutPermission(UserControllerTest.java:184)
+
+testGetUserById  Time elapsed: 0.377 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<404>
+	at com.adplatform.module.user.controller.UserControllerTest.testGetUserById(UserControllerTest.java:81)
+
