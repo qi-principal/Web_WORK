@@ -14,6 +14,12 @@ import java.util.List;
 @Service
 public class WebsiteServiceImpl extends ServiceImpl<WebsiteMapper, Website> implements WebsiteService {
 
+    private final WebsiteMapper websiteMapper;
+
+    public WebsiteServiceImpl(WebsiteMapper websiteMapper) {
+        this.websiteMapper = websiteMapper;
+    }
+
     @Override
     @Transactional
     public void createWebsite(Website website) {
@@ -92,5 +98,10 @@ public class WebsiteServiceImpl extends ServiceImpl<WebsiteMapper, Website> impl
                 .orderByDesc(Website::getCreateTime)
                 .last("LIMIT 1")
                 .one();
+    }
+
+    @Override
+    public List<Website> getAll() {
+        return websiteMapper.selectList(null);
     }
 } 

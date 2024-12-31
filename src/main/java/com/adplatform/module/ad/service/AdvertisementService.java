@@ -1,6 +1,7 @@
 package com.adplatform.module.ad.service;
 
 import com.adplatform.module.ad.dto.AdvertisementDTO;
+import com.adplatform.module.ad.entity.Advertisement;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
@@ -80,4 +81,6 @@ public interface AdvertisementService {
      * @param id 广告ID
      */
     void delete(Long id);
-} 
+
+    List<Advertisement> getall();
+}

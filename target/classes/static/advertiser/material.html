@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>素材管理</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/material.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- 侧边栏 -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>广告主系统</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="dashboard.html">
+                            <span class="icon">📊</span>数据概览
+                        </a>
+                    </li>
+                    <li>
+                        <a href="campaign.html">
+                            <span class="icon">🎯</span>广告活动
+                        </a>
+                    </li>
+                    <li>
+                        <a href="ad.html">
+                            <span class="icon">📢</span>广告管理
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="material.html">
+                            <span class="icon">🖼️</span>素材管理
+                        </a>
+                    </li>
+                    <li>
+                        <a href="finance.html">
+                            <span class="icon">💰</span>财务中心
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- 主要内容区 -->
+        <div class="main-content">
+            <!-- 顶部栏 -->
+            <header class="top-bar">
+                <div class="user-info">
+                    <span id="currentUser">广告主</span>
+                    <button onclick="logout()" class="logout-btn">退出登录</button>
+                </div>
+            </header>
+
+            <!-- 素材库面板 -->
+            <div class="content-panel">
+                <div class="material-library-panel">
+                    <!-- 工具栏 -->
+                    <div class="toolbar">
+                        <div class="filter-group">
+                            <select id="materialType" onchange="filterMaterials()">
+                                <option value="">全部类型</option>
+                                <option value="1">图片</option>
+                                <option value="2">视频</option>
+                            </select>
+                            <input type="text" id="searchInput" placeholder="搜索素材" onkeyup="filterMaterials()">
+                        </div>
+                        <button onclick="showUploadModal()" class="primary-btn">
+                            <span class="icon">➕</span>上传素材
+                        </button>
+                    </div>
+
+                    <!-- 素材网格 -->
+                    <div class="material-grid" id="materialGrid">
+                        <!-- 素材卡片将通过 JavaScript 动态加载 -->
+                    </div>
+
+                    <!-- 分页控件 -->
+                    <div class="pagination" id="pagination">
+                        <!-- 分页将通过 JavaScript 动态加载 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 素材上传弹窗 -->
+    <div class="modal" id="materialModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>上传素材</h3>
+                <button onclick="closeModal()" class="close-btn">&times;</button>
+            </div>
+            <form id="materialForm">
+                <div class="form-group">
+                    <label>素材类型</label>
+                    <select name="type" required>
+                        <option value="1">图片</option>
+                        <option value="2">视频</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>选择文件</label>
+                    <div class="file-upload">
+                        <input type="file" id="fileInput" name="file" required accept="image/*,video/*">
+                        <div class="file-preview" id="filePreview">
+                            <span>点击或拖拽文件到此处</span>
+                        </div>
+                    </div>
+                    <p class="help-text">支持的格式：图片(jpg, png, gif)，视频(mp4, webm)</p>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="primary-btn">上传</button>
+                    <button type="button" onclick="closeModal()" class="secondary-btn">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 素材预览弹窗 -->
+    <div class="modal" id="previewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>素材预览</h3>
+                <button onclick="closePreviewModal()" class="close-btn">&times;</button>
+            </div>
+            <div class="preview-content">
+                <div id="previewContainer"></div>
+                <div class="material-info">
+                    <p>文件名：<span id="previewFileName"></span></p>
+                    <p>上传时间：<span id="previewUploadTime"></span></p>
+                    <p>文件大小：<span id="previewFileSize"></span></p>
+                    <p>使用次数：<span id="previewUsageCount"></span></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="deleteMaterial()" class="danger-btn">删除素材</button>
+                <button onclick="closePreviewModal()" class="secondary-btn">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/dashboard.js"></script>
+    <script src="../js/material.js"></script>
+</body>
+</html> 

@@ -115,4 +115,16 @@ public class AdvertisementDTO {
      */
     @JsonProperty("materialIds")
     private List<Long> materialIds;
+
+    /**
+     * 广告展示页面URL
+     */
+    private String displayPageUrl;
+
+    /**
+     * 广告投放位置列表
+     */
+    private Integer width;
+
+    private Integer height;
 } 

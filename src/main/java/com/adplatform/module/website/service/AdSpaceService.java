@@ -43,8 +43,8 @@ public interface AdSpaceService extends IService<AdSpace> {
      */
     void rejectAdSpace(Long id);
 
-    /**
-     * 生成广告位代码
-     */
-    String generateAdCode(Long adSpaceId);
+//    /**
+//     * 生成广告位代码
+//     */
+//    String generateAdCode(Long adSpaceId);
 } 

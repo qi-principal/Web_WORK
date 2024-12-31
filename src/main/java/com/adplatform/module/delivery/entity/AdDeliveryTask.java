@@ -3,6 +3,8 @@ package com.adplatform.module.delivery.entity;
 import com.adplatform.module.delivery.enums.DeliveryStatus;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -28,12 +30,12 @@ public class AdDeliveryTask {
     /**
      * 开始时间
      */
-    private Date startTime;
+    private LocalDateTime startTime;
 
     /**
      * 结束时间
      */
-    private Date endTime;
+    private LocalDateTime endTime;
 
     /**
      * 优先级：数字越大优先级越高

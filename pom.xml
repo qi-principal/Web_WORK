@@ -157,6 +157,11 @@
             <version>5.3.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+           <version>2.3.1</version>
+        </dependency>
 
         <!-- Apache HttpClient 依赖 -->
         <dependency>
