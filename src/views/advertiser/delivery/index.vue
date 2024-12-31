@@ -25,7 +25,7 @@
       style="width: 100%">
       <el-table-column prop="id" label="ID" width="80" />
       <el-table-column prop="adTitle" label="广告标题" />
-      <el-table-column prop="spaceName" label="广告位" />
+      <el-table-column prop="spaceName" label="投放网站" />
       <el-table-column label="投放时间" width="300">
         <template slot-scope="{row}">
           {{ row.startTime }} 至 {{ row.endTime }}
@@ -88,8 +88,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="选择广告位" prop="spaceId">
-          <el-select v-model="temp.spaceId" placeholder="请选择广告位" filterable>
+        <el-form-item label="请选择投放网站" prop="spaceId">
+          <el-select v-model="temp.spaceId" placeholder="请选择投放网站" filterable>
             <el-option
               v-for="item in spaceOptions"
               :key="item.id"
@@ -119,8 +119,9 @@
 
 <script>
 import { getDeliveryTasks, createDeliveryTask, updateDeliveryTaskStatus } from '@/api/delivery'
-import { getAdList } from '@/api/ad'
+import {getAdList, getSpaceAdList} from '@/api/ad'
 import { getAdSpaceList } from '@/api/adspace'
+import { getWebsiteByUserId } from '@/api/website'
 
 export default {
   name: 'DeliveryManagement',
@@ -138,7 +139,9 @@ export default {
       temp: {
         adId: undefined,
         spaceId: undefined,
-        scheduleTime: []
+        scheduleTime: [],
+        priority: 1,
+        status:0
       },
       rules: {
         adId: [{ required: true, message: '请选择广告', trigger: 'change' }],
@@ -146,31 +149,58 @@ export default {
         scheduleTime: [{ required: true, message: '请选择投放时间', trigger: 'change' }]
       },
       adOptions: [],
-      spaceOptions: []
+      spaceOptions: [],
+      websiteId: null,
+      websiteOptions: [],
+      selectedWebsiteId: null
     }
   },
   created() {
-    this.getList()
-    this.getAdOptions()
-    this.getSpaceOptions()
+    console.log("delivery1")
+    this.getWebsiteId()
+      .then(() => {
+        console.log("delivery2")
+        this.getAdOptions();
+        this.getSpaceOptions();
+        this.getList()
+      })
+      .catch(error => {
+        console.error('初始化数据失败：', error);
+      });
   },
   methods: {
+    getWebsiteId() {
+      return new Promise((resolve, reject) => {
+        const userInfo = this.$store.state.user.userInfo;
+        console.log('delivery当前用户信息：', userInfo);
+        // 添加 resolve() 以确保 Promise 被解决
+        resolve(); // 确保 delivery2 能够运行
+      });
+    },
     getList() {
       this.listLoading = true
       getDeliveryTasks(this.listQuery).then(response => {
+
         this.list = response.data.records
+        console.log("11")
+        console.log(response.data)
         this.total = response.data.total
         this.listLoading = false
-      })
+      }).catch(error => {
+          console.error('获取投放任务失败：', error);
+          this.listLoading = false; // 确保在请求失败时也停止加载状态
+        });
     },
     getAdOptions() {
-      getAdList({ status: 1 }).then(response => {
-        this.adOptions = response.data.records
+      getAdList().then(response => {
+        console.log("Delivery运行",response.data)
+        this.adOptions = response.data
       })
     },
     getSpaceOptions() {
-      getAdSpaceList({ status: 1 }).then(response => {
-        this.spaceOptions = response.data.records
+      getSpaceAdList().then(response => {
+        console.log("Delivery运行",response.data)
+        this.spaceOptions = response.data
       })
     },
     handleFilter() {
@@ -204,10 +234,13 @@ export default {
         if (valid) {
           const data = {
             adId: this.temp.adId,
-            spaceId: this.temp.spaceId,
+            adSpaceId: this.temp.spaceId,
             startTime: this.temp.scheduleTime[0],
-            endTime: this.temp.scheduleTime[1]
+            endTime: this.temp.scheduleTime[1],
+            priority: this.temp.priority,
+            status:this.temp.status
           }
+          console.log(data)
           createDeliveryTask(data).then(() => {
             this.dialogVisible = false
             this.$message({
@@ -215,9 +248,15 @@ export default {
               message: '创建成功'
             })
             this.getList()
-          })
+          }).catch(error => {
+            console.error('创建失败：', error);
+            this.$message({
+              type: 'error',
+              message: '创建失败，请重试'
+            });
+          });
         }
-      })
+      });
     },
     handleStart(row) {
       this.updateStatus(row.id, 1)
@@ -232,6 +271,8 @@ export default {
         type: 'warning'
       }).then(() => {
         this.updateStatus(row.id, 4)
+        console.log("fffffffffffffffffffffffff")
+        console.log(row.id)
       })
     },
     updateStatus(id, status) {

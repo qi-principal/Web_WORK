@@ -3,7 +3,15 @@ import request from '@/utils/request'
 // 获取广告列表
 export function getAdList(params) {
   return request({
-    url: '/v1/ads',
+    url: 'public/ad-proxy/all',
+    method: 'get',
+    params
+  })
+}
+// 获取广告列表
+export function getSpaceAdList(params) {
+  return request({
+    url: '/v1/websites/all',
     method: 'get',
     params
   })
@@ -49,4 +57,4 @@ export function submitAdReview(id) {
     url: `/v1/ads/${id}/submit`,
     method: 'post'
   })
-} 
+}

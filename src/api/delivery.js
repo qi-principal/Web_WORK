@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 获取投放任务列表
 export function getDeliveryTasks(params) {
   return request({
-    url: '/v1/delivery/tasks',
+    url: '/delivery/tasks',
     method: 'get',
     params
   })
@@ -12,7 +12,7 @@ export function getDeliveryTasks(params) {
 // 创建投放任务
 export function createDeliveryTask(data) {
   return request({
-    url: '/v1/delivery/tasks',
+    url: '/delivery/tasks',
     method: 'post',
     data
   })
@@ -21,7 +21,7 @@ export function createDeliveryTask(data) {
 // 更新投放任务状态
 export function updateDeliveryTaskStatus(id, status) {
   return request({
-    url: `/v1/delivery/tasks/${id}/status`,
+    url: `/delivery/tasks/${id}/status`,
     method: 'put',
     params: { status }
   })
@@ -34,4 +34,4 @@ export function getAdStatistics(adId, params) {
     method: 'get',
     params
   })
-} 
+}

@@ -41,4 +41,12 @@ export function updateUserStatus(id, status) {
     method: 'put',
     params: { status }
   })
-} 
+}
+
+// 获取用户关联的网站列表
+export function getUserWebsites() {
+  return request({
+    url: '/v1/users/me/websites',
+    method: 'get'
+  })
+}

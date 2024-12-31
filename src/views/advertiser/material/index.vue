@@ -21,6 +21,10 @@
               <span>{{ item.typeName }}</span>
             </div>
             <div class="info-item">
+              <span class="label">描述：</span>
+              <span>{{ item.content }}</span>
+            </div>
+            <div class="info-item">
               <span class="label">大小：</span>
               <span>{{ formatSize(item.size) }}</span>
             </div>
@@ -37,10 +41,24 @@
       </el-col>
     </el-row>
 
+    <el-pagination
+      v-if="usePagination"
+      class="pagination-container"
+      background
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="listQuery.current"
+      :page-sizes="[10, 20, 30, 50]"
+      :page-size="listQuery.size"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
+
     <!-- 查看素材详情对话框 -->
     <el-dialog title="素材详情" :visible.sync="detailVisible" width="800px">
       <el-descriptions :column="2" border>
         <el-descriptions-item label="素材类型">{{ detail.typeName }}</el-descriptions-item>
+        <el-descriptions-item label="素材描述">{{ detail.content }}</el-descriptions-item>
         <el-descriptions-item label="素材大小">{{ formatSize(detail.size) }}</el-descriptions-item>
         <el-descriptions-item label="上传时间">{{ detail.createTime }}</el-descriptions-item>
         <el-descriptions-item label="使用状态">
@@ -59,7 +77,7 @@
 </template>
 
 <script>
-import { uploadMaterial, getMaterialList, getMaterialDetail, deleteMaterial } from '@/api/material'
+import { uploadMaterial, getMaterialList, getMaterialListByPage, getMaterialDetail, deleteMaterial } from '@/api/material'
 
 export default {
   name: 'MaterialManagement',
@@ -68,19 +86,73 @@ export default {
       materialList: [],
       detailVisible: false,
       detail: {},
-      loading: false
+      loading: false,
+      usePagination: true,
+      total: 0,
+      listQuery: {
+        current: 1,
+        size: 10
+      },
+      userId: null
     }
   },
   created() {
-    this.getList()
+    const userInfo = this.$store.state.user.userInfo;
+    console.log('当前用户信息：', userInfo);
+    
+    if (!userInfo) {
+      // 如果没有用户信息，先获取用户信息
+      this.$store.dispatch('user/getUserInfo')
+        .then(data => {
+          console.log('获取到的用户信息：', data);
+          this.userId = data.id;
+          this.getList();
+        })
+        .catch(error => {
+          console.error('获取用户信息失败：', error);
+          this.$message.error('获取用户信息失败');
+        });
+    } else {
+      this.userId = userInfo.id;
+      this.getList();
+    }
   },
   methods: {
     getList() {
-      this.loading = true
-      getMaterialList().then(response => {
-        this.materialList = response.data
-        this.loading = false
-      })
+      if (!this.userId) {
+        this.$message.error('用户ID不能为空');
+        return;
+      }
+
+      this.loading = true;
+      const request = this.usePagination
+        ? getMaterialListByPage(this.userId, this.listQuery)
+        : getMaterialList(this.userId);
+
+      request
+        .then(response => {
+          if (this.usePagination) {
+            this.materialList = response.data.records;
+            this.total = response.data.total;
+          } else {
+            this.materialList = response.data;
+          }
+        })
+        .catch(error => {
+          console.error('获取素材列表失败:', error);
+          this.$message.error('获取素材列表失败');
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    handleSizeChange(val) {
+      this.listQuery.size = val;
+      this.getList();
+    },
+    handleCurrentChange(val) {
+      this.listQuery.current = val;
+      this.getList();
     },
     formatSize(size) {
       if (size < 1024) {
@@ -92,6 +164,12 @@ export default {
       }
     },
     beforeUpload(file) {
+      console.log('素材页面-上传前的文件信息：', {
+        fileName: file.name,
+        fileType: file.type,
+        fileSize: file.size,
+        lastModified: file.lastModified
+      })
       const isImage = file.type.startsWith('image/')
       const isLt10M = file.size / 1024 / 1024 < 10
 
@@ -106,16 +184,37 @@ export default {
       return true
     },
     handleUpload(params) {
-      const formData = new FormData()
-      formData.append('file', params.file)
-      formData.append('type', 1) // 1表示图片类型
+      if (!this.userId) {
+        this.$message.error('用户ID不能为空');
+        return;
+      }
 
-      uploadMaterial(formData).then(() => {
-        this.$message.success('上传成功')
-        this.getList()
-      }).catch(() => {
-        this.$message.error('上传失败')
-      })
+      console.log('素材页面-准备上传的参数：', params);
+      const formData = new FormData();
+      formData.append('file', params.file);
+      formData.append('type', 1); // 1表示图片类型
+      formData.append('content', params.file.name); // 添加content字段，默认使用文件名
+      formData.append('userId', this.userId); // 添加用户ID
+
+      console.log('素材页面-FormData内容：');
+      for (let [key, value] of formData.entries()) {
+        console.log(key, ':', value instanceof File ? {
+          name: value.name,
+          type: value.type,
+          size: value.size
+        } : value);
+      }
+
+      uploadMaterial(formData)
+        .then(response => {
+          console.log('素材页面-上传成功响应：', response);
+          this.$message.success('上传成功');
+          this.getList();
+        })
+        .catch(error => {
+          console.error('素材页面-上传失败：', error);
+          this.$message.error('上传失败');
+        });
     },
     handleView(item) {
       getMaterialDetail(item.id).then(response => {
@@ -187,6 +286,11 @@ export default {
     h3 {
       margin-bottom: 10px;
     }
+  }
+
+  .pagination-container {
+    margin-top: 20px;
+    text-align: right;
   }
 }
 </style> 

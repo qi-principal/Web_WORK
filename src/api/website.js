@@ -49,4 +49,12 @@ export function submitWebsiteReview(id) {
     url: `/v1/websites/${id}/submit`,
     method: 'post'
   })
-} 
+}
+
+// 通过用户ID获取网站
+export function getWebsiteByUserId(userId) {
+  return request({
+    url: `/v1/websites/user/${userId}`,
+    method: 'get'
+  })
+}

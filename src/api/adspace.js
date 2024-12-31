@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 
 // 获取广告位列表
-export function getAdSpaceList(params) {
+export function getAdSpaceList(websiteId, params) {
   return request({
-    url: '/v1/websites/{websiteId}/spaces',
+    url: `/v1/websites/${websiteId}/spaces`,
     method: 'get',
     params
   })
