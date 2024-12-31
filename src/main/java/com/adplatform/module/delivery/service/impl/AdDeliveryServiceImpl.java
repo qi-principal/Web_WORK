@@ -1,15 +1,20 @@
 package com.adplatform.module.delivery.service.impl;
 
+import com.adplatform.module.ad.entity.Advertisement;
+import com.adplatform.module.ad.mapper.AdvertisementMapper;
 import com.adplatform.module.delivery.converter.DeliveryConverter;
 import com.adplatform.module.delivery.dto.request.DeliveryTaskRequest;
 import com.adplatform.module.delivery.dto.response.DeliveryTaskResponse;
+import com.adplatform.module.delivery.dto.response.News;
 import com.adplatform.module.delivery.entity.AdDeliveryJob;
 import com.adplatform.module.delivery.entity.AdDeliveryTask;
+import com.adplatform.module.delivery.entity.Time;
 import com.adplatform.module.delivery.enums.DeliveryStatus;
 //import com.adplatform.module.delivery.executor.SimpleDeliveryExecutor;
 import com.adplatform.module.delivery.mapper.AdDeliveryJobMapper;
 import com.adplatform.module.delivery.mapper.AdDeliveryTaskMapper;
 import com.adplatform.module.delivery.service.AdDeliveryService;
+import com.adplatform.module.website.mapper.WebsiteMapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -17,6 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -31,24 +40,22 @@ public class AdDeliveryServiceImpl implements AdDeliveryService {
 
     @Autowired
     private AdDeliveryJobMapper jobMapper;
+    @Resource
+    private AdvertisementMapper  advertisementMapper;
+    @Resource
+    private WebsiteMapper websiteMapper;
+    @Resource
+    private AdDeliveryTaskMapper adDeliveryTaskMapper;
 
 //    @Autowired
 //    private SimpleDeliveryExecutor deliveryExecutor;
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public DeliveryTaskResponse createDeliveryTask(DeliveryTaskRequest request) {
+    public void createDeliveryTask(DeliveryTaskRequest request) {
 
-        // 转换请求为实体
-        AdDeliveryTask task = DeliveryConverter.INSTANCE.toEntity(request);
+        taskMapper.insetTask(request);
 
 
-        task.setDeliveryStatus(DeliveryStatus.PENDING);
-
-        // 保存任务
-        taskMapper.insert(task);
-
-        return DeliveryConverter.INSTANCE.toResponse(task);
     }
 
     @Override
@@ -97,27 +104,59 @@ public class AdDeliveryServiceImpl implements AdDeliveryService {
     }
 
     @Override
-    public IPage<DeliveryTaskResponse> pageDeliveryTasks(Page<DeliveryTaskResponse> page, Long adId, Long adSpaceId, Integer status) {
+    public IPage<News> pageDeliveryTasks(Page<News> page, Long adId, Long adSpaceId, Integer status) {
         Page<AdDeliveryTask> taskPage = taskMapper.selectPage(
             new Page<>(page.getCurrent(), page.getSize()),
             new LambdaQueryWrapper<AdDeliveryTask>()
                 .eq(Objects.nonNull(adId), AdDeliveryTask::getAdId, adId)
                 .eq(Objects.nonNull(adSpaceId), AdDeliveryTask::getAdSpaceId, adSpaceId)
-                .eq(Objects.nonNull(status), AdDeliveryTask::getStatus, status)
                 .orderByDesc(AdDeliveryTask::getCreateTime)
         );
 
         // 转换为响应DTO
-        IPage<DeliveryTaskResponse> responsePage = new Page<>(
+        IPage<News> responsePage = new Page<>(
             taskPage.getCurrent(),
             taskPage.getSize(),
             taskPage.getTotal()
         );
-        responsePage.setRecords(taskPage.getRecords().stream()
-            .map(DeliveryConverter.INSTANCE::toResponse)
-            .collect(Collectors.toList()));
 
+        List<News> responseList = new ArrayList<>();
+        for (AdDeliveryTask task : taskPage.getRecords()) {
+//            DeliveryTaskResponse response = DeliveryConverter.INSTANCE.toResponse(task);
+
+            News response=new News();
+            // 假设您有一个方法可以根据adId查询广告标题
+            String adTitle = advertisementMapper.getAdTitleById(task.getAdId());
+            response.setAdTitle(adTitle); // 将广告标题设置到响应对象中
+
+            // 假设您有一个方法可以根据adId查询广告标题
+            String  spaceName=websiteMapper.getAdTitleById(task.getAdSpaceId());
+            response.setSpaceName(spaceName); // 将广告标题设置到响应对象中
+
+            Time time=adDeliveryTaskMapper.find(task.getId());
+            response.setStartTime(time.getStartTime());
+            response.setEndTime(time.getEndTime());
+            responseList.add(response);
+            response.setStatus(task.getStatus());
+            response.setId(task.getId());
+            System.out.println("hhhhhhhhhhhhhhhhhhhhhhh ");
+            System.out.println(task.getStatus());
+        }
+        responsePage.setRecords(responseList);
         return responsePage;
+
+    }
+
+    @Override
+    public void updateStatus(Long taskId, Integer status) {
+       adDeliveryTaskMapper.updateStatus(taskId,status);
+    }
+
+    @Override
+    public List<Advertisement> getAd() {
+        List<Integer> index=adDeliveryTaskMapper.selectIDS();
+        List<Advertisement> list=advertisementMapper.getAll(index);
+        return list;
     }
 
 //    @Override

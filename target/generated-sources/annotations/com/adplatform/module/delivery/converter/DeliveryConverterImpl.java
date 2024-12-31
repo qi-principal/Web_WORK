@@ -7,8 +7,8 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-12-24T02:24:44+0800",
-    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.12 (Amazon.com Inc.)"
+    date = "2024-12-30T22:47:35+0800",
+    comments = "version: 1.5.3.Final, compiler: javac, environment: Java 15.0.2 (Amazon.com Inc.)"
 )
 public class DeliveryConverterImpl implements DeliveryConverter {
 
@@ -39,11 +39,14 @@ public class DeliveryConverterImpl implements DeliveryConverter {
 
         DeliveryTaskResponse deliveryTaskResponse = new DeliveryTaskResponse();
 
+        deliveryTaskResponse.setStartTime( entity.getStartTime() );
+        deliveryTaskResponse.setEndTime( entity.getEndTime() );
         deliveryTaskResponse.setId( entity.getId() );
         deliveryTaskResponse.setAdId( entity.getAdId() );
         deliveryTaskResponse.setAdSpaceId( entity.getAdSpaceId() );
         deliveryTaskResponse.setCreateTime( entity.getCreateTime() );
         deliveryTaskResponse.setUpdateTime( entity.getUpdateTime() );
+        deliveryTaskResponse.setPriority( entity.getPriority() );
 
         deliveryTaskResponse.setStatus( entity.getDeliveryStatus() );
 

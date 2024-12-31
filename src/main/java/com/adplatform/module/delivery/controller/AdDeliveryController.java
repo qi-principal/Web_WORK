@@ -1,32 +1,47 @@
 package com.adplatform.module.delivery.controller;
 
+import com.adplatform.common.response.Result;
+import com.adplatform.module.ad.entity.Advertisement;
 import com.adplatform.module.delivery.dto.request.DeliveryTaskRequest;
 import com.adplatform.module.delivery.dto.response.DeliveryTaskResponse;
+import com.adplatform.module.delivery.dto.response.News;
 import com.adplatform.module.delivery.service.AdDeliveryService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 广告投放控制器
  */
 @RestController
-@RequestMapping("/api/delivery")
+@RequestMapping("/delivery")
 public class AdDeliveryController {
 
     @Autowired
     private AdDeliveryService deliveryService;
 
+
+
+    @GetMapping("/getAd")
+    public Result<List<Advertisement>> giveAd(){
+        List<Advertisement> list= deliveryService.getAd();
+        return Result.success(list);
+    }
+
     /**
      * 创建投放任务
      */
     @PostMapping("/tasks")
-    public ResponseEntity<DeliveryTaskResponse> createDeliveryTask(@Valid @RequestBody DeliveryTaskRequest request) {
-        return ResponseEntity.ok(deliveryService.createDeliveryTask(request));
+    public Result<String> createDeliveryTask(@RequestBody DeliveryTaskRequest request) {
+
+       deliveryService.createDeliveryTask(request);
+       return Result.success("插入成功");
     }
 
     /**
@@ -60,14 +75,14 @@ public class AdDeliveryController {
      * 分页查询投放任务
      */
     @GetMapping("/tasks")
-    public ResponseEntity<IPage<DeliveryTaskResponse>> pageDeliveryTasks(
+    public Result<IPage<News>> pageDeliveryTasks(
             @RequestParam(defaultValue = "1") Integer current,
             @RequestParam(defaultValue = "10") Integer size,
             @RequestParam(required = false) Long adId,
             @RequestParam(required = false) Long adSpaceId,
             @RequestParam(required = false) Integer status) {
-        Page<DeliveryTaskResponse> page = new Page<>(current, size);
-        return ResponseEntity.ok(deliveryService.pageDeliveryTasks(page, adId, adSpaceId, status));
+        Page<News> page = new Page<>(current, size);
+        return Result.success(deliveryService.pageDeliveryTasks(page, adId, adSpaceId, status));
     }
 
 //    /**
@@ -97,11 +112,12 @@ public class AdDeliveryController {
 //        return ResponseEntity.ok().build();
 //    }
 //
-//    /**
-//     * 获取任务执行状态
-//     */
-//    @GetMapping("/tasks/{taskId}/status")
-//    public ResponseEntity<String> getTaskExecutionStatus(@PathVariable Long taskId) {
-//        return ResponseEntity.ok(deliveryService.getTaskExecutionStatus(taskId));
-//    }
+    /**
+     * 获取任务执行状态
+     */
+    @PutMapping("/tasks/{taskId}/status")
+    public Result getTaskExecutionStatus(@PathVariable Long taskId, Integer status) {
+        deliveryService.updateStatus(taskId,status);
+        return Result.success();
+    }
 }

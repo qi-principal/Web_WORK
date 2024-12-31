@@ -2,6 +2,8 @@ package com.adplatform.module.delivery.dto.response;
 
 import com.adplatform.module.delivery.enums.DeliveryStatus;
 import lombok.Data;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -9,7 +11,10 @@ import java.util.Date;
  */
 @Data
 public class DeliveryTaskResponse {
-    
+    private String adTitle;
+    private String spaceName;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     /**
      * 任务ID
      */
@@ -33,8 +38,8 @@ public class DeliveryTaskResponse {
     /**
      * 状态
      */
-    private DeliveryStatus status;
-
+  private DeliveryStatus status;
+//private Integer status;
     /**
      * 创建时间
      */
@@ -44,4 +49,6 @@ public class DeliveryTaskResponse {
      * 更新时间
      */
     private Date updateTime;
+
+    private Integer priority;
 } 

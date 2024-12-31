@@ -2,208 +2,140 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>广告展示</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${advertisement.title}">广告展示</title>
     <style>
-        .ad-container {
-            width: 100%;
-            min-height: 100px;
-            margin: 0 auto;
-            position: relative;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #f5f5f5;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        .card-container {
             display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
             justify-content: center;
-            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        .ad-content {
-            max-width: 100%;
+        
+        .ad-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            width: 300px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .ad-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .media-container {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
             position: relative;
+            background: #f0f0f0;
         }
-        .ad-image {
-            max-width: 100%;
-            height: auto;
-            display: block;
+        
+        .media-content {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
-        .ad-video {
-            max-width: 100%;
-        }
-        .ad-text {
+        
+        .ad-info {
             padding: 15px;
-            text-align: center;
-            font-size: 16px;
-            line-height: 1.5;
         }
+        
         .ad-title {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.4;
         }
+        
         .ad-description {
             font-size: 14px;
             color: #666;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.4;
+        }
+        
+        .ad-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
     </style>
 </head>
 <body>
-    <div class="ad-container" th:attr="data-ad-space-id=${adSpaceId}">
-        <div class="ad-content">
-            <!-- 广告内容将通过 JavaScript 动态加载 -->
+    <div class="card-container">
+        <th:block th:each="material : ${materials}">
+            <a th:href="${advertisement.clickUrl}" target="_blank" class="ad-link">
+                <div class="ad-card">
+                    <div class="media-container">
+                        <!-- 根据素材类型显示不同内容 -->
+                        <!-- 图片广告 -->
+                        <img th:if="${material.type == 1}" 
+                             th:src="${material.url}" 
+                             class="media-content" 
+                             th:alt="${advertisement.title}">
+                        
+                        <!-- 视频广告 -->
+                        <video th:if="${material.type == 2}" 
+                               class="media-content" 
+                               controls>
+                            <source th:src="${material.url}" type="video/mp4">
+                            您的浏览器不支持视频播放
+                        </video>
+                        
+                        <!-- 文字广告 -->
+                        <div th:if="${material.type == 3}" 
+                             class="media-content" 
+                             style="padding: 20px; display: flex; align-items: center; justify-content: center;">
+                            <p th:text="${material.content}">广告内容</p>
+                        </div>
+                    </div>
+                    <div class="ad-info">
+                        <h3 class="ad-title" th:text="${advertisement.title}">广告标题</h3>
+                        <p class="ad-description" th:text="${advertisement.description}">广告描述</p>
+                    </div>
+                </div>
+            </a>
+        </th:block>
+        
+        <!-- 无广告内容时显示 -->
+        <div th:if="${#lists.isEmpty(materials)}" class="ad-card">
+            <div class="media-container">
+                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #999;">
+                    暂无内容
+                </div>
+            </div>
+            <div class="ad-info">
+                <h3 class="ad-title">广告加载失败</h3>
+                <p class="ad-description">暂无广告内容</p>
+            </div>
         </div>
     </div>
-
-    <script th:inline="javascript">
-        class AdManager {
-            constructor(adSpaceId) {
-                this.adSpaceId = adSpaceId;
-                this.container = document.querySelector('.ad-content');
-                this.currentAd = null;
-                this.refreshInterval = 30000; // 30秒刷新一次
-            }
-
-            // 初始化
-            async init() {
-                await this.loadAd();
-                this.startRefreshTimer();
-            }
-
-            // 开始定时刷新
-            startRefreshTimer() {
-                setInterval(() => this.loadAd(), this.refreshInterval);
-            }
-
-            // 加载广告
-            async loadAd() {
-                try {
-                    const response = await fetch(`/api/v1/delivery/ads/${this.adSpaceId}`, {
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('广告加载失败');
-                    }
-
-                    const adData = await response.json();
-                    if (adData && adData.data) {
-                        this.currentAd = adData.data;
-                        this.renderAd();
-                        this.recordImpression();
-                    }
-                } catch (error) {
-                    console.error('加载广告失败:', error);
-                }
-            }
-
-            // 渲染广告
-            renderAd() {
-                if (!this.currentAd) return;
-
-                let content = '';
-                switch (this.currentAd.type) {
-                    case 1: // 图片广告
-                        if (this.currentAd.materials && this.currentAd.materials.length > 0) {
-                            content = `
-                                <a href="${this.currentAd.clickUrl}" target="_blank" onclick="adManager.recordClick()">
-                                    <img class="ad-image" 
-                                         src="${this.currentAd.materials[0].url}"
-                                         alt="${this.currentAd.title}">
-                                </a>
-                            `;
-                        }
-                        break;
-
-                    case 2: // 视频广告
-                        if (this.currentAd.materials && this.currentAd.materials.length > 0) {
-                            content = `
-                                <video class="ad-video" controls onplay="adManager.recordVideoPlay()">
-                                    <source src="${this.currentAd.materials[0].url}" type="video/mp4">
-                                    您的浏览器不支持视频播放
-                                </video>
-                            `;
-                        }
-                        break;
-
-                    case 3: // 文字广告
-                        content = `
-                            <a href="${this.currentAd.clickUrl}" target="_blank" onclick="adManager.recordClick()">
-                                <div class="ad-text">
-                                    <div class="ad-title">${this.currentAd.title}</div>
-                                    <div class="ad-description">${this.currentAd.description}</div>
-                                </div>
-                            </a>
-                        `;
-                        break;
-                }
-
-                this.container.innerHTML = content;
-            }
-
-            // 记录展示
-            async recordImpression() {
-                if (!this.currentAd) return;
-
-                try {
-                    await fetch('/api/v1/delivery/stats/impression', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            adId: this.currentAd.id,
-                            adSpaceId: this.adSpaceId
-                        })
-                    });
-                } catch (error) {
-                    console.error('记录展示失败:', error);
-                }
-            }
-
-            // 记录点击
-            async recordClick() {
-                if (!this.currentAd) return;
-
-                try {
-                    await fetch('/api/v1/delivery/stats/click', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            adId: this.currentAd.id,
-                            adSpaceId: this.adSpaceId
-                        })
-                    });
-                } catch (error) {
-                    console.error('记录点击失败:', error);
-                }
-            }
-
-            // 记录视频播放
-            async recordVideoPlay() {
-                if (!this.currentAd) return;
-
-                try {
-                    await fetch('/api/v1/delivery/stats/video-play', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            adId: this.currentAd.id,
-                            adSpaceId: this.adSpaceId
-                        })
-                    });
-                } catch (error) {
-                    console.error('记录视频播放失败:', error);
-                }
-            }
-        }
-
-        // 初始化广告管理器
-        const adSpaceId = document.querySelector('.ad-container').dataset.adSpaceId;
-        const adManager = new AdManager(adSpaceId);
-        adManager.init();
-    </script>
 </body>
-</html> 
+</html>

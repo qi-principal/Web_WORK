@@ -41,4 +41,6 @@ public interface WebsiteService extends IService<Website> {
      * 通过用户ID获取网站
      */
     Website getWebsiteByUserId(Long userId);
-} 
+
+    List<Website> getAll();
+}

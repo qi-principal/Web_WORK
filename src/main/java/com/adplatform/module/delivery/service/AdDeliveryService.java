@@ -1,9 +1,13 @@
 package com.adplatform.module.delivery.service;
 
+import com.adplatform.module.ad.entity.Advertisement;
 import com.adplatform.module.delivery.dto.request.DeliveryTaskRequest;
 import com.adplatform.module.delivery.dto.response.DeliveryTaskResponse;
+import com.adplatform.module.delivery.dto.response.News;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
+import java.util.List;
 
 /**
  * 广告投放服务接口
@@ -13,7 +17,7 @@ public interface AdDeliveryService {
     /**
      * 创建投放任务
      */
-    DeliveryTaskResponse createDeliveryTask(DeliveryTaskRequest request);
+    void createDeliveryTask(DeliveryTaskRequest request);
 
     /**
      * 更新投放任务
@@ -33,7 +37,11 @@ public interface AdDeliveryService {
     /**
      * 分页查询投放任务
      */
-    IPage<DeliveryTaskResponse> pageDeliveryTasks(Page<DeliveryTaskResponse> page, Long adId, Long adSpaceId, Integer status);
+    IPage<News> pageDeliveryTasks(Page<News> page, Long adId, Long adSpaceId, Integer status);
+
+    void updateStatus(Long taskId, Integer status);
+
+    List<Advertisement> getAd();
 
 //    /**
 //     * 执行投放任务

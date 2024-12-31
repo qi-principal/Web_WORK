@@ -1,6 +1,9 @@
 package com.adplatform.module.user.dto;
 
 import lombok.Data;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,6 +15,9 @@ import java.time.LocalDateTime;
  * @date 2023-11-21
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDTO {
     
     /**
@@ -53,4 +59,9 @@ public class UserDTO {
      * 创建时间
      */
     private LocalDateTime createTime;
+    
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updatedAt;
 } 

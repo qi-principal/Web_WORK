@@ -1,23 +1,89 @@
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\module\user\service\UserDetailsServiceImpl.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\module\user\service\UserServiceImpl.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\module\user\controller\AuthController.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\common\response\Result.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\module\user\repository\UserRepository.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\module\user\security\JwtAuthenticationFilter.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\module\user\dto\LoginResponse.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\module\user\security\SecurityConfig.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\module\user\entity\Role.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\module\user\repository\RoleRepository.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\module\user\entity\User.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\common\exception\ApiException.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\common\exception\GlobalExceptionHandler.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\common\response\ResultCode.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\module\user\dto\RegisterRequest.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\module\user\controller\UserController.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\module\user\security\JwtTokenProvider.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\AdPlatformApplication.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\module\user\exception\GlobalExceptionHandler.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\module\user\dto\LoginRequest.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\module\user\service\UserService.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\module\user\config\SwaggerConfig.java
-D:\Project\School\work\JAVA WEB\ads\src\main\java\com\adplatform\module\user\dto\UserDTO.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\mapper\AdDeliveryJobMapper.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\user\entity\UserRole.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\entity\AdMaterialRelation.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\user\dto\LoginRequest.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\dto\response\News.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\service\impl\OssServiceImpl.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\common\response\Result.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\user\security\JwtAuthenticationFilter.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\service\impl\AdvertisementServiceImpl.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\common\exception\BusinessException.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\user\dto\RegisterRequest.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\website\service\WebsiteService.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\user\security\SecurityConfig.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\entity\Material.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\mapper\AdDeliveryTaskMapper.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\entity\Time.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\common\response\ResultCode.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\service\impl\AdDeliveryServiceImpl.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\user\config\AdminInitializer.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\entity\AdShow.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\website\mapper\AdSpaceMapper.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\website\security\WebsiteSecurityService.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\enums\MaterialType.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\user\service\AdminInitService.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\config\OssConfig.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\converter\AdvertisementConverter.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\entity\AdDeliveryTask.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\user\entity\Role.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\common\exception\ApiException.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\entity\AdDeliveryJob.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\service\CdnService.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\dto\AdvertisementDTO.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\service\AdDisplayPageService.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\service\OssService.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\user\service\UserService.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\user\entity\User.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\mapper\AdvertisementMapper.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\website\controller\AdSpaceController.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\entity\Advertisement.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\controller\AdDeliveryController.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\enums\AdType.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\mapper\AdDisplayPageMapper.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\converter\AdConverter.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\dto\request\DeliveryTaskRequest.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\user\security\SecurityService.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\executor\SimpleDeliveryExecutor.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\config\JacksonConfig.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\service\impl\RedisAdContentCacheService.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\user\controller\AuthController.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\enums\AdStatus.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\mapper\MaterialMapper.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\executor\AdDeliveryExecutor.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\user\mapper\UserMapper.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\service\AdvertisementService.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\website\service\AdSpaceService.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\website\security\WebsitePermissions.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\AdPlatformApplication.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\service\AdContentCacheService.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\website\entity\AdSpace.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\controller\MaterialController.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\website\service\impl\AdSpaceServiceImpl.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\controller\AdProxyController.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\user\dto\UserDTO.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\service\impl\MaterialServiceImpl.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\common\exception\GlobalExceptionHandler.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\controller\AdvertisementController.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\dto\MaterialDTO.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\user\controller\UserController.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\user\security\UserPrincipal.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\website\controller\WebsiteController.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\user\dto\LoginResponse.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\config\SwaggerConfig.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\website\entity\Website.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\converter\DeliveryConverter.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\user\security\JwtTokenProvider.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\dto\response\DeliveryTaskResponse.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\service\AdDeliveryService.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\mapper\AdMaterialRelationMapper.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\user\security\UserDetailsServiceImpl.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\website\controller\AdSpaceTestController.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\service\impl\AdDisplayPageServiceImpl.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\service\impl\AliyunCdnService.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\website\service\impl\WebsiteServiceImpl.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\entity\AdDisplayPage.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\user\service\impl\UserServiceImpl.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\website\mapper\WebsiteMapper.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\dto\AdCreateRequest.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\delivery\enums\DeliveryStatus.java
+C:\Users\CZY\Desktop\ads\ads\src\main\java\com\adplatform\module\ad\service\MaterialService.java

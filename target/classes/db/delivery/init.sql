@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `ad_display_page` (
 CREATE TABLE IF NOT EXISTS `ad_delivery_task` (
     `id` bigint NOT NULL AUTO_INCREMENT COMMENT '任务ID',
     `ad_id` bigint NOT NULL COMMENT '广告ID',
-    `ad_space_id` bigint NOT NULL COMMENT '广告位ID',
+    `ad_space_id` bigint NOT NULL COMMENT 'websiteID',
     `start_time` datetime NOT NULL COMMENT '开始时间',
     `end_time` datetime NOT NULL COMMENT '结束时间',
     `status` tinyint NOT NULL DEFAULT '0' COMMENT '状态：0-待投放、1-投放中、2-已完成、3-已暂停',
