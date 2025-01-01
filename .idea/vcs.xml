@@ -4,6 +4,5 @@
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/web_ad" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/web_ad/ads" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/web_ad0/ads" vcs="Git" />
   </component>
 </project>
