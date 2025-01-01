@@ -16,11 +16,7 @@ class NewsManager {
     async loadNews() {
         try {
             console.log('开始加载新闻数据...');
-<<<<<<< HEAD
             const response = await fetch('https://10142zp2193.goho.co/api/news/all');
-=======
-            const response = await fetch('http://localhost:8080/api/news/all');
->>>>>>> origin/news
             console.log('API响应:', response);
             const result = await response.json();
             console.log('获取到的新闻数据:', result);
@@ -84,7 +80,6 @@ class NewsManager {
 
     createAdCard() {
         console.log('创建广告卡片');
-<<<<<<< HEAD
         return `
             <article class="news-card ad-card">
                 <div class="ad-label">广告</div>
@@ -94,24 +89,6 @@ class NewsManager {
                     loading="lazy"
                     title="广告内容"
                 ></iframe>
-=======
-        // 广告内容配置
-        const adContent = {
-            imageUrl: 'https://28406602.s21i.faimallusr.com/2/ABUIABACGAAgo4qkqQYogNOnvwE!800x800.jpg',
-            title: '金窖美酒1988',
-            link: 'http://www.zgxyhpt.com/sys-pd/1359.html',
-            price: '￥1199元'
-        };
-
-        return `
-            <article class="news-card ad-card">
-                <div class="ad-label">广告</div>
-                <img src="${adContent.imageUrl}" alt="${adContent.title}" onerror="this.src='https://via.placeholder.com/300x200?text=广告图片'"/>
-                <div class="news-card-content">
-                    <h3><a href="${adContent.link}" target="_blank" rel="noopener noreferrer">${adContent.title}</a></h3>
-                    <div class="price-tag">${adContent.price}</div>
-                </div>
->>>>>>> origin/news
             </article>
         `;
     }
